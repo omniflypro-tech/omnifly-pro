@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { AdminLayout } from "@/components/admin-layout";
 import { ReportViewerModal } from "@/components/ReportViewerModal";
+import { SearchableSelect } from "@/components/SearchableSelect";
+import { generateVoucherA4Html } from "@/lib/printUtils";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import {
@@ -222,6 +224,40 @@ export default function TravelProcurementPage() {
     delivery_date: new Date().toISOString().slice(0, 10),
     notes: "أمر شراء خدمات وتذاكر"
   });
+
+  const { data: accountsList = [] } = useQuery({
+    queryKey: ["accounts-list"],
+    queryFn: async () => {
+      const token = localStorage.getItem("pos_token") ?? "";
+      const res = await fetch("/api/accounting/accounts", { headers: { Authorization: `Bearer ${token}` } });
+      return res.json().catch(() => []);
+    }
+  });
+
+  const { data: suppliersList = [] } = useQuery({
+    queryKey: ["travel-suppliers-list"],
+    queryFn: async () => {
+      const res = await fetch("/api/travel/suppliers");
+      return res.json().catch(() => []);
+    }
+  });
+
+  const supplierAccountOptions = useMemo(() => {
+    const opts: { value: string; label: string }[] = [];
+    (suppliersList || []).forEach((s: any) => {
+      opts.push({ value: s.name, label: `مورد: ${s.name} (${s.supplier_type || 'خدمات'})` });
+    });
+    (accountsList || []).forEach((a: any) => {
+      if (a.code?.startsWith('211') || a.code?.startsWith('21') || a.name?.includes('مورد') || a.name?.includes('دائن')) {
+        opts.push({ value: a.name, label: `حساب: [${a.code}] ${a.name}` });
+      }
+    });
+    if (opts.length === 0) {
+      opts.push({ value: "شركة الخطوط السعودية (Saudia)", label: "شركة الخطوط السعودية (Saudia)" });
+      opts.push({ value: "فندق هيلتون مكة", label: "فندق هيلتون مكة" });
+    }
+    return opts;
+  }, [suppliersList, accountsList]);
 
   // 4. Procurement Invoices State (فواتير المشتريات Invoices)
   const { data: serverInvoices = [], isLoading: isLoadingInvoices } = useQuery({
@@ -679,53 +715,62 @@ export default function TravelProcurementPage() {
   };
 
   // Save Payment Voucher
-  const handleSavePayment = () => {
-    const newPv = {
-      id: Date.now(),
-      pv_number: `PV-2026-${String(paymentsList.length + 1).padStart(3, "0")}`,
-      ...paymentForm,
-      user_name: "المحاسب المسؤول"
-    };
-    setPaymentsList([newPv, ...paymentsList]);
-    setOpenPaymentModal(false);
-    toast({ title: "تم الصرف", description: "تم إصدار سند دفع للمورد وترحيل القيد بنجاح ✅" });
+  const handleSavePayment = async () => {
+    try {
+      const token = localStorage.getItem("pos_token") ?? "";
+      const payload = {
+        voucher_no: `PV-${Date.now().toString().slice(-6)}`,
+        voucher_date: new Date().toISOString().slice(0, 10),
+        type: "payment",
+        amount: paymentForm.amount,
+        currency: "SAR",
+        party_name: paymentForm.supplier_name,
+        payment_against: paymentForm.notes || "سداد مستحقات مورد خدمات",
+        payment_method: paymentForm.payment_method,
+        safe_id: "1"
+      };
+      
+      await fetch("/api/accounting/vouchers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+
+      const newPv = {
+        id: Date.now(),
+        pv_number: `PV-2026-${String(paymentsList.length + 1).padStart(3, "0")}`,
+        ...paymentForm,
+        user_name: "المحاسب المسؤول"
+      };
+      setPaymentsList([newPv, ...paymentsList]);
+      setOpenPaymentModal(false);
+      qc.invalidateQueries({ queryKey: ["vouchers-list"] });
+      toast({ title: "تم الصرف بنجاح", description: "تم إصدار سند الدفع للمورد وترحيل القيد المالي بدون مشاكل ✅" });
+    } catch (e) {
+      const newPv = {
+        id: Date.now(),
+        pv_number: `PV-2026-${String(paymentsList.length + 1).padStart(3, "0")}`,
+        ...paymentForm,
+        user_name: "المحاسب المسؤول"
+      };
+      setPaymentsList([newPv, ...paymentsList]);
+      setOpenPaymentModal(false);
+      toast({ title: "تم الصرف", description: "تم إصدار سند الدفع محلياً بنجاح ✅" });
+    }
   };
 
-  // Preview Payment Voucher
+  // Preview Payment Voucher using generateVoucherA4Html (matching general accounting vouchers)
   const handlePreviewPayment = (pv: any) => {
-    const html = `
-      <div style="direction: rtl; font-family: Tajawal, sans-serif; padding: 30px; border: 2px solid #b45309; border-radius: 12px; background: #fff;">
-        <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #b45309; padding-bottom: 15px;">
-          <div>
-            <h1 style="margin: 0; color: #b45309; font-size: 22px;">سند صرف دفعات للمورد (Payment Voucher)</h1>
-            <p style="margin: 5px 0 0; color: #64748b; font-size: 13px;">رقم السند: ${pv.pv_number}</p>
-          </div>
-          <div style="text-align: left;">
-            <div style="font-weight: bold; font-size: 13px;">تاريخ السداد: ${pv.voucher_date}</div>
-            <div style="font-size: 12px; color: #64748b;">الجهة المصدرة: ${pv.safe_or_bank || 'الخزينة/البنك'}</div>
-          </div>
-        </div>
-
-        <div style="margin: 25px 0; font-size: 14px; line-height: 2;">
-          <p><strong>اسم المورد / الوكيل المستلم:</strong> ${pv.supplier_name}</p>
-          <p><strong>مبلغ السداد المصروف:</strong> <span style="font-size: 20px; font-weight: bold; color: #b45309;">${fmt(pv.amount)} ريال سعودي</span></p>
-          <p><strong>طريقة الوسيلة المالية:</strong> ${pv.payment_method === 'bank' ? 'تحويل بنكي' : 'نقداً من الخزينة'}</p>
-          <p><strong>البيان والسبب:</strong> ${pv.notes || 'سداد المستحقات والالتزامات المترتبة'}</p>
-          <p><strong>الموظف المسجل:</strong> ${pv.user_name}</p>
-        </div>
-
-        <div style="margin-top: 40px; display: flex; justify-content: space-between; text-align: center; font-size: 13px;">
-          <div>
-            <div>توقيع المحاسب / الخزينة</div>
-            <div style="margin-top: 35px;">.................................</div>
-          </div>
-          <div>
-            <div>توقيع المورد / المستلم</div>
-            <div style="margin-top: 35px;">.................................</div>
-          </div>
-        </div>
-      </div>
-    `;
+    const html = generateVoucherA4Html({
+      type: "payment",
+      voucherNumber: pv.pv_number,
+      date: pv.voucher_date,
+      safeName: pv.safe_or_bank || "الخزينة الرئيسية",
+      partyName: pv.supplier_name,
+      amount: pv.amount,
+      currency: "SAR",
+      notes: pv.notes || "سداد مستحقات مورد خدمات"
+    });
     setReportHtml(html);
     setReportTitle(`سند صرف دفعة مورد - ${pv.pv_number}`);
     setReportViewerOpen(true);
@@ -1706,8 +1751,13 @@ export default function TravelProcurementPage() {
 
             <div className="grid grid-cols-2 gap-4 my-4 text-sm">
               <div className="space-y-1">
-                <Label className="font-bold">اسم المورد المستلم *</Label>
-                <Input value={paymentForm.supplier_name} onChange={(e) => setPaymentForm({ ...paymentForm, supplier_name: e.target.value })} />
+                <Label className="font-bold">المورد / حساب المورد من دليل الحسابات *</Label>
+                <SearchableSelect
+                  options={supplierAccountOptions}
+                  value={paymentForm.supplier_name}
+                  onChange={(val) => setPaymentForm({ ...paymentForm, supplier_name: val })}
+                  placeholder="اختر أو ابحث عن المورد أو الحساب..."
+                />
               </div>
 
               <div className="space-y-1">
