@@ -7664,9 +7664,9 @@ export default function Accounting() {
                           </td>
                         </tr>
                       ) : (
-                        filteredAccountsForVoucherSearch.map((acc: any) => (
+                        filteredAccountsForVoucherSearch.map((acc: any, idx: number) => (
                           <tr
-                            key={acc.id || acc.code}
+                            key={`v-acc-${acc.id || acc.code}-${idx}`}
                             className="hover:bg-indigo-50/60 dark:hover:bg-indigo-950/40 cursor-pointer transition-colors"
                             onClick={() => handleSelectAccountForVoucher(acc)}
                           >
@@ -7770,9 +7770,9 @@ export default function Accounting() {
                         String(acc.name || "").toLowerCase().includes(f9SearchQuery.toLowerCase()) ||
                         String(acc.account_type || "").toLowerCase().includes(f9SearchQuery.toLowerCase())
                       )
-                      .map((acc: any) => (
+                      .map((acc: any, idx: number) => (
                         <tr
-                          key={acc.id || acc.code}
+                          key={`f9-acc-${acc.id || acc.code}-${idx}`}
                           className="hover:bg-indigo-50/70 dark:hover:bg-indigo-950/40 cursor-pointer transition-colors"
                           onClick={() => {
                             if (f9Target === "receipt") {

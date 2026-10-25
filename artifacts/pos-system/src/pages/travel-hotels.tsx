@@ -990,7 +990,7 @@ export default function TravelHotelsPage() {
 
                       return (
                         <tr
-                          key={h.id}
+                          key={`hotel-${h.id || idx}-${idx}`}
                           onClick={() => setSelectedBookingId(h.id)}
                           className={`cursor-pointer transition-colors ${
                             isSelected ? "bg-amber-50/90 font-medium border-l-4 border-l-amber-500" : "hover:bg-slate-50"
@@ -1533,8 +1533,8 @@ export default function TravelHotelsPage() {
                           onChange={e => setForm(f => ({ ...f, customer_currency: e.target.value, commission_currency: e.target.value }))}
                           className="flex h-9 w-full rounded-md border border-input bg-white px-2 py-1 text-xs font-medium"
                         >
-                          {CURRENCIES.map(cur => (
-                            <option key={cur.id} value={cur.id}>{cur.label}</option>
+                          {CURRENCIES.map((cur, idx) => (
+                            <option key={`cur-copt-${cur.id || idx}-${idx}`} value={cur.id}>{cur.label}</option>
                           ))}
                         </select>
                       </div>
@@ -1763,8 +1763,8 @@ export default function TravelHotelsPage() {
                           onChange={e => setForm(f => ({ ...f, supplier_currency: e.target.value }))}
                           className="flex h-9 w-full rounded-md border border-input bg-white px-2 py-1 text-xs font-medium"
                         >
-                          {CURRENCIES.map(cur => (
-                            <option key={cur.id} value={cur.id}>{cur.label}</option>
+                          {CURRENCIES.map((cur, idx) => (
+                            <option key={`cur-sopt-${cur.id || idx}-${idx}`} value={cur.id}>{cur.label}</option>
                           ))}
                         </select>
                       </div>
@@ -1816,8 +1816,8 @@ export default function TravelHotelsPage() {
                             }}
                             className="flex h-8 w-full rounded-md border border-input bg-background px-1.5 py-0.5 text-[11px] font-medium"
                           >
-                            {SUPPLIER_PAYMENT_METHODS.map(pm => (
-                              <option key={pm.id} value={pm.id}>{pm.label}</option>
+                            {SUPPLIER_PAYMENT_METHODS.map((pm, idx) => (
+                              <option key={`pm-hopt-${pm.id || idx}-${idx}`} value={pm.id}>{pm.label}</option>
                             ))}
                           </select>
                         </div>

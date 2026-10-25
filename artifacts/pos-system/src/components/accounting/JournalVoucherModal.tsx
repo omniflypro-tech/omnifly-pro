@@ -709,8 +709,8 @@ export const JournalVoucherModal: React.FC<JournalVoucherModalProps> = ({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {SUPPORTED_CURRENCIES.map((c) => (
-                        <SelectItem key={c.code} value={c.code}>
+                      {SUPPORTED_CURRENCIES.map((c, idx) => (
+                        <SelectItem key={`jvm-cur-${c.code}-${idx}`} value={c.code}>
                           {c.code} ({c.symbol})
                         </SelectItem>
                       ))}
@@ -752,8 +752,8 @@ export const JournalVoucherModal: React.FC<JournalVoucherModalProps> = ({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">عام / الإدارة العامة</SelectItem>
-                    {costCentersList.map((cc: any) => (
-                      <SelectItem key={cc.id} value={String(cc.id)}>
+                    {costCentersList.map((cc: any, idx: number) => (
+                      <SelectItem key={`jvm-cc-${cc.id || idx}-${idx}`} value={String(cc.id)}>
                         {cc.code} - {cc.name}
                       </SelectItem>
                     ))}
@@ -771,8 +771,8 @@ export const JournalVoucherModal: React.FC<JournalVoucherModalProps> = ({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {ENTRY_CLASSIFICATIONS.map((cl) => (
-                      <SelectItem key={cl.id} value={cl.id}>
+                    {ENTRY_CLASSIFICATIONS.map((cl, idx) => (
+                      <SelectItem key={`jvm-cl-${cl.id || idx}-${idx}`} value={cl.id}>
                         {cl.name}
                       </SelectItem>
                     ))}
@@ -894,8 +894,8 @@ export const JournalVoucherModal: React.FC<JournalVoucherModalProps> = ({
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent className="max-h-72">
-                                  {accountsList.map((a: any) => (
-                                    <SelectItem key={a.id} value={a.code} className="text-xs">
+                                  {accountsList.map((a: any, aIdx: number) => (
+                                    <SelectItem key={`jvm-line-acc-${a.id || a.code || aIdx}-${aIdx}`} value={a.code} className="text-xs">
                                       <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold ml-1">
                                         [{a.code}]
                                       </span>{" "}
@@ -916,8 +916,8 @@ export const JournalVoucherModal: React.FC<JournalVoucherModalProps> = ({
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  {SUPPORTED_CURRENCIES.map((c) => (
-                                    <SelectItem key={c.code} value={c.code} className="text-xs">
+                                  {SUPPORTED_CURRENCIES.map((c, cIdx) => (
+                                    <SelectItem key={`jvm-line-cur-${c.code}-${cIdx}`} value={c.code} className="text-xs">
                                       {c.code}
                                     </SelectItem>
                                   ))}
@@ -994,8 +994,8 @@ export const JournalVoucherModal: React.FC<JournalVoucherModalProps> = ({
                                 </SelectTrigger>
                                 <SelectContent>
                                   <SelectItem value="all">عام / كلي</SelectItem>
-                                  {costCentersList.map((cc: any) => (
-                                    <SelectItem key={cc.id} value={String(cc.id)}>
+                                  {costCentersList.map((cc: any, ccIdx: number) => (
+                                    <SelectItem key={`jvm-line-cc-${cc.id || ccIdx}-${ccIdx}`} value={String(cc.id)}>
                                       {cc.name}
                                     </SelectItem>
                                   ))}
@@ -1412,11 +1412,11 @@ export const JournalVoucherModal: React.FC<JournalVoucherModalProps> = ({
                       </td>
                     </tr>
                   ) : (
-                    filteredSearchEntries.map((e) => {
+                    filteredSearchEntries.map((e, idx) => {
                       const entryDebit = (e.lines || []).reduce((s: number, l: any) => s + (l.debit || 0), 0);
                       return (
                         <tr
-                          key={e.id}
+                          key={`jvm-search-e-${e.id || idx}-${idx}`}
                           className="hover:bg-indigo-50/60 dark:hover:bg-indigo-950/40 cursor-pointer"
                           onClick={() => {
                             loadEntry(e);
@@ -1535,7 +1535,7 @@ export const JournalVoucherModal: React.FC<JournalVoucherModalProps> = ({
                 {lines.map((l, idx) => {
                   const acc = accountsList.find((a: any) => a.code === l.account_code);
                   return (
-                    <tr key={idx} className="border-b border-slate-300">
+                    <tr key={`jvm-print-line-${idx}`} className="border-b border-slate-300">
                       <td className="p-2 text-center font-mono font-bold border-l border-slate-900">{idx + 1}</td>
                       <td className="p-2 font-mono font-bold border-l border-slate-900">{l.account_code}</td>
                       <td className="p-2 font-semibold border-l border-slate-900">{acc ? acc.name : l.account_code}</td>

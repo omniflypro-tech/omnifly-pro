@@ -1293,8 +1293,8 @@ export default function TravelProcurementPage() {
                   ) : allProcurementInvoices.length === 0 ? (
                     <tr><td colSpan={8} className="text-center p-8 text-slate-400">لا توجد فواتير مشتريات مسجلة بعد</td></tr>
                   ) : (
-                    allProcurementInvoices.map((pi: any) => (
-                      <tr key={pi.id} className="hover:bg-slate-50">
+                    allProcurementInvoices.map((pi: any, idx: number) => (
+                      <tr key={`pi-${pi.id || idx}-${idx}`} className="hover:bg-slate-50">
                         <td className="p-3.5 font-mono font-bold text-teal-700">{pi.pi_number}</td>
                         <td className="p-3.5 text-xs">
                           <div className="font-bold text-slate-800">{pi.supplier_name}</div>
@@ -1790,8 +1790,8 @@ export default function TravelProcurementPage() {
                     <SelectValue placeholder="اختر عملة السند" />
                   </SelectTrigger>
                   <SelectContent>
-                    {currenciesList.map((c) => (
-                      <SelectItem key={c.code} value={c.code}>
+                    {currenciesList.map((c, idx) => (
+                      <SelectItem key={`proc-cur-${c.code}-${idx}`} value={c.code}>
                         {c.name}
                       </SelectItem>
                     ))}

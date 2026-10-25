@@ -245,7 +245,7 @@ function EmployeesTab() {
                 }}>
                   <SelectTrigger className="mt-1"><SelectValue placeholder="اختر القسم" /></SelectTrigger>
                   <SelectContent>
-                    {((depts as any[]) || []).map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)}
+                    {((depts as any[]) || []).map((d: any, idx: number) => <SelectItem key={`hr-dept-${d.id || idx}-${idx}`} value={String(d.id)}>{d.name}</SelectItem>)}
                     <SelectItem value="new" className="text-primary font-bold">➕ إضافة قسم جديد يدوياً</SelectItem>
                   </SelectContent>
                 </Select>
@@ -369,7 +369,7 @@ function SalariesTab() {
               <label className="text-sm font-medium">الموظف *</label>
               <Select value={form.employee_id} onValueChange={v => { const emp = (employees as any[]).find((e: any) => e.id === Number(v)); setForm(f => ({ ...f, employee_id: v, basic_salary: emp ? String(emp.basic_salary) : f.basic_salary })); }}>
                 <SelectTrigger className="mt-1"><SelectValue placeholder="اختر الموظف" /></SelectTrigger>
-                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={e.id} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any, idx: number) => <SelectItem key={`hr-emp1-${e.id || idx}-${idx}`} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><label className="text-sm font-medium">الشهر *</label><Input type="month" value={form.month} onChange={e => setForm(f => ({ ...f, month: e.target.value }))} className="mt-1" /></div>
@@ -483,7 +483,7 @@ function AttendanceTab() {
               <label className="text-sm font-medium">الموظف *</label>
               <Select value={form.employee_id} onValueChange={v => setForm(f => ({ ...f, employee_id: v }))}>
                 <SelectTrigger className="mt-1"><SelectValue placeholder="اختر الموظف" /></SelectTrigger>
-                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={e.id} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any, idx: number) => <SelectItem key={`hr-emp2-${e.id || idx}-${idx}`} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><label className="text-sm font-medium">التاريخ *</label><Input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} className="mt-1" /></div>
@@ -548,8 +548,8 @@ function MealDeductionsTab() {
             <SelectTrigger className="w-44"><SelectValue placeholder="كل الموظفين" /></SelectTrigger>
             <SelectContent>
               <SelectItem value=" ">كل الموظفين</SelectItem>
-              {((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => (
-                <SelectItem key={e.id} value={String(e.id)}>{e.name}</SelectItem>
+              {((employees as any[]) || []).filter((e: any) => e.active).map((e: any, idx: number) => (
+                <SelectItem key={`hr-emp3-${e.id || idx}-${idx}`} value={String(e.id)}>{e.name}</SelectItem>
               ))}
             </SelectContent>
           </Select>

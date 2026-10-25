@@ -1601,8 +1601,8 @@ export default function TravelBusTicketsPage() {
                           className="flex h-9 w-full rounded-md border border-input bg-white px-2.5 py-1 text-xs"
                         >
                           <option value="">نفس العميل الدافع</option>
-                          {passengers.map((p: any) => (
-                            <option key={`bus-pax-${p.id}`} value={p.id}>{p.name_ar}</option>
+                          {passengers.map((p: any, idx: number) => (
+                            <option key={`bus-pax-${p.id || idx}-${idx}`} value={p.id}>{p.name_ar}</option>
                           ))}
                         </select>
                       </div>
@@ -1629,8 +1629,8 @@ export default function TravelBusTicketsPage() {
                           onChange={e => setForm({ ...form, customer_currency: e.target.value })}
                           className="flex h-9 w-full rounded-md border border-input bg-white px-2 text-xs font-bold"
                         >
-                          {CURRENCIES.map(c => (
-                            <option key={c.code} value={c.code}>{c.flag} {c.label}</option>
+                          {CURRENCIES.map((c, idx) => (
+                            <option key={`bus-cur1-${c.code}-${idx}`} value={c.code}>{c.flag} {c.label}</option>
                           ))}
                         </select>
                       </div>
@@ -1760,8 +1760,8 @@ export default function TravelBusTicketsPage() {
                           onChange={e => setForm({ ...form, supplier_currency: e.target.value })}
                           className="flex h-9 w-full rounded-md border border-input bg-white px-2 text-xs font-bold text-emerald-900"
                         >
-                          {CURRENCIES.map(c => (
-                            <option key={c.code} value={c.code}>{c.flag} {c.label}</option>
+                          {CURRENCIES.map((c, idx) => (
+                            <option key={`bus-cur2-${c.code}-${idx}`} value={c.code}>{c.flag} {c.label}</option>
                           ))}
                         </select>
                       </div>
@@ -1775,8 +1775,8 @@ export default function TravelBusTicketsPage() {
                         onChange={e => handleSupplierPaymentMethodChange(e.target.value)}
                         className="flex h-9 w-full rounded-md border border-input bg-white px-2 text-xs font-bold"
                       >
-                        {SUPPLIER_PAYMENT_METHODS.map(pm => (
-                          <option key={pm.id} value={pm.id}>{pm.label}</option>
+                        {SUPPLIER_PAYMENT_METHODS.map((pm, idx) => (
+                          <option key={`bus-pm-${pm.id || idx}-${idx}`} value={pm.id}>{pm.label}</option>
                         ))}
                       </select>
                     </div>

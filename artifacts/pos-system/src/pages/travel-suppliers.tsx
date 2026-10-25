@@ -440,8 +440,8 @@ export default function TravelSuppliersPage() {
               لا يوجد موردين مطابقين للبحث
             </div>
           ) : (
-            filtered.map((supp: any) => (
-              <div key={supp.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col justify-between">
+            filtered.map((supp: any, idx: number) => (
+              <div key={`supp-${supp.id || idx}-${idx}`} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col justify-between">
                 <div className="space-y-3">
                   <div className="flex justify-between items-start">
                     <span className="px-2.5 py-1 text-xs font-mono font-bold bg-amber-50 text-amber-800 rounded-lg">
@@ -615,8 +615,8 @@ export default function TravelSuppliersPage() {
                       <SelectValue placeholder="اختر الصندوق أو الحساب البنكي" />
                     </SelectTrigger>
                     <SelectContent>
-                      {safes.map((s: any) => (
-                        <SelectItem key={s.id} value={String(s.id)}>
+                      {safes.map((s: any, idx: number) => (
+                        <SelectItem key={`safe-${s.id || idx}-${idx}`} value={String(s.id)}>
                           {s.name} {s.balance != null ? `(الرصيد: ${fmt(s.balance)} ريال)` : ''}
                         </SelectItem>
                       ))}
@@ -661,8 +661,8 @@ export default function TravelSuppliersPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {currenciesList.map(c => (
-                        <SelectItem key={c.code} value={c.code}>{c.name}</SelectItem>
+                      {currenciesList.map((c, idx) => (
+                        <SelectItem key={`supp-cur-${c.code}-${idx}`} value={c.code}>{c.name}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -927,8 +927,8 @@ export default function TravelSuppliersPage() {
                 {statementData?.payments?.length === 0 ? (
                   <div className="text-xs text-slate-400 py-4 text-center">لا توجد سندات دفع سابقة.</div>
                 ) : (
-                  statementData?.payments?.map((p: any) => (
-                    <div key={p.id} className="p-3 bg-white border rounded-xl flex justify-between items-center text-xs">
+                  statementData?.payments?.map((p: any, idx: number) => (
+                    <div key={`supp-stmt-p-${p.id || idx}-${idx}`} className="p-3 bg-white border rounded-xl flex justify-between items-center text-xs">
                       <div>
                         <div className="font-bold text-slate-800">{p.voucher_number}</div>
                         <div className="text-slate-500">{p.voucher_date} - {p.notes || "دفعة نقدية"}</div>

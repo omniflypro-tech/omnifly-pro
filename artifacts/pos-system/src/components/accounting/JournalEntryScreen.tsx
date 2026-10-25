@@ -515,20 +515,20 @@ export const JournalEntryScreen: React.FC<JournalEntryScreenProps> = ({
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
             {lines.map((line, idx) => (
-              <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+              <tr key={`je-line-${idx}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                 <td className="p-1 border-l text-center font-mono text-slate-400 font-bold">{idx + 1}</td>
                 <td className="p-1 border-l">
                   <Select value={line.account_code} onValueChange={(v) => updateLine(idx, "account_code", v)}>
                     <SelectTrigger className="h-7 text-[11px] bg-transparent border-0 focus:ring-0 font-bold text-indigo-700"><SelectValue /></SelectTrigger>
                     <SelectContent className="max-h-64 overflow-y-auto">
-                      {accountsList.map(a => <SelectItem key={a.id} value={a.code} className="text-xs">[{a.code}] - {a.name}</SelectItem>)}
+                      {accountsList.map((a, aIdx) => <SelectItem key={`je-acc-${a.id || a.code || aIdx}-${aIdx}`} value={a.code} className="text-xs">[{a.code}] - {a.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </td>
                 <td className="p-1 border-l">
                    <Select value={line.currency} onValueChange={(v) => updateLine(idx, "currency", v)}>
                      <SelectTrigger className="h-7 text-[10px] text-center bg-transparent border-0 p-0"><SelectValue /></SelectTrigger>
-                     <SelectContent>{SUPPORTED_CURRENCIES.map(c => <SelectItem key={c.code} value={c.code} className="text-[10px]">{c.code}</SelectItem>)}</SelectContent>
+                     <SelectContent>{SUPPORTED_CURRENCIES.map((c, cIdx) => <SelectItem key={`je-cur-${c.code}-${cIdx}`} value={c.code} className="text-[10px]">{c.code}</SelectItem>)}</SelectContent>
                    </Select>
                 </td>
                 <td className="p-1 border-l">
@@ -564,7 +564,7 @@ export const JournalEntryScreen: React.FC<JournalEntryScreenProps> = ({
                      <SelectTrigger className="h-7 text-[10px] border-0 bg-transparent"><SelectValue /></SelectTrigger>
                      <SelectContent>
                         <SelectItem value="all">الكل</SelectItem>
-                        {costCentersList.map(cc => <SelectItem key={cc.id} value={String(cc.id)} className="text-[10px]">{cc.name}</SelectItem>)}
+                        {costCentersList.map((cc, ccIdx) => <SelectItem key={`je-cc-${cc.id || ccIdx}-${ccIdx}`} value={String(cc.id)} className="text-[10px]">{cc.name}</SelectItem>)}
                      </SelectContent>
                    </Select>
                 </td>
