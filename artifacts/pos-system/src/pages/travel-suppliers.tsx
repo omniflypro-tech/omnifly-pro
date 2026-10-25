@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/admin-layout";
 import { ReportViewerModal } from "@/components/ReportViewerModal";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -108,6 +108,21 @@ export default function TravelSuppliersPage() {
       return res.json();
     }
   });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const suppId = params.get("supplierId");
+    const action = params.get("action");
+    if (suppId && suppliers.length > 0) {
+      const found = suppliers.find((s: any) => s.id.toString() === suppId);
+      if (found) {
+        setSelectedSupplier(found);
+        if (action === "statement") {
+          setOpenStatementSheet(true);
+        }
+      }
+    }
+  }, [suppliers]);
 
   const { data: statementData, refetch: refetchStatement } = useQuery({
     queryKey: ["/api/travel/suppliers", selectedSupplier?.id, "statement"],

@@ -263,7 +263,7 @@ export function TravelGlobalSearch({
                 {results.suppliers.map((s) => (
                   <div
                     key={s.id}
-                    onClick={() => navigateTo("/travel-suppliers")}
+                    onClick={() => navigateTo(`/travel-suppliers?supplierId=${s.id}&action=statement`)}
                     className="p-3 bg-amber-50/50 hover:bg-amber-100/70 border border-amber-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
                     <div>
