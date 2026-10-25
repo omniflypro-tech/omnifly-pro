@@ -93,21 +93,23 @@ export default function TravelSuppliersPage() {
   });
 
   // Queries
-  const { data: safes = [] } = useQuery({
+  const { data: safesRaw } = useQuery({
     queryKey: ["/api/accounting/safes"],
     queryFn: async () => {
       const res = await fetch("/api/accounting/safes");
       return res.json();
     }
   });
+  const safes = Array.isArray(safesRaw) ? safesRaw : (safesRaw?.safes || safesRaw?.data || []);
 
-  const { data: suppliers = [], isLoading } = useQuery({
+  const { data: suppliersRaw, isLoading } = useQuery({
     queryKey: ["/api/travel/suppliers"],
     queryFn: async () => {
       const res = await fetch("/api/travel/suppliers");
       return res.json();
     }
   });
+  const suppliers = Array.isArray(suppliersRaw) ? suppliersRaw : (suppliersRaw?.suppliers || suppliersRaw?.data || []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
