@@ -45,6 +45,15 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { tafqeet } from "@/lib/tafqeet";
+
+const currenciesList = [
+  { code: "SAR", name: "ريال سعودي (SAR)", rate: "1", symbol: "ر.س" },
+  { code: "USD", name: "دولار أمريكي (USD)", rate: "3.75", symbol: "$" },
+  { code: "YER", name: "ريال يمني (YER)", rate: "0.0025", symbol: "ر.ي" },
+  { code: "EUR", name: "يورو (EUR)", rate: "4.10", symbol: "€" },
+  { code: "AED", name: "درهم إماراتي (AED)", rate: "1.02", symbol: "د.إ" }
+];
 
 // Format numbers
 const fmt = (num: number) => (num || 0).toLocaleString("ar-SA", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
@@ -375,6 +384,8 @@ export default function TravelProcurementPage() {
   const [paymentForm, setPaymentForm] = useState({
     supplier_name: "شركة الخطوط السعودية (Saudia)",
     amount: 10000,
+    currency: "SAR",
+    exchange_rate: "1",
     payment_method: "bank",
     safe_or_bank: "البنك الأهلي السعودي",
     voucher_date: new Date().toISOString().slice(0, 10),
@@ -723,7 +734,8 @@ export default function TravelProcurementPage() {
         voucher_date: new Date().toISOString().slice(0, 10),
         type: "payment",
         amount: paymentForm.amount,
-        currency: "SAR",
+        currency: paymentForm.currency || "SAR",
+        exchange_rate: paymentForm.exchange_rate || "1",
         party_name: paymentForm.supplier_name,
         payment_against: paymentForm.notes || "سداد مستحقات مورد خدمات",
         payment_method: paymentForm.payment_method,
@@ -745,7 +757,7 @@ export default function TravelProcurementPage() {
       setPaymentsList([newPv, ...paymentsList]);
       setOpenPaymentModal(false);
       qc.invalidateQueries({ queryKey: ["vouchers-list"] });
-      toast({ title: "تم الصرف بنجاح", description: "تم إصدار سند الدفع للمورد وترحيل القيد المالي بدون مشاكل ✅" });
+      toast({ title: "تم الصرف بنجاح", description: "تم إصدار سند الدفع للمورد بالعملة المحددة وترحيل القيد المالي بدون مشاكل ✅" });
     } catch (e) {
       const newPv = {
         id: Date.now(),
@@ -768,7 +780,8 @@ export default function TravelProcurementPage() {
       safeName: pv.safe_or_bank || "الخزينة الرئيسية",
       partyName: pv.supplier_name,
       amount: pv.amount,
-      currency: "SAR",
+      currency: pv.currency || "SAR",
+      amountWords: tafqeet(Number(pv.amount) || 0, pv.currency || "SAR"),
       notes: pv.notes || "سداد مستحقات مورد خدمات"
     });
     setReportHtml(html);
@@ -1068,8 +1081,8 @@ export default function TravelProcurementPage() {
                   {requestsList.length === 0 ? (
                     <tr><td colSpan={7} className="text-center p-8 text-slate-400">لا توجد طلبات شراء مسجلة</td></tr>
                   ) : (
-                    requestsList.map((pr) => (
-                      <tr key={pr.id} className="hover:bg-slate-50">
+                    requestsList.map((pr, idx) => (
+                      <tr key={`pr-${pr.id}-${idx}`} className="hover:bg-slate-50">
                         <td className="p-3.5 font-mono font-bold text-teal-700">{pr.pr_number}</td>
                         <td className="p-3.5">
                           <div className="font-bold text-slate-800">{pr.supplier_name}</div>
@@ -1139,8 +1152,8 @@ export default function TravelProcurementPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y">
-                  {rfqsList.map((rfq) => (
-                    <tr key={rfq.id} className="hover:bg-slate-50">
+                  {rfqsList.map((rfq, idx) => (
+                    <tr key={`rfq-${rfq.id}-${idx}`} className="hover:bg-slate-50">
                       <td className="p-3.5 font-mono font-bold text-teal-700">{rfq.rfq_number}</td>
                       <td className="p-3.5">
                         <div className="font-bold text-slate-800">{rfq.title}</div>
@@ -1200,8 +1213,8 @@ export default function TravelProcurementPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y">
-                  {ordersList.map((po) => (
-                    <tr key={po.id} className="hover:bg-slate-50">
+                  {ordersList.map((po, idx) => (
+                    <tr key={`po-${po.id}-${idx}`} className="hover:bg-slate-50">
                       <td className="p-3.5 font-mono font-bold text-teal-700">{po.po_number}</td>
                       <td className="p-3.5">
                         <div className="font-bold text-slate-800">{po.supplier_name}</div>
@@ -1350,12 +1363,12 @@ export default function TravelProcurementPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y">
-                  {paymentsList.map((pv) => (
-                    <tr key={pv.id} className="hover:bg-slate-50">
+                  {paymentsList.map((pv, idx) => (
+                    <tr key={`pv-${pv.id}-${idx}`} className="hover:bg-slate-50">
                       <td className="p-3.5 font-mono font-bold text-amber-800">{pv.pv_number}</td>
                       <td className="p-3.5 font-bold text-slate-800">{pv.supplier_name}</td>
                       <td className="p-3.5 text-xs text-slate-600">{pv.safe_or_bank}</td>
-                      <td className="p-3.5 font-mono font-bold text-amber-800">{fmt(pv.amount)} ريال</td>
+                      <td className="p-3.5 font-mono font-bold text-amber-800">{fmt(pv.amount)} {pv.currency || "SAR"}</td>
                       <td className="p-3.5 text-xs text-slate-600">{pv.voucher_date}</td>
                       <td className="p-3.5 text-xs text-slate-500">{pv.notes}</td>
                       <td className="p-3.5 text-center">
@@ -1392,8 +1405,8 @@ export default function TravelProcurementPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {contractsList.map((cnt) => (
-                <div key={cnt.id} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-3">
+              {contractsList.map((cnt, idx) => (
+                <div key={`cnt-${cnt.id}-${idx}`} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-3">
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="font-mono font-bold text-xs bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md">{cnt.contract_number}</span>
@@ -1761,9 +1774,56 @@ export default function TravelProcurementPage() {
               </div>
 
               <div className="space-y-1">
-                <Label className="font-bold">مبلغ السداد (ريال سعودي) *</Label>
-                <Input type="number" value={paymentForm.amount} onChange={(e) => setPaymentForm({ ...paymentForm, amount: Number(e.target.value) })} />
+                <Label className="font-bold">عملة السند *</Label>
+                <Select
+                  value={paymentForm.currency || "SAR"}
+                  onValueChange={(curr) => {
+                    const cObj = currenciesList.find((c) => c.code === curr);
+                    setPaymentForm({
+                      ...paymentForm,
+                      currency: curr,
+                      exchange_rate: cObj ? cObj.rate : "1"
+                    });
+                  }}
+                >
+                  <SelectTrigger className="bg-white dark:bg-slate-800">
+                    <SelectValue placeholder="اختر عملة السند" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currenciesList.map((c) => (
+                      <SelectItem key={c.code} value={c.code}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
+
+              <div className="space-y-1">
+                <Label className="font-bold">
+                  مبلغ السداد ({currenciesList.find(c => c.code === paymentForm.currency)?.symbol || "ر.س"}) *
+                </Label>
+                <Input
+                  type="number"
+                  value={paymentForm.amount}
+                  onChange={(e) => setPaymentForm({ ...paymentForm, amount: Number(e.target.value) })}
+                />
+              </div>
+
+              {paymentForm.currency !== "SAR" && (
+                <div className="space-y-1">
+                  <Label className="font-bold">سعر الصرف إلى الريال السعودي (Exchange Rate)</Label>
+                  <Input
+                    type="number"
+                    step="0.0001"
+                    value={paymentForm.exchange_rate}
+                    onChange={(e) => setPaymentForm({ ...paymentForm, exchange_rate: e.target.value })}
+                  />
+                  <span className="text-[10px] text-amber-700 font-mono">
+                    المقابل بالريال: {fmt(Number(paymentForm.amount) * Number(paymentForm.exchange_rate || 1))} ر.س
+                  </span>
+                </div>
+              )}
 
               <div className="space-y-1">
                 <Label className="font-bold">جهة الصرف</Label>
