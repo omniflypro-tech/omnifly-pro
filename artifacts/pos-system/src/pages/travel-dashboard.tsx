@@ -367,7 +367,7 @@ export default function TravelDashboardPage() {
               {alerts.expiringPassports?.length === 0 ? (
                 <p className="text-muted-foreground p-2">لا توجد جوازات تنتهي قريباً ✅</p>
               ) : (
-                alerts.expiringPassports?.map((p: any) => (
+                alerts.expiringPassports?.map((p: any, idx: number) => (
                   <div key={`traveldashboard-p-id-${p.id || idx}-${idx}`} className="flex items-center justify-between p-2 bg-amber-50 rounded border border-amber-200">
                     <div>
                       <p className="font-bold text-slate-900">{p.name_ar}</p>
@@ -392,7 +392,7 @@ export default function TravelDashboardPage() {
               {alerts.pendingVisas?.length === 0 ? (
                 <p className="text-muted-foreground p-2">لا توجد تأشيرات قيد الانتظار ✅</p>
               ) : (
-                alerts.pendingVisas?.map((v: any) => (
+                alerts.pendingVisas?.map((v: any, idx: number) => (
                   <div key={`traveldashboard-v-id-${v.id || idx}-${idx}`} className="p-2 bg-blue-50 rounded border border-blue-200 space-y-1">
                     <div className="flex items-center justify-between font-bold text-slate-900">
                       <span>{v.customer_name} ({v.country})</span>
@@ -417,7 +417,7 @@ export default function TravelDashboardPage() {
               {alerts.upcomingFlights?.length === 0 ? (
                 <p className="text-muted-foreground p-2">لا توجد مغادرات قريبة جداً ✅</p>
               ) : (
-                alerts.upcomingFlights?.map((f: any) => (
+                alerts.upcomingFlights?.map((f: any, idx: number) => (
                   <div key={`traveldashboard-f-id-${f.id || idx}-${idx}`} className="flex items-center justify-between p-2 bg-emerald-50 rounded border border-emerald-200">
                     <div>
                       <p className="font-bold text-slate-900">{f.customer_name} - {f.destination_city}</p>
