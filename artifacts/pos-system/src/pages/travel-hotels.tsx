@@ -1,5 +1,6 @@
 import { useState, useRef, useMemo } from "react";
 import { AdminLayout } from "@/components/admin-layout";
+import { ReportViewerModal } from "@/components/ReportViewerModal";
 import { SearchableAccountSelect } from "@/components/ui/searchable-account-select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -38,7 +39,9 @@ import {
   Check,
   X,
   AlertTriangle,
-  RefreshCw
+  RefreshCw,
+  Maximize2,
+  FileDown
 } from "lucide-react";
 
 function fetchWithAuth<T>(url: string, options?: RequestInit): Promise<T> {
@@ -139,6 +142,138 @@ export default function TravelHotelsPage() {
   const [previewBooking, setPreviewBooking] = useState<any | null>(null);
   const [quickHotelModal, setQuickHotelModal] = useState(false);
   const [quickCustomerModal, setQuickCustomerModal] = useState(false);
+
+  // Fullscreen Report Viewer Modal State
+  const [reportViewerOpen, setReportViewerOpen] = useState(false);
+  const [reportHtml, setReportHtml] = useState("");
+  const [reportTitle, setReportTitle] = useState("");
+
+  const handleOpenHotelFullScreenPdf = (bk: any) => {
+    if (!bk) return;
+    const title = `تأكيد_حجز_فندق_${bk.booking_ref || 'HOTEL'}`;
+    const html = `
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>${title}</title>
+  <style>
+    @page { size: A4; margin: 12mm; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fff; color: #1e293b; margin: 0; padding: 15px; direction: rtl; line-height: 1.5; font-size: 13px; }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #d97706; padding-bottom: 12px; margin-bottom: 16px; }
+    .logo-title { font-size: 20px; font-weight: 900; color: #0f172a; margin: 0; }
+    .subtitle { font-size: 12px; color: #64748b; margin-top: 2px; }
+    .voucher-badge { background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; padding: 6px 14px; border-radius: 8px; text-align: center; }
+    .voucher-ref { font-family: monospace; font-size: 14px; font-weight: bold; }
+    .hotel-box { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .hotel-name { font-size: 16px; font-weight: 800; color: #78350f; margin: 0; }
+    .hotel-location { font-size: 12px; color: #b45309; margin-top: 3px; }
+    .status-tag { background: #059669; color: #fff; font-weight: bold; padding: 4px 10px; border-radius: 6px; font-size: 11px; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
+    .info-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; }
+    .label { color: #64748b; font-size: 11px; font-weight: 600; margin-bottom: 2px; }
+    .value { font-weight: 700; color: #0f172a; font-size: 13px; }
+    .financial-box { background: #0f172a; color: #fff; border-radius: 10px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .financial-amount { font-family: monospace; font-size: 20px; font-weight: 900; color: #34d399; }
+    .statement-box { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a8a; border-radius: 8px; padding: 10px 12px; margin-bottom: 16px; font-size: 12px; }
+    .terms { font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 12px; line-height: 1.6; }
+    .signatures { margin-top: 30px; display: flex; justify-content: space-between; text-align: center; font-weight: 700; font-size: 12px; }
+    .sig-line { width: 160px; border-top: 1px dashed #94a3b8; margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1 class="logo-title">شركة أومني للسفريات والسياحة</h1>
+      <div class="subtitle">قسم الحجوزات الفندقية والإقامة السياحية المعتمدة</div>
+      <div style="font-family: monospace; font-size: 11px; color: #475569; margin-top: 2px;">HOTEL ACCOMMODATION CONFIRMATION VOUCHER</div>
+    </div>
+    <div class="voucher-badge">
+      <div class="voucher-ref">مرجع: ${bk.booking_ref || '-'}</div>
+      ${bk.voucher_number ? `<div style="font-size:11px; margin-top:2px;">سند: ${bk.voucher_number}</div>` : ''}
+      ${bk.confirmation_number ? `<div style="font-size:11px; color:#059669; font-weight:bold;">تأكيد: ${bk.confirmation_number}</div>` : ''}
+    </div>
+  </div>
+
+  <div class="hotel-box">
+    <div>
+      <h2 class="hotel-name">🏨 ${bk.hotel_name || 'الفندق والمجمع الفندقي'}</h2>
+      <div class="hotel-location">📍 ${bk.city_country || bk.city || 'السعودية'}</div>
+    </div>
+    <span class="status-tag">حجز مؤكد Confirmed</span>
+  </div>
+
+  <div class="grid">
+    <div class="info-card">
+      <div class="label">اسم العميل / النزيل الأساسي</div>
+      <div class="value">${bk.customer_name || bk.guest_name || 'عميل عام'}</div>
+    </div>
+    <div class="info-card">
+      <div class="label">النزيل الموافق / جواز السفر</div>
+      <div class="value">${bk.guest_name || bk.customer_name || '-'} ${bk.guest_passport ? `(${bk.guest_passport})` : ''}</div>
+    </div>
+    <div class="info-card">
+      <div class="label">تاريخ الدخول (Check-In)</div>
+      <div class="value" style="font-family: monospace; color: #2563eb;">${bk.check_in || '-'}</div>
+    </div>
+    <div class="info-card">
+      <div class="label">تاريخ المغادرة (Check-Out)</div>
+      <div class="value" style="font-family: monospace; color: #2563eb;">${bk.check_out || '-'}</div>
+    </div>
+    <div class="info-card">
+      <div class="label">مدة الإقامة ونوع الغرفة</div>
+      <div class="value">${bk.nights || 1} ليالي / ${bk.room_type || 'غرفة مزدوجة'}</div>
+    </div>
+    <div class="info-card">
+      <div class="label">عدد الغرف والنزلاء والنظام</div>
+      <div class="value">${bk.rooms_count || 1} غرفة • ${bk.guests_count || 2} نزيل • ${bk.meal_plan ? bk.meal_plan.split('(')[0] : 'إفطار شامل'}</div>
+    </div>
+  </div>
+
+  ${bk.customer_statement ? `
+  <div class="statement-box">
+    <strong>البيان والتعليق:</strong> ${bk.customer_statement}
+  </div>` : ''}
+
+  <div class="financial-box">
+    <div>
+      <div style="font-size:12px; opacity:0.8;">إجمالي قيمة الحجز الفندقي</div>
+      <div class="financial-amount">${Number(bk.selling_price || 0).toLocaleString()} ${bk.customer_currency || 'SAR'}</div>
+    </div>
+    <div style="text-align:left; font-size:12px;">
+      <div>طريقة الدفع: <strong>${bk.payment_method || 'نقداً'}</strong></div>
+      <div>حالة السداد: <strong style="color:#34d399;">${bk.payment_status === 'paid' ? 'مدفوع بالكامل' : bk.payment_status || 'مؤكد'}</strong></div>
+    </div>
+  </div>
+
+  ${bk.notes ? `
+  <div style="background:#f1f5f9; border:1px solid #cbd5e1; border-radius:8px; padding:10px 12px; margin-bottom:16px; font-size:11px;">
+    <strong>ملاحظات وشروط خاصة:</strong> ${bk.notes}
+  </div>` : ''}
+
+  <div class="terms">
+    <p>• مواعيد تسجيل الدخول المعتادة بالفندق تبدأ من الساعة 02:00 ظهراً، وتسجيل المغادرة حتى الساعة 12:00 ظهراً.</p>
+    <p>• يرجى إبراز هذا السند مع أصل جواز السفر أو الهوية الوطنية عند الاستقبال في الفندق.</p>
+    <p>• هذا السند صادر رسمياً وموثق إلكترونياً من شركة أومني للسفريات والسياحة.</p>
+  </div>
+
+  <div class="signatures">
+    <div>
+      توثيق موظف الحجوزات
+      <div class="sig-line"></div>
+    </div>
+    <div>
+      ختم وتوقيع الوكالة
+      <div class="sig-line"></div>
+    </div>
+  </div>
+</body>
+</html>
+    `;
+    setReportTitle(title);
+    setReportHtml(html);
+    setReportViewerOpen(true);
+  };
 
   // Quick New Hotel in Catalog Form
   const [quickHotelForm, setQuickHotelForm] = useState({
@@ -1022,6 +1157,19 @@ export default function TravelHotelsPage() {
                               <Button
                                 variant="ghost"
                                 size="icon"
+                                className="h-8 w-8 text-indigo-600 hover:bg-indigo-50"
+                                title="استعراض بشاشة كاملة وتصدير PDF"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleOpenHotelFullScreenPdf(h);
+                                }}
+                              >
+                                <Maximize2 className="w-4 h-4" />
+                              </Button>
+
+                              <Button
+                                variant="ghost"
+                                size="icon"
                                 className="h-8 w-8 text-blue-600 hover:bg-blue-50"
                                 title="تعديل الحجز"
                                 onClick={(e) => {
@@ -1134,6 +1282,22 @@ export default function TravelHotelsPage() {
               >
                 <Printer className="w-4 h-4" />
                 طباعة (استعراض) المعاملة 🖨️
+              </Button>
+
+              {/* زر استعراض بشاشة كاملة وتصدير PDF */}
+              <Button
+                onClick={() => {
+                  if (selectedBooking) {
+                    handleOpenHotelFullScreenPdf(selectedBooking);
+                  } else {
+                    alert("يرجى اختيار معاملة من الجدول لاستعراضها وتصديرها");
+                  }
+                }}
+                disabled={!selectedBooking}
+                className="bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs gap-1.5 shadow-sm"
+              >
+                <Maximize2 className="w-4 h-4" />
+                استعراض بشاشة كاملة وتصدير PDF 📄
               </Button>
 
               {/* 3. زر البحث عن المعاملات السابقة */}
@@ -2275,12 +2439,28 @@ export default function TravelHotelsPage() {
               <Button variant="outline" onClick={() => setPreviewBooking(null)}>
                 إغلاق
               </Button>
+              <Button
+                onClick={() => handleOpenHotelFullScreenPdf(previewBooking)}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold gap-2"
+              >
+                <Maximize2 className="w-4 h-4" /> شاشة كاملة / PDF
+              </Button>
               <Button onClick={() => window.print()} className="bg-amber-600 hover:bg-amber-700 text-white font-bold gap-2">
                 <Printer className="w-4 h-4" /> طباعة القسيمة فوراً
               </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* ══════════════════════════════════════════════════════════════════════════ */}
+        {/* FULL-SCREEN PDF & PRINT REPORT VIEWER MODAL */}
+        {/* ══════════════════════════════════════════════════════════════════════════ */}
+        <ReportViewerModal
+          open={reportViewerOpen}
+          onOpenChange={setReportViewerOpen}
+          htmlContent={reportHtml}
+          title={reportTitle}
+        />
       </div>
     </AdminLayout>
   );
