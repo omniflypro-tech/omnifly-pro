@@ -656,7 +656,7 @@ export default function Returns() {
                   </thead>
                   <tbody className="divide-y divide-slate-200">
                     {((returnsList as any[]) || []).map((r: any) => (
-                      <tr key={r.id} className="hover:bg-slate-50">
+                      <tr key={`returns-r-id-${r.id || idx}-${idx}`} className="hover:bg-slate-50">
                         <td className="p-2.5 font-mono font-bold text-blue-700">{r.return_number}</td>
                         <td className="p-2.5 font-mono font-bold">{r.invoice_number}</td>
                         <td className="p-2.5 text-slate-500">{new Date(r.created_at).toLocaleString("ar-SA")}</td>
@@ -775,7 +775,7 @@ export default function Returns() {
                     </SelectTrigger>
                     <SelectContent>
                       {safes.map((s: any) => (
-                        <SelectItem key={s.id} value={String(s.id)}>{s.id} - {s.name}</SelectItem>
+                        <SelectItem key={`returns-s-id-${s.id || idx}-${idx}`} value={String(s.id)}>{s.id} - {s.name}</SelectItem>
                       ))}
                       {safes.length === 0 && (
                         <SelectItem value="1">101 - صندوق الكاشير الرئيسي</SelectItem>

@@ -150,7 +150,7 @@ export const SplashSimulator: React.FC<SplashSimulatorProps> = ({ config, langua
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
-        return prev.map((item) =>
+        return prev.map((item, idx) =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
@@ -161,7 +161,7 @@ export const SplashSimulator: React.FC<SplashSimulatorProps> = ({ config, langua
   const updateCartQuantity = (id: number, delta: number) => {
     setCart((prev) =>
       prev
-        .map((item) => (item.id === id ? { ...item, quantity: item.quantity + delta } : item))
+        .map((item, idx) => (item.id === id ? { ...item, quantity: item.quantity + delta } : item))
         .filter((item) => item.quantity > 0)
     );
   };
@@ -377,8 +377,8 @@ export const SplashSimulator: React.FC<SplashSimulatorProps> = ({ config, langua
                         </span>
                       </div>
                     ) : (
-                      cart.map((item) => (
-                        <div key={item.id} className="bg-[#141414] border border-white/5 rounded-xl p-2.5 flex items-center justify-between text-xs gap-2">
+                      cart.map((item, idx) => (
+                        <div key={`SplashSimulator-item-id-${item.id || idx}-${idx}`} className="bg-[#141414] border border-white/5 rounded-xl p-2.5 flex items-center justify-between text-xs gap-2">
                           <div className="flex-1 text-right">
                             <h4 className="font-semibold text-white">{item.name}</h4>
                             <span className="text-[10px] text-[#f27d26] mt-0.5 block">
@@ -450,9 +450,9 @@ export const SplashSimulator: React.FC<SplashSimulatorProps> = ({ config, langua
                   </h3>
 
                   <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pb-4">
-                    {products.map((product) => (
+                    {products.map((product, idx) => (
                       <button
-                        key={product.id}
+                        key={`SplashSimulator-product-id-${product.id || idx}-${idx}`}
                         onClick={() => addToCart(product)}
                         className="bg-[#0d0d0d] hover:bg-[#141414] border border-white/5 hover:border-[#f27d26]/30 rounded-2xl p-3 flex flex-col items-center justify-center text-center transition-all cursor-pointer hover:scale-[1.02] shadow-sm duration-300"
                       >
@@ -495,7 +495,7 @@ export const SplashSimulator: React.FC<SplashSimulatorProps> = ({ config, langua
                 {language === 'ar' ? 'قم بتشغيل محاكي التطبيق لمشاهدة المخرجات التقنية وسجلات الاتصال بالسيرفر...' : 'Start the simulator to capture technical process output logs...'}
               </div>
             ) : (
-              terminalLogs.map((log) => {
+              terminalLogs.map((log, idx) => {
                 const sourceColor =
                   log.source === 'electron'
                     ? 'text-[#f27d26]'
@@ -513,7 +513,7 @@ export const SplashSimulator: React.FC<SplashSimulatorProps> = ({ config, langua
                     : 'text-white/80';
 
                 return (
-                  <div key={log.id} className="leading-relaxed hover:bg-white/5 px-2 py-0.5 rounded">
+                  <div key={`SplashSimulator-log-id-${log.id || idx}-${idx}`} className="leading-relaxed hover:bg-white/5 px-2 py-0.5 rounded">
                     <span className="text-white/20 text-[11px] mr-2">[{log.time}]</span>
                     <span className={`font-semibold mr-2 ${sourceColor}`}>[{log.source.toUpperCase()}]</span>
                     <span className={typeColor}>

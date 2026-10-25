@@ -270,9 +270,9 @@ export default function TravelSmartItinerary() {
             </h4>
 
             <div className="space-y-2">
-              {itineraries.map((itn) => (
+              {itineraries.map((itn, idx) => (
                 <div
-                  key={itn.id}
+                  key={`travelsmartitinerary-itn-id-${itn.id || idx}-${idx}`}
                   onClick={() => setSelectedItinerary(itn)}
                   className={`p-3 rounded-xl border cursor-pointer transition ${
                     selectedItinerary?.id === itn.id
@@ -337,9 +337,9 @@ export default function TravelSmartItinerary() {
                   الجدول السياحي اليومي المفصل (Day-by-Day Breakdown):
                 </h3>
 
-                {(selectedItinerary.daily_plans || []).map((day) => (
+                {(selectedItinerary.daily_plans || []).map((day, idx) => (
                   <div
-                    key={day.day_number}
+                    key={`travelsmartitinerary-day-day_number-${day.day_number || idx}-${idx}`}
                     className="border border-border/80 rounded-2xl p-5 bg-card hover:border-indigo-500/40 transition space-y-4 relative overflow-hidden"
                   >
                     <div className="flex items-center justify-between border-b border-border/60 pb-3">

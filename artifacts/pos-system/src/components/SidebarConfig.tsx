@@ -210,9 +210,9 @@ export const SidebarConfig: React.FC<SidebarConfigProps> = ({ config, onChange, 
           <div>
             <label className="block text-xs font-medium text-white/60 mb-2">{t.theme}</label>
             <div className="grid grid-cols-5 gap-2">
-              {themes.map((theme) => (
+              {themes.map((theme, idx) => (
                 <button
-                  key={theme.id}
+                  key={`SidebarConfig-theme-id-${theme.id || idx}-${idx}`}
                   onClick={() => handleInputChange('splashTheme', theme.id)}
                   title={language === 'ar' ? theme.labelAr : theme.labelEn}
                   className={`h-10 rounded-xl border-2 transition-all flex items-center justify-center cursor-pointer ${theme.color} ${

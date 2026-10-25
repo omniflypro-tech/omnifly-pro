@@ -368,7 +368,7 @@ export default function TravelDashboardPage() {
                 <p className="text-muted-foreground p-2">لا توجد جوازات تنتهي قريباً ✅</p>
               ) : (
                 alerts.expiringPassports?.map((p: any) => (
-                  <div key={p.id} className="flex items-center justify-between p-2 bg-amber-50 rounded border border-amber-200">
+                  <div key={`traveldashboard-p-id-${p.id || idx}-${idx}`} className="flex items-center justify-between p-2 bg-amber-50 rounded border border-amber-200">
                     <div>
                       <p className="font-bold text-slate-900">{p.name_ar}</p>
                       <p className="font-mono text-[11px] text-muted-foreground">{p.passport_number}</p>
@@ -393,7 +393,7 @@ export default function TravelDashboardPage() {
                 <p className="text-muted-foreground p-2">لا توجد تأشيرات قيد الانتظار ✅</p>
               ) : (
                 alerts.pendingVisas?.map((v: any) => (
-                  <div key={v.id} className="p-2 bg-blue-50 rounded border border-blue-200 space-y-1">
+                  <div key={`traveldashboard-v-id-${v.id || idx}-${idx}`} className="p-2 bg-blue-50 rounded border border-blue-200 space-y-1">
                     <div className="flex items-center justify-between font-bold text-slate-900">
                       <span>{v.customer_name} ({v.country})</span>
                       <span className="font-mono text-[10px] bg-blue-200 px-1.5 py-0.5 rounded">{v.visa_number}</span>
@@ -418,7 +418,7 @@ export default function TravelDashboardPage() {
                 <p className="text-muted-foreground p-2">لا توجد مغادرات قريبة جداً ✅</p>
               ) : (
                 alerts.upcomingFlights?.map((f: any) => (
-                  <div key={f.id} className="flex items-center justify-between p-2 bg-emerald-50 rounded border border-emerald-200">
+                  <div key={`traveldashboard-f-id-${f.id || idx}-${idx}`} className="flex items-center justify-between p-2 bg-emerald-50 rounded border border-emerald-200">
                     <div>
                       <p className="font-bold text-slate-900">{f.customer_name} - {f.destination_city}</p>
                       <p className="font-mono text-[11px] text-muted-foreground">{f.airline_supplier} ({f.flight_number})</p>

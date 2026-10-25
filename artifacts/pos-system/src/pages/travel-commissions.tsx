@@ -355,12 +355,12 @@ export default function TravelCommissionsPage() {
                 { id: "employee", label: "عمولة الموظفين", icon: Users },
                 { id: "agent", label: "عمولة الوكلاء", icon: ShieldCheck },
                 { id: "branch", label: "عمولة الفروع", icon: Building2 }
-              ].map((tab) => {
+              ].map((tab, idx) => {
                 const Icon = tab.icon;
                 const active = typeFilter === tab.id;
                 return (
                   <button
-                    key={tab.id}
+                    key={`travelcommissions-tab-id-${tab.id || idx}-${idx}`}
                     onClick={() => setTypeFilter(tab.id)}
                     className={cn(
                       "flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border",
@@ -423,8 +423,8 @@ export default function TravelCommissionsPage() {
                     </td>
                   </tr>
                 ) : (
-                  commissions.map((c) => (
-                    <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  commissions.map((c, idx) => (
+                    <tr key={`travelcommissions-c-id-${c.id || idx}-${idx}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                       <td className="p-3.5 font-bold font-mono text-slate-900 dark:text-white">
                         {c.commission_code}
                       </td>

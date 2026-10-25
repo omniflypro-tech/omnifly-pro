@@ -369,7 +369,7 @@ export function ReportsTab({ initialTab }: { initialTab?: string }) {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {((custodiesReport as any[]) || []).map((c: any) => (
-                    <tr key={c.id}>
+                    <tr key={`reports-c-id-${c.id || idx}-${idx}`}>
                       <td className="p-3 font-medium">{c.employee_name}</td>
                       <td className="p-3 font-bold text-slate-700">{c.item_name}</td>
                       <td className="p-3 font-mono">{c.received_date}</td>
@@ -398,7 +398,7 @@ export function ReportsTab({ initialTab }: { initialTab?: string }) {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {((movementsReport as any[]) || []).map((m: any) => (
-                    <tr key={m.id}>
+                    <tr key={`reports-m-id-${m.id || idx}-${idx}`}>
                       <td className="p-3">
                         <span className={`px-2 py-0.5 rounded text-xs font-bold ${m.type === "out" ? "bg-amber-100 text-amber-700" : "bg-green-100 text-green-700"}`}>
                           {m.type === "out" ? "صرف" : "عودة للعهدة"}
@@ -428,7 +428,7 @@ export function ReportsTab({ initialTab }: { initialTab?: string }) {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {((leavesReport as any[]) || []).map((l: any) => (
-                    <tr key={l.id}>
+                    <tr key={`reports-l-id-${l.id || idx}-${idx}`}>
                       <td className="p-3 font-semibold">{l.employee_name}</td>
                       <td className="p-3 font-medium text-blue-700">{l.type}</td>
                       <td className="p-3 font-mono">{l.start_date}</td>
@@ -455,7 +455,7 @@ export function ReportsTab({ initialTab }: { initialTab?: string }) {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {((penaltiesReport as any[]) || []).map((p: any) => (
-                    <tr key={p.id}>
+                    <tr key={`reports-p-id-${p.id || idx}-${idx}`}>
                       <td className="p-3 font-medium">{p.employee_name}</td>
                       <td className="p-3 font-bold text-red-600">{p.violation_name}</td>
                       <td className="p-3 font-mono font-black text-red-600">-{fmt(p.amount)}</td>
@@ -480,7 +480,7 @@ export function ReportsTab({ initialTab }: { initialTab?: string }) {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {((notesReport as any[]) || []).map((n: any) => (
-                    <tr key={n.id}>
+                    <tr key={`reports-n-id-${n.id || idx}-${idx}`}>
                       <td className="p-3"><span className="font-bold px-2 py-1 bg-purple-50 text-purple-700 rounded-md">{n.department_name ?? "عام لكافة الأقسام"}</span></td>
                       <td className="p-3">
                         <div className="font-bold text-slate-800">{n.title}</div>

@@ -433,7 +433,7 @@ export default function OnyxErpPage() {
       if (pricingParams.category_id) {
         filtered = filtered.filter(p => String(p.category_id) === pricingParams.category_id);
       }
-      setPricingGrid(filtered.map(p => ({
+      setPricingGrid(filtered.map((p, idx) => ({
         id: p.id,
         number: p.number,
         name: p.name,
@@ -598,7 +598,7 @@ export default function OnyxErpPage() {
   
   // Warehouse Operations
   const handleWhNew = () => {
-    const nextId = warehouses.length > 0 ? Math.max(...warehouses.map(w => w.id)) + 1 : 1;
+    const nextId = warehouses.length > 0 ? Math.max(...warehouses.map((w, idx) => w.id)) + 1 : 1;
     setWhForm({
       id: nextId,
       code: `WH-00${nextId}`,
@@ -665,7 +665,7 @@ export default function OnyxErpPage() {
   };
 
   const handleWhCopy = () => {
-    const nextId = warehouses.length > 0 ? Math.max(...warehouses.map(w => w.id)) + 1 : 1;
+    const nextId = warehouses.length > 0 ? Math.max(...warehouses.map((w, idx) => w.id)) + 1 : 1;
     setWhForm({
       ...whForm,
       id: nextId,
@@ -1095,7 +1095,7 @@ export default function OnyxErpPage() {
                   </div>
                   {dbBranches.map((b: any, idx: number) => (
                     <button
-                      key={b.id}
+                      key={`onyxerp-b-id-${b.id || idx}-${idx}`}
                       onClick={() => {
                         setBranchIndex(idx);
                         setIsNewBranch(false);
@@ -1891,7 +1891,7 @@ export default function OnyxErpPage() {
                             .filter((u: any) => (user?.role === "developer" || (u.role !== "developer" && u.username !== "developer")) && (u.name.toLowerCase().includes(userSearchTerm.toLowerCase()) || u.username.toLowerCase().includes(userSearchTerm.toLowerCase())))
                             .map((u: any) => (
                               <button
-                                key={u.id}
+                                key={`onyxerp-u-id-${u.id || idx}-${idx}`}
                                 onClick={() => {
                                   setSelectedUserId(u.id);
                                   setIsUserEditing(false);
@@ -2070,7 +2070,7 @@ export default function OnyxErpPage() {
                                   className="w-full h-8 text-xs rounded border-slate-300 bg-white px-2 border"
                                 >
                                   {dbBranches.map((b: any) => (
-                                    <option key={b.id} value={b.id}>{b.name}</option>
+                                    <option key={`onyxerp-b-id-${b.id || idx}-${idx}`} value={b.id}>{b.name}</option>
                                   ))}
                                 </select>
                               </div>
@@ -2209,7 +2209,7 @@ export default function OnyxErpPage() {
                             {dbRoles
                               .filter((r: any) => r.role !== "developer" || user?.role === "developer")
                               .map((r: any) => (
-                              <option key={r.role} value={r.role}>
+                              <option key={`onyxerp-r-role-${r.role || idx}-${idx}`} value={r.role}>
                                 {r.role === "admin" ? "مدير النظام العام (admin)" : r.role === "developer" ? "مطور البرمجيات (developer)" : r.role === "accountant" ? "المحاسب المعتمد (accountant)" : `صلاحية الكاشير (${r.role})`}
                               </option>
                             ))}
@@ -2512,7 +2512,7 @@ export default function OnyxErpPage() {
                         </thead>
                         <tbody className="divide-y divide-slate-200">
                           {sessionData?.active?.map((sess: any) => (
-                            <tr key={sess.id} className="hover:bg-slate-50/50">
+                            <tr key={`onyxerp-sess-id-${sess.id || idx}-${idx}`} className="hover:bg-slate-50/50">
                               <td className="p-3">
                                 <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-xs">
                                   {sess.status || "نشط"}
@@ -2587,7 +2587,7 @@ export default function OnyxErpPage() {
                         </thead>
                         <tbody className="divide-y divide-slate-200">
                           {dbAuditLogs.map((l: any) => (
-                            <tr key={l.id} className="hover:bg-slate-50/50">
+                            <tr key={`onyxerp-l-id-${l.id || idx}-${idx}`} className="hover:bg-slate-50/50">
                               <td className="p-3 font-mono text-slate-400">#{l.id}</td>
                               <td className="p-3 font-mono text-slate-600">{l.timestamp}</td>
                               <td className="p-3 font-bold text-slate-850">{l.user_name}</td>
@@ -2859,7 +2859,7 @@ export default function OnyxErpPage() {
                             )
                             .map((inv, idx) => (
                               <div
-                                key={inv.id}
+                                key={`onyxerp-inv-id-${inv.id || idx}-${idx}`}
                                 className="p-2 border-b last:border-0 hover:bg-slate-50 cursor-pointer text-xs flex justify-between items-center"
                                 onClick={() => {
                                   const index = invoices.findIndex(i => i.id === inv.id);
@@ -2950,8 +2950,8 @@ export default function OnyxErpPage() {
                       disabled={!isInvEditing}
                       className="w-full h-8 px-2 bg-white border border-slate-300 rounded text-xs font-semibold text-blue-700"
                     >
-                      {warehouses.map(w => (
-                        <option key={w.id} value={w.name_ar}>{w.name_ar}</option>
+                      {warehouses.map((w, idx) => (
+                        <option key={`onyxerp-w-id-${w.id || idx}-${idx}`} value={w.name_ar}>{w.name_ar}</option>
                       ))}
                     </select>
                   </div>
@@ -3107,7 +3107,7 @@ export default function OnyxErpPage() {
                       >
                         <option value="">-- اختر صنفاً --</option>
                         {dbProducts.map((p: any) => (
-                          <option key={p.id} value={p.id}>[{p.number}] {p.name} - {p.price.toLocaleString()} ر.ي</option>
+                          <option key={`onyxerp-p-id-${p.id || idx}-${idx}`} value={p.id}>[{p.number}] {p.name} - {p.price.toLocaleString()} ر.ي</option>
                         ))}
                       </select>
                     </div>
@@ -3566,7 +3566,7 @@ export default function OnyxErpPage() {
                           "الخصومات والضرائب"
                         ].map((rep, rIdx) => (
                           <Button
-                            key={rIdx} variant="ghost" size="sm"
+                            key={`onyxerp-rIdx-${rIdx || idx}-${idx}`} variant="ghost" size="sm"
                             className="h-7 text-[10px] bg-white border border-slate-300 hover:bg-blue-50 hover:text-blue-800 text-slate-700 font-semibold px-2 py-0.5"
                             onClick={() => {
                               setInvReportType(rep);
@@ -3797,8 +3797,8 @@ export default function OnyxErpPage() {
                     </div>
                   </div>
                   <div className="p-3 bg-slate-50 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 text-xs font-semibold">
-                    {Object.keys(invPermissions[invActivePermRole] || {}).map((permKey) => (
-                      <label key={permKey} className="flex items-center gap-2 cursor-pointer p-1.5 bg-white border rounded hover:bg-slate-50">
+                    {Object.keys(invPermissions[invActivePermRole] || {}).map((permKey, idx) => (
+                      <label key={`onyxerp-permKey-${permKey || idx}-${idx}`} className="flex items-center gap-2 cursor-pointer p-1.5 bg-white border rounded hover:bg-slate-50">
                         <input
                           type="checkbox"
                           checked={invPermissions[invActivePermRole][permKey]}
@@ -3955,7 +3955,7 @@ export default function OnyxErpPage() {
                         >
                           <option value="">-- اختر المجموعة --</option>
                           {dbCategories.map((c: any) => (
-                            <option key={c.id} value={c.id}>{c.name}</option>
+                            <option key={`onyxerp-c-id-${c.id || idx}-${idx}`} value={c.id}>{c.name}</option>
                           ))}
                         </select>
                       </div>
@@ -4507,7 +4507,7 @@ export default function OnyxErpPage() {
                       <tbody className="divide-y divide-slate-200 font-semibold">
                         {warehouses.map((wh: any, idx: number) => (
                           <tr
-                            key={wh.id}
+                            key={`onyxerp-wh-id-${wh.id || idx}-${idx}`}
                             className={`hover:bg-slate-50 cursor-pointer transition-colors ${
                               currentWhIndex === idx ? "bg-indigo-50/70 border-r-4 border-indigo-600 font-bold text-indigo-900" : "text-slate-700"
                             }`}
@@ -4658,7 +4658,7 @@ export default function OnyxErpPage() {
                     </thead>
                     <tbody className="divide-y divide-slate-200">
                       {((dbCurrencies as any[]) || []).map((curr: any) => (
-                        <tr key={curr.id} className="hover:bg-slate-50">
+                        <tr key={`onyxerp-curr-id-${curr.id || idx}-${idx}`} className="hover:bg-slate-50">
                           <td className="p-3 font-bold text-slate-800">{curr.name}</td>
                           <td className="p-3 font-mono font-bold text-blue-700">{curr.symbol}</td>
                           <td className="p-3">{curr.fraction ?? "—"}</td>
@@ -4741,7 +4741,7 @@ export default function OnyxErpPage() {
                     >
                       <option value="">جميع مجموعات الأصناف</option>
                       {dbCategories.map((c: any) => (
-                        <option key={c.id} value={c.id}>{c.name}</option>
+                        <option key={`onyxerp-c-id-${c.id || idx}-${idx}`} value={c.id}>{c.name}</option>
                       ))}
                     </select>
                   </div>
@@ -4782,7 +4782,7 @@ export default function OnyxErpPage() {
                     </thead>
                     <tbody className="divide-y divide-slate-200 font-mono">
                       {pricingGrid.map((p, idx) => (
-                        <tr key={p.id} className="hover:bg-slate-50">
+                        <tr key={`onyxerp-p-id-${p.id || idx}-${idx}`} className="hover:bg-slate-50">
                           <td className="p-2.5 text-slate-500 font-semibold">{p.number}</td>
                           <td className="p-2.5 font-sans font-bold text-slate-800">{p.name}</td>
                           <td className="p-2.5 font-sans text-slate-500">{p.unit}</td>
@@ -4877,7 +4877,7 @@ export default function OnyxErpPage() {
                     </thead>
                     <tbody className="divide-y divide-slate-100">
                       {dbAuditLogs.map((log: any) => (
-                        <tr key={log.id} className="hover:bg-slate-50/60 transition-colors">
+                        <tr key={`onyxerp-log-id-${log.id || idx}-${idx}`} className="hover:bg-slate-50/60 transition-colors">
                           <td className="p-3 font-mono font-bold text-slate-400">#{log.id}</td>
                           <td className="p-3 font-mono text-slate-600">{log.timestamp}</td>
                           <td className="p-3 font-bold text-slate-800 flex items-center gap-1.5">

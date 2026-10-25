@@ -66,8 +66,8 @@ export default function TablesPage() {
 
         {/* عرض الطاولات */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {((tables as any[]) || []).map(t => (
-            <Card key={t.id} className={`border-2 ${t.status === "occupied" ? "border-amber-500 bg-amber-50/30" : "border-green-500 bg-green-50/30"}`}>
+          {((tables as any[]) || []).map((t, idx) => (
+            <Card key={`tables-t-id-${t.id || idx}-${idx}`} className={`border-2 ${t.status === "occupied" ? "border-amber-500 bg-amber-50/30" : "border-green-500 bg-green-50/30"}`}>
               <CardContent className="p-4 flex flex-col justify-between h-36">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-lg">طاولة {t.table_number}</span>
@@ -98,14 +98,14 @@ export default function TablesPage() {
                 <label className="text-sm font-medium mb-1 block">من الطاولة الحالية:</label>
                 <select value={fromTable} onChange={e => setFromTable(e.target.value)} className="w-full border rounded-md p-2 bg-background">
                   <option value="">اختر الطاولة المصدر</option>
-                  {((tables as any[]) || []).map(t => <option key={t.id} value={t.table_number}>طاولة {t.table_number}</option>)}
+                  {((tables as any[]) || []).map((t, idx) => <option key={`tables-t-id-${t.id || idx}-${idx}`} value={t.table_number}>طاولة {t.table_number}</option>)}
                 </select>
               </div>
               <div>
                 <label className="text-sm font-medium mb-1 block">إلى الطاولة الجديدة:</label>
                 <select value={toTable} onChange={e => setToTable(e.target.value)} className="w-full border rounded-md p-2 bg-background">
                   <option value="">اختر الطاولة الوجهة</option>
-                  {((tables as any[]) || []).map(t => <option key={t.id} value={t.table_number}>طاولة {t.table_number}</option>)}
+                  {((tables as any[]) || []).map((t, idx) => <option key={`tables-t-id-${t.id || idx}-${idx}`} value={t.table_number}>طاولة {t.table_number}</option>)}
                 </select>
               </div>
             </div>

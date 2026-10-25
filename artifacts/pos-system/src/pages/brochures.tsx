@@ -289,9 +289,9 @@ export default function BrochuresPage() {
 
       {/* Brochure Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {filteredBrochures.map((item) => (
+        {filteredBrochures.map((item, idx) => (
           <Card 
-            key={item.id} 
+            key={`brochures-item-id-${item.id || idx}-${idx}`} 
             className="overflow-hidden border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all duration-300 group flex flex-col justify-between"
           >
             <div>

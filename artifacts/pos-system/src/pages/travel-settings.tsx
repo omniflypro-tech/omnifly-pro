@@ -181,7 +181,7 @@ export default function TravelSettingsPage() {
     e.preventDefault();
     if (!country || !visaName) return;
 
-    const docsArray = docList.split("\n").map(d => d.trim()).filter(Boolean);
+    const docsArray = docList.split("\n").map((d, idx) => d.trim()).filter(Boolean);
 
     saveVisaMutation.mutate({
       country,
@@ -587,7 +587,7 @@ export default function TravelSettingsPage() {
                     }
 
                     return (
-                      <tr key={vt.id} className="hover:bg-slate-50/80 transition-colors">
+                      <tr key={`travelsettings-vt-id-${vt.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                         <td className="p-3">
                           <div className="font-bold text-slate-900">{vt.country}</div>
                           <div className="text-[10px] text-slate-400 font-mono">{vt.visa_code}</div>
@@ -796,7 +796,7 @@ export default function TravelSettingsPage() {
 
                 return (
                   <div
-                    key={gw.id}
+                    key={`travelsettings-gw-id-${gw.id || idx}-${idx}`}
                     className={`bg-white border rounded-2xl p-5 shadow-sm transition-all flex flex-col justify-between gap-4 ${
                       gw.is_enabled ? "border-slate-200 hover:border-indigo-300" : "border-slate-200/60 bg-slate-50/50 opacity-80"
                     }`}

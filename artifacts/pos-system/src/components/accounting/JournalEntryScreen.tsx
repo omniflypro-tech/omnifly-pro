@@ -337,7 +337,7 @@ export const JournalEntryScreen: React.FC<JournalEntryScreenProps> = ({
         doc_type: docType,
         cost_center_id: costCenterId !== "all" ? Number(costCenterId) : undefined,
         entry_class: entryClass,
-        lines: lines.map((l) => ({
+        lines: lines.map((l, idx) => ({
           account_code: l.account_code,
           currency: l.currency || currency,
           exchange_rate: Number(l.exchange_rate) || 1.0,
@@ -367,7 +367,7 @@ export const JournalEntryScreen: React.FC<JournalEntryScreenProps> = ({
   });
 
   const handlePreview = () => {
-    const mappedLines = lines.map((l) => {
+    const mappedLines = lines.map((l, idx) => {
       const acc = accountsList.find(a => String(a.code) === String(l.account_code));
       return {
         account_code: l.account_code || "",
@@ -463,7 +463,7 @@ export const JournalEntryScreen: React.FC<JournalEntryScreenProps> = ({
                 <Select value={currency} onValueChange={(v) => { setCurrency(v); const f = SUPPORTED_CURRENCIES.find(c => c.code === v); if(f) setCurrencyRate(f.defaultRate); }}>
                   <SelectTrigger className="h-8 text-xs bg-slate-50 font-bold"><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    {SUPPORTED_CURRENCIES.map(c => <SelectItem key={c.code} value={c.code}>{c.name}</SelectItem>)}
+                    {SUPPORTED_CURRENCIES.map((c, idx) => <SelectItem key={`JournalEntryScreen-c-code-${c.code || idx}-${idx}`} value={c.code}>{c.name}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -618,8 +618,8 @@ export const JournalEntryScreen: React.FC<JournalEntryScreenProps> = ({
                     return (!searchQuery || e.entry_number?.toLowerCase().includes(q) || e.description?.toLowerCase().includes(q)) &&
                            (!searchFromDate || e.entry_date >= searchFromDate) &&
                            (!searchToDate || e.entry_date <= searchToDate);
-                 }).map(e => (
-                    <div key={e.id} onClick={() => { loadEntry(e); setShowSearchDlg(false); }} className="p-2 hover:bg-slate-50 cursor-pointer flex items-center justify-between">
+                 }).map((e, idx) => (
+                    <div key={`JournalEntryScreen-e-id-${e.id || idx}-${idx}`} onClick={() => { loadEntry(e); setShowSearchDlg(false); }} className="p-2 hover:bg-slate-50 cursor-pointer flex items-center justify-between">
                        <div className="flex flex-col">
                           <span className="font-bold text-xs text-indigo-700">{e.entry_number}</span>
                           <span className="text-[10px] text-slate-500 truncate max-w-[300px]">{e.description}</span>

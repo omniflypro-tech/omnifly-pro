@@ -667,7 +667,7 @@ export default function TravelGdsTerminalPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {ndcResults.offers.map((offer: any) => (
-                        <Card key={offer.id} className="border hover:border-blue-400 transition shadow-sm overflow-hidden">
+                        <Card key={`travelgdsterminal-offer-id-${offer.id || idx}-${idx}`} className="border hover:border-blue-400 transition shadow-sm overflow-hidden">
                           <div className="bg-slate-50 p-3 border-b flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <Badge className="bg-blue-900 text-white font-mono">{offer.carrier_code}</Badge>
@@ -796,8 +796,8 @@ export default function TravelGdsTerminalPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y">
-                      {gdsHistory?.map((row) => (
-                        <tr key={row.id} className="hover:bg-slate-50">
+                      {gdsHistory?.map((row, idx) => (
+                        <tr key={`travelgdsterminal-row-id-${row.id || idx}-${idx}`} className="hover:bg-slate-50">
                           <td className="p-3 font-bold font-mono text-indigo-600">{row.pnr_code}</td>
                           <td className="p-3 uppercase font-semibold text-slate-700">{row.gds_system}</td>
                           <td className="p-3 font-mono font-medium">{row.passenger_name}</td>

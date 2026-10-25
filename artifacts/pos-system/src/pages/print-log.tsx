@@ -150,7 +150,7 @@ export default function PrintLog() {
                   </thead>
                   <tbody className="divide-y divide-border">
                     {filtered.map((log, idx) => (
-                      <tr key={log.id} className="hover:bg-muted/30 transition-colors">
+                      <tr key={`printlog-log-id-${log.id || idx}-${idx}`} className="hover:bg-muted/30 transition-colors">
                         <td className="py-2 px-3 text-muted-foreground">{idx + 1}</td>
                         <td className="py-2 px-3 font-mono font-medium">{log.invoiceNumber}</td>
                         <td className="py-2 px-3">

@@ -113,11 +113,11 @@ export default function TravelBranchesHubPage() {
 
         {/* Branches Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {branches.map((branch) => {
+          {branches.map((branch, idx) => {
             const isSelected = activeBranchId === branch.id;
             return (
               <Card
-                key={branch.id}
+                key={`travelbrancheshub-branch-id-${branch.id || idx}-${idx}`}
                 onClick={() => setActiveBranchId(branch.id)}
                 className={`cursor-pointer transition-all border-2 ${
                   isSelected 

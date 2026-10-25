@@ -355,7 +355,7 @@ export function AccountImportModal({
 
       const lines = extractedText
         .split("\n")
-        .map((l) => l.trim())
+        .map((l, idx) => l.trim())
         .filter((l) => l.length > 0);
 
       const parsed: ParsedAccountRow[] = [];
@@ -378,7 +378,7 @@ export function AccountImportModal({
         // Try comma or pipe separation first
         if (line.includes(",") || line.includes("|") || line.includes("\t")) {
           const sep = line.includes(",") ? "," : line.includes("|") ? "|" : "\t";
-          const parts = line.split(sep).map((p) => p.trim());
+          const parts = line.split(sep).map((p, idx) => p.trim());
           if (parts.length >= 2) {
             const rawCode = parts[0];
             const rawName = parts[1];
@@ -455,13 +455,13 @@ export function AccountImportModal({
     const lines = pastedText
       .trim()
       .split("\n")
-      .map((l) => l.trim())
+      .map((l, idx) => l.trim())
       .filter(Boolean);
 
     const parsed: ParsedAccountRow[] = [];
 
     for (const line of lines) {
-      const parts = line.split(",").map((p) => p.trim().replace(/^"|"$/g, ""));
+      const parts = line.split(",").map((p, idx) => p.trim().replace(/^"|"$/g, ""));
       if (parts.length >= 2) {
         const rawCode = parts[0];
         const rawName = parts[1];
@@ -655,7 +655,7 @@ export function AccountImportModal({
     setIsSubmitting(true);
     try {
       const token = localStorage.getItem("pos_token") ?? "";
-      const accountsPayload = rowsToImport.map((r) => ({
+      const accountsPayload = rowsToImport.map((r, idx) => ({
         code: r.code,
         name: r.name,
         type: r.type,

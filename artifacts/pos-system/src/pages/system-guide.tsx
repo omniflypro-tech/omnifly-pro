@@ -880,7 +880,7 @@ export default function SystemGuidePage() {
 
     const q = searchQuery.toLowerCase().trim();
 
-    return list.map(sec => {
+    return list.map((sec, idx) => {
       const headerMatch =
         sec.title.toLowerCase().includes(q) ||
         sec.description.toLowerCase().includes(q) ||
@@ -1014,9 +1014,9 @@ export default function SystemGuidePage() {
               { id: "accountant", label: "المحاسب والمالية" },
               { id: "manager", label: "الإدارة والمشرفين" },
               { id: "admin", label: "مسؤول النظام والتقنية" },
-            ].map(r => (
+            ].map((r, idx) => (
               <button
-                key={r.id}
+                key={`systemguide-r-id-${r.id || idx}-${idx}`}
                 onClick={() => setSelectedRoleFilter(r.id)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   selectedRoleFilter === r.id
@@ -1112,9 +1112,9 @@ export default function SystemGuidePage() {
                     <div>
                       <label className="text-[11px] font-semibold text-slate-600 block mb-1">طريقة الدفع:</label>
                       <div className="grid grid-cols-3 gap-1">
-                        {(["cash", "bank", "credit"] as const).map(m => (
+                        {(["cash", "bank", "credit"] as const).map((m, idx) => (
                           <button
-                            key={m}
+                            key={`systemguide-m-${m || idx}-${idx}`}
                             type="button"
                             onClick={() => setCalcPaymentType(m)}
                             className={`text-[11px] py-1 rounded-md font-bold transition-all ${
@@ -1267,9 +1267,9 @@ export default function SystemGuidePage() {
                         { id: "usa", name: "أمريكا (USA B1/B2)" },
                         { id: "turkey", name: "تركيا (eVisa)" },
                         { id: "egypt", name: "مصر (تأشيرة دخول)" }
-                      ].map(emb => (
+                      ].map((emb, idx) => (
                         <button
-                          key={emb.id}
+                          key={`systemguide-emb-id-${emb.id || idx}-${idx}`}
                           onClick={() => setSelectedEmbassy(emb.id)}
                           className={`text-xs px-3 py-1.5 rounded-lg font-bold transition-all ${
                             selectedEmbassy === emb.id
@@ -1316,7 +1316,7 @@ export default function SystemGuidePage() {
                       const isChecked = !!checkedVisaItems[key];
                       return (
                         <div
-                          key={rIdx}
+                          key={`systemguide-rIdx-${rIdx || idx}-${idx}`}
                           onClick={() => setCheckedVisaItems(prev => ({ ...prev, [key]: !prev[key] }))}
                           className={`p-2.5 rounded-xl border flex items-center gap-2 text-xs cursor-pointer transition-all ${
                             isChecked
@@ -1364,8 +1364,8 @@ export default function SystemGuidePage() {
               </Card>
             ) : (
               <div className="grid grid-cols-1 gap-6">
-                {filteredSections.map(sec => (
-                  <Card key={sec.id} className="border border-slate-200 shadow-sm overflow-hidden rounded-2xl">
+                {filteredSections.map((sec, idx) => (
+                  <Card key={`systemguide-sec-id-${sec.id || idx}-${idx}`} className="border border-slate-200 shadow-sm overflow-hidden rounded-2xl">
                     <CardHeader className="bg-slate-50/90 border-b pb-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -1408,7 +1408,7 @@ export default function SystemGuidePage() {
 
                           <div className="space-y-2.5">
                             {t.steps.map((st, sIdx) => (
-                              <div key={sIdx} className="flex items-start gap-3 text-sm text-slate-700 bg-slate-50/60 p-3 rounded-xl border border-slate-100 leading-relaxed">
+                              <div key={`systemguide-sIdx-${sIdx || idx}-${idx}`} className="flex items-start gap-3 text-sm text-slate-700 bg-slate-50/60 p-3 rounded-xl border border-slate-100 leading-relaxed">
                                 <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
                                 <span className="whitespace-pre-line">{st}</span>
                               </div>
@@ -1447,9 +1447,9 @@ export default function SystemGuidePage() {
             {/* Scrollable Category Tabs Bar */}
             <div className="sticky top-16 z-20 bg-slate-50/90 backdrop-blur-md p-1.5 rounded-2xl border shadow-xs">
               <TabsList className="w-full justify-start overflow-x-auto h-auto p-1 bg-transparent gap-1.5 flex flex-nowrap scrollbar-none">
-                {guideSections.map(sec => (
+                {guideSections.map((sec, idx) => (
                   <TabsTrigger
-                    key={sec.id}
+                    key={`systemguide-sec-id-${sec.id || idx}-${idx}`}
                     value={sec.id}
                     className="data-[state=active]:bg-white data-[state=active]:text-sky-950 data-[state=active]:shadow-sm rounded-xl px-3.5 py-2 text-xs font-bold flex items-center gap-2 whitespace-nowrap transition-all border border-transparent data-[state=active]:border-slate-200"
                   >
@@ -1461,8 +1461,8 @@ export default function SystemGuidePage() {
             </div>
 
             {/* Individual Guide Tab Contents */}
-            {guideSections.map(sec => (
-              <TabsContent key={sec.id} value={sec.id} className="mt-6 space-y-6">
+            {guideSections.map((sec, idx) => (
+              <TabsContent key={`systemguide-sec-id-${sec.id || idx}-${idx}`} value={sec.id} className="mt-6 space-y-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border shadow-xs">
                   <div className="flex items-center gap-3.5">
                     <div className={`p-3.5 rounded-2xl text-white ${sec.color} shadow-sm`}>
@@ -1512,7 +1512,7 @@ export default function SystemGuidePage() {
                       <CardContent className="pt-5 pb-6 px-6 space-y-4">
                         <div className="space-y-2.5">
                           {t.steps.map((st, sIdx) => (
-                            <div key={sIdx} className="flex items-start gap-3 text-sm text-slate-700 bg-slate-50/50 p-3.5 rounded-xl border border-slate-100/80 leading-relaxed hover:bg-slate-50 transition-colors">
+                            <div key={`systemguide-sIdx-${sIdx || idx}-${idx}`} className="flex items-start gap-3 text-sm text-slate-700 bg-slate-50/50 p-3.5 rounded-xl border border-slate-100/80 leading-relaxed hover:bg-slate-50 transition-colors">
                               <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
                               <span className="whitespace-pre-line">{st}</span>
                             </div>

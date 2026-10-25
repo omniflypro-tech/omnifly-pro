@@ -87,7 +87,7 @@ export function ToolsTab() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {((tools as any[]) || []).map((t: any) => (
-                    <tr key={t.id} className="hover:bg-muted/30">
+                    <tr key={`tools-t-id-${t.id || idx}-${idx}`} className="hover:bg-muted/30">
                       <td className="p-3 font-medium">{t.name}</td>
                       <td className="p-3 font-mono text-xs text-muted-foreground">{t.serial_number ?? "—"}</td>
                       <td className="p-3 font-mono">{t.quantity}</td>
@@ -128,7 +128,7 @@ export function ToolsTab() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {((movements as any[]) || []).map((m: any) => (
-                    <tr key={m.id} className="hover:bg-muted/30">
+                    <tr key={`tools-m-id-${m.id || idx}-${idx}`} className="hover:bg-muted/30">
                       <td className="p-3">
                         <Badge variant={m.type === "out" ? "destructive" : "default"} className="gap-1">
                           {m.type === "out" ? "خروج / عهدة" : "عودة / استلام"}
@@ -182,7 +182,7 @@ export function ToolsTab() {
                 <SelectTrigger className="mt-1"><SelectValue placeholder="اختر الأداة" /></SelectTrigger>
                 <SelectContent>
                   {((tools as any[]) || []).map((t: any) => (
-                    <SelectItem key={t.id} value={String(t.id)}>
+                    <SelectItem key={`tools-t-id-${t.id || idx}-${idx}`} value={String(t.id)}>
                       {t.name} (المتاح: {t.available_qty} من {t.quantity})
                     </SelectItem>
                   ))}
@@ -193,7 +193,7 @@ export function ToolsTab() {
               <label className="text-sm font-medium">الموظف المستلم / المرجع *</label>
               <Select value={moveForm.employee_id} onValueChange={v => setMoveForm(f => ({ ...f, employee_id: v }))}>
                 <SelectTrigger className="mt-1"><SelectValue placeholder="اختر الموظف" /></SelectTrigger>
-                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={e.id} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={`tools-e-id-${e.id || idx}-${idx}`} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="grid grid-cols-2 gap-3">

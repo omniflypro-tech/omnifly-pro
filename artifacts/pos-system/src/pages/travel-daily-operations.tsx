@@ -271,7 +271,7 @@ export default function TravelDailyOperationsPage() {
                     </thead>
                     <tbody className="divide-y text-slate-700">
                       {filterItems(flights).map((b: any) => (
-                        <tr key={b.id} className="hover:bg-slate-50/80 transition-colors">
+                        <tr key={`traveldailyoperations-b-id-${b.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                           <td className="p-3 font-mono font-bold text-indigo-700">
                             <div>{b.pnr || "—"}</div>
                             <div className="text-[10px] text-slate-400">{b.ticket_number || b.booking_number}</div>
@@ -352,7 +352,7 @@ export default function TravelDailyOperationsPage() {
                     </thead>
                     <tbody className="divide-y text-slate-700">
                       {filterItems(visas).map((v: any) => (
-                        <tr key={v.id} className="hover:bg-slate-50/80 transition-colors">
+                        <tr key={`traveldailyoperations-v-id-${v.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                           <td className="p-3">
                             <div className="font-bold text-indigo-700 font-mono">{v.application_number || `VSA-${v.id}`}</div>
                             <div className="text-[11px] font-bold text-slate-800">{v.country}</div>
@@ -419,7 +419,7 @@ export default function TravelDailyOperationsPage() {
                     </thead>
                     <tbody className="divide-y text-slate-700">
                       {filterItems(hotels).map((h: any) => (
-                        <tr key={h.id} className="hover:bg-slate-50/80 transition-colors">
+                        <tr key={`traveldailyoperations-h-id-${h.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                           <td className="p-3">
                             <div className="font-bold text-slate-900">{h.hotel_name}</div>
                             <div className="text-[10px] text-slate-500">{h.city} - {h.room_type || "غرفة قياسية"}</div>
@@ -486,7 +486,7 @@ export default function TravelDailyOperationsPage() {
                     </thead>
                     <tbody className="divide-y text-slate-700">
                       {filterItems(transports).map((t: any) => (
-                        <tr key={t.id} className="hover:bg-slate-50/80 transition-colors">
+                        <tr key={`traveldailyoperations-t-id-${t.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                           <td className="p-3 font-bold text-slate-900">{t.customer_name || "عميل"}</td>
                           <td className="p-3">
                             <span className="font-bold">{t.transport_type || "توصيل مطار"}</span>
@@ -542,7 +542,7 @@ export default function TravelDailyOperationsPage() {
                 <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
                   {filterItems(tasks).map((tsk: any) => (
                     <div
-                      key={tsk.id}
+                      key={`traveldailyoperations-tsk-id-${tsk.id || idx}-${idx}`}
                       className={`p-4 rounded-xl border transition-all ${
                         tsk.priority === 'urgent' ? 'bg-rose-50/60 border-rose-200' :
                         tsk.priority === 'high' ? 'bg-amber-50/60 border-amber-200' : 'bg-slate-50/80 border-slate-200'

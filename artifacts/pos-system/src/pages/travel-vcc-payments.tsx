@@ -202,12 +202,12 @@ export default function TravelVccPayments() {
             </button>
           </div>
 
-          {cards.map((card) => {
+          {cards.map((card, idx) => {
             const isSelected = selectedCard?.id === card.id;
             const isRevealed = revealedCvv[card.id];
             return (
               <div
-                key={card.id}
+                key={`travelvccpayments-card-id-${card.id || idx}-${idx}`}
                 onClick={() => setSelectedCard(card)}
                 className={`cursor-pointer rounded-2xl border p-5 transition space-y-4 ${
                   isSelected

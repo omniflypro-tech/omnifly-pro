@@ -397,10 +397,10 @@ export default function Reports() {
 
                 if (tab === "sales") {
                   headers = ["الفترة", "عدد الفواتير", "الإجمالي", "الضريبة", "الخصم"];
-                  rows = salesRows.map(r => [r.period, r.orders, r.total, (r as any).tax ?? 0, (r as any).discount ?? 0]);
+                  rows = salesRows.map((r, idx) => [r.period, r.orders, r.total, (r as any).tax ?? 0, (r as any).discount ?? 0]);
                 } else if (tab === "cashier") {
                   headers = ["اسم الكاشير", "عدد الفواتير", "إجمالي المبيعات"];
-                  rows = cashierRows.map(r => [r.cashierName || r.username || "غير محدد", r.orders, r.total]);
+                  rows = cashierRows.map((r, idx) => [r.cashierName || r.username || "غير محدد", r.orders, r.total]);
                 } else if (tab === "product") {
                   headers = ["اسم المنتج", "الفئة/القسم", "سعر الوحدة", "الكمية المباعة", "عدد الفواتير", "إجمالي الإيراد", "إجمالي الربح"];
                   rows = productRows.map((r: any) => [
@@ -449,7 +449,7 @@ export default function Reports() {
                   ]);
                 } else if (tab === "payment") {
                   headers = ["طريقة الدفع", "عدد العمليات", "الإجمالي"];
-                  rows = paymentRows.map(r => [paymentLabel(r.method), r.count, r.total]);
+                  rows = paymentRows.map((r, idx) => [paymentLabel(r.method), r.count, r.total]);
                 } else if (tab === "purchases") {
                   headers = ["رقم الفاتورة", "المورد", "التاريخ", "الإجمالي", "المدفوع", "المتبقي"];
                   rows = (purchasesData?.rows || []).map((r: any) => [r.invoiceNumber, r.supplierName, r.invoiceDate, r.total, r.paidAmount, r.remainingAmount]);
@@ -476,7 +476,7 @@ export default function Reports() {
                   rows = (wasteData?.records || []).map((w: any) => [w.productName, w.quantity, w.cost, w.reason, w.waste_date]);
                 }
 
-                const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(row => row.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(","))].join("\n");
+                const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((row, idx) => row.map((v, idx) => `"${String(v ?? "").replace(/"/g, '""')}"`).join(","))].join("\n");
                 const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement("a");
@@ -518,8 +518,8 @@ export default function Reports() {
 
         {/* Tabs */}
         <div className="flex gap-1 border-b border-border flex-wrap">
-          {(Object.keys(TAB_LABELS) as Tab[]).map(t => (
-            <button key={t} onClick={() => setTab(t)}
+          {(Object.keys(TAB_LABELS) as Tab[]).map((t, idx) => (
+            <button key={`reports-t-${t || idx}-${idx}`} onClick={() => setTab(t)}
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px ${tab === t ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
               {TAB_LABELS[t]}
             </button>
@@ -530,8 +530,8 @@ export default function Reports() {
         {tab === "sales" && (
           <div className="space-y-4">
             <div className="flex gap-1 border rounded-lg overflow-hidden w-fit">
-              {(["day","month","year"] as const).map(g => (
-                <button key={g} onClick={() => setGroupBy(g)}
+              {(["day","month","year"] as const).map((g, idx) => (
+                <button key={`reports-g-${g || idx}-${idx}`} onClick={() => setGroupBy(g)}
                   className={`px-3 py-1.5 text-sm font-medium transition-colors ${groupBy === g ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>
                   {g === "day" ? "يومي" : g === "month" ? "شهري" : "سنوي"}
                 </button>
@@ -804,7 +804,7 @@ export default function Reports() {
                 const items = cat.items || [];
                 const catProfit = (items || []).reduce((s: number, it: any) => s + (it.totalProfit || 0), 0);
                 return (
-                  <Card key={catIdx} className="border-2 border-slate-300 shadow-xs overflow-hidden">
+                  <Card key={`reports-catIdx-${catIdx || idx}-${idx}`} className="border-2 border-slate-300 shadow-xs overflow-hidden">
                     {/* Category Header Bar */}
                     <div className="bg-slate-900 text-white p-3.5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-700">
                       <div className="flex items-center gap-2">
@@ -837,7 +837,7 @@ export default function Reports() {
                         </thead>
                         <tbody className="divide-y divide-border">
                           {items.map((item: any, itemIdx: number) => (
-                            <tr key={itemIdx} className="hover:bg-slate-50 transition-colors">
+                            <tr key={`reports-itemIdx-${itemIdx || idx}-${idx}`} className="hover:bg-slate-50 transition-colors">
                               <td className="p-2.5 text-center text-slate-500 font-mono text-xs border-l font-bold">{itemIdx + 1}</td>
                               <td className="p-2.5 font-bold text-slate-900 border-l">{item.productName}</td>
                               <td className="p-2.5 text-slate-600 border-l">{item.categoryName || cat.categoryName}</td>
@@ -1247,7 +1247,7 @@ export default function Reports() {
                 <SelectContent>
                   <SelectItem value="__window__">طابعة افتراضية (نافذة الطباعة)</SelectItem>
                   {printers.map((p: any) => (
-                    <SelectItem key={p.name} value={p.name}>{p.name} {p.isDefault ? "(افتراضية)" : ""}</SelectItem>
+                    <SelectItem key={`reports-p-name-${p.name || idx}-${idx}`} value={p.name}>{p.name} {p.isDefault ? "(افتراضية)" : ""}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>

@@ -289,7 +289,7 @@ export default function TravelTransportPage() {
                       </tr>
                     ) : (
                       transports.map((t: any) => (
-                        <tr key={t.id} className="hover:bg-slate-50/80 transition-colors">
+                        <tr key={`traveltransport-t-id-${t.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                           <td className="p-3.5 font-mono font-bold text-blue-700">{t.transport_number}</td>
                           <td className="p-3.5">
                             <span className="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-lg text-xs font-bold">
@@ -345,7 +345,7 @@ export default function TravelTransportPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {vehicles.map((v: any) => (
-                <div key={v.id} className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+                <div key={`traveltransport-v-id-${v.id || idx}-${idx}`} className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
                   <div className="flex justify-between items-start">
                     <h4 className="font-bold text-slate-800">{v.name}</h4>
                     <span className="px-2 py-0.5 bg-blue-50 text-blue-700 font-mono text-xs rounded">{v.vehicle_type}</span>
@@ -371,7 +371,7 @@ export default function TravelTransportPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {drivers.map((d: any) => (
-                <div key={d.id} className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+                <div key={`traveltransport-d-id-${d.id || idx}-${idx}`} className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
                   <div className="flex justify-between items-start">
                     <h4 className="font-bold text-slate-800">{d.name}</h4>
                     <span className="text-xs text-slate-500">{d.nationality}</span>
@@ -396,7 +396,7 @@ export default function TravelTransportPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {companies.map((c: any) => (
-                <div key={c.id} className="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
+                <div key={`traveltransport-c-id-${c.id || idx}-${idx}`} className="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
                   <div className="flex justify-between items-start">
                     <h4 className="font-bold text-slate-800">{c.name}</h4>
                     <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-mono">رمز: {c.account_code || "—"}</span>
@@ -653,7 +653,7 @@ export default function TravelTransportPage() {
                       </thead>
                       <tbody className="divide-y">
                         {(companyStmtData.transports || []).map((tr: any) => (
-                          <tr key={tr.id} className="hover:bg-slate-50">
+                          <tr key={`traveltransport-tr-id-${tr.id || idx}-${idx}`} className="hover:bg-slate-50">
                             <td className="p-2.5 font-mono font-bold">{tr.transport_number}</td>
                             <td className="p-2.5">{tr.service_type}</td>
                             <td className="p-2.5">{tr.pickup_location} إلى {tr.dropoff_location}</td>
@@ -686,7 +686,7 @@ export default function TravelTransportPage() {
                       </thead>
                       <tbody className="divide-y">
                         {(companyStmtData.busBookings || []).map((b: any) => (
-                          <tr key={b.id} className="hover:bg-slate-50">
+                          <tr key={`traveltransport-b-id-${b.id || idx}-${idx}`} className="hover:bg-slate-50">
                             <td className="p-2.5 font-mono font-bold">{b.ticket_number || b.booking_number}</td>
                             <td className="p-2.5">{b.origin_city} إلى {b.destination_city}</td>
                             <td className="p-2.5">{b.passenger_name || b.customer_name}</td>

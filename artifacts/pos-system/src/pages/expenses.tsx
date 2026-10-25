@@ -176,8 +176,8 @@ export default function ExpensesPage() {
             </select>
             <select value={safeId} onChange={e => setSafeId(e.target.value)} className="border rounded-md px-3 bg-background text-sm">
               <option value="">-- اختر الصندوق المالي --</option>
-              {((safes as any[]) || []).map(s => (
-                <option key={s.id} value={s.id}>{s.name} ({fmt(s.balance)} {s.currency})</option>
+              {((safes as any[]) || []).map((s, idx) => (
+                <option key={`expenses-s-id-${s.id || idx}-${idx}`} value={s.id}>{s.name} ({fmt(s.balance)} {s.currency})</option>
               ))}
             </select>
             <Input type="number" value={amount} onChange={e => setAmount(e.target.value)} placeholder="المبلغ" />
@@ -201,8 +201,8 @@ export default function ExpensesPage() {
               </tr>
             </thead>
             <tbody className="divide-y">
-              {((expenses as any[]) || []).map(e => (
-                <tr key={e.id} className="hover:bg-muted/30">
+              {((expenses as any[]) || []).map((e, idx) => (
+                <tr key={`expenses-e-id-${e.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-medium">{e.category}</td>
                   <td className="p-3 font-bold text-muted-foreground">{e.safe_name ?? "الصندوق الرئيسي"}</td>
                   <td className="p-3 font-mono font-bold text-destructive">{fmt(e.amount)} YER</td>

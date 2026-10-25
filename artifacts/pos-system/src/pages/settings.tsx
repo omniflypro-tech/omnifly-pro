@@ -390,7 +390,7 @@ export default function Settings() {
                   ["taxNumber", "الرقم الضريبي"],
                 ] as [keyof SettingsInput, string][]).map(([field, label]) => {
                   return (
-                    <div key={field} className="space-y-1">
+                    <div key={`settings-field-${field || idx}-${idx}`} className="space-y-1">
                       <label className="text-sm font-medium flex items-center gap-1.5">
                         <span>{label}</span>
                       </label>
@@ -742,7 +742,7 @@ export default function Settings() {
                     ["showDiscount", "إظهار قيمة الخصم الممنوح"],
                     ["showNotes", "إظهار شروط وملاحظات وتفاصيل الرحلة"],
                   ] as [keyof SettingsInput, string][]).map(([field, label]) => (
-                    <div key={field} className="flex items-center justify-between py-2 border-b border-border/50">
+                    <div key={`settings-field-${field || idx}-${idx}`} className="flex items-center justify-between py-2 border-b border-border/50">
                       <label className="text-sm">{label}</label>
                       <Switch
                         checked={Boolean(form[field])}
@@ -893,7 +893,7 @@ function MasterCopiesTab({
 
   const handleAdd = () => {
     if (!newLabel.trim()) return;
-    const nextNum = copies.length > 0 ? Math.max(...copies.map(c => c.copyNumber)) + 1 : 1;
+    const nextNum = copies.length > 0 ? Math.max(...copies.map((c, idx) => c.copyNumber)) + 1 : 1;
     createCopy.mutate({ data: { copyNumber: nextNum, label: newLabel.trim(), enabled: newEnabled } }, {
       onSuccess: () => {
         qc.invalidateQueries({ queryKey: getGetReceiptCopyConfigsQueryKey() });
@@ -958,8 +958,8 @@ function MasterCopiesTab({
             <div className="text-center py-8 text-muted-foreground">جاري التحميل...</div>
           ) : (
             <div className="space-y-2">
-              {copies.map(copy => (
-                <div key={copy.id} className="flex items-center gap-3 p-3 rounded-lg border bg-card">
+              {copies.map((copy, idx) => (
+                <div key={`settings-copy-id-${copy.id || idx}-${idx}`} className="flex items-center gap-3 p-3 rounded-lg border bg-card">
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary shrink-0">
                     {copy.copyNumber}
                   </div>
@@ -1129,8 +1129,8 @@ function DepartmentsTab() {
             <SelectValue placeholder="اختر قسماً" />
           </SelectTrigger>
           <SelectContent>
-            {categories.map(c => (
-              <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
+            {categories.map((c, idx) => (
+              <SelectItem key={`settings-c-id-${c.id || idx}-${idx}`} value={String(c.id)}>{c.name}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -1145,7 +1145,7 @@ function DepartmentsTab() {
             <SelectContent>
               <SelectItem value="__none__">بدون طابعة</SelectItem>
               {systemPrinters.map((p: string) => (
-                <SelectItem key={p} value={p}>{p}</SelectItem>
+                <SelectItem key={`settings-p-${p || idx}-${idx}`} value={p}>{p}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -1193,8 +1193,8 @@ function DepartmentsTab() {
             <div className="text-center py-8 text-muted-foreground">جاري التحميل...</div>
           ) : (
             <div className="space-y-2">
-              {depts.map(dept => (
-                <div key={dept.id} className={`flex items-center gap-3 p-3 rounded-lg border bg-card transition-opacity ${!dept.enabled ? "opacity-50" : ""}`}>
+              {depts.map((dept, idx) => (
+                <div key={`settings-dept-id-${dept.id || idx}-${idx}`} className={`flex items-center gap-3 p-3 rounded-lg border bg-card transition-opacity ${!dept.enabled ? "opacity-50" : ""}`}>
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary shrink-0">
                     {dept.printOrder}
                   </div>
@@ -1497,8 +1497,8 @@ function PrinterLayoutTab() {
           <CardDescription>عرض رول ورق الطابعة الحرارية المستخدمة</CardDescription>
         </CardHeader>
         <CardContent className="flex gap-6">
-          {[80, 58].map(w => (
-            <label key={w} className="flex items-center gap-2 cursor-pointer p-2 rounded-lg border hover:bg-slate-50 transition-colors">
+          {[80, 58].map((w, idx) => (
+            <label key={`settings-w-${w || idx}-${idx}`} className="flex items-center gap-2 cursor-pointer p-2 rounded-lg border hover:bg-slate-50 transition-colors">
               <input
                 type="radio"
                 name="paperWidth"
@@ -1629,7 +1629,7 @@ function BusinessDaySettingsTab({
   const currentBusinessDate = `${busY}-${busM}-${busD}`;
 
   // Calculate simulated test result
-  const [simH, simM] = simulatedTime.split(":").map(v => parseInt(v, 10) || 0);
+  const [simH, simM] = simulatedTime.split(":").map((v, idx) => parseInt(v, 10) || 0);
   const simTotalMin = simH * 60 + simM;
   const simIsPastMidnight = enabled && simTotalMin < cutoffTotalMin;
   const simTargetObj = new Date(now);
@@ -1785,11 +1785,11 @@ function BusinessDaySettingsTab({
               اختيار سريع لوقت تقليب اليوم الجديد (مستمر يومياً):
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {presetTimes.map(p => {
+              {presetTimes.map((p, idx) => {
                 const isSelected = form.businessDayCutoffTime === p.time;
                 return (
                   <button
-                    key={p.time}
+                    key={`settings-p-time-${p.time || idx}-${idx}`}
                     type="button"
                     onClick={() => handleApplyPreset(p.time)}
                     className={`p-3.5 rounded-xl border text-right transition-all cursor-pointer flex items-center justify-between shadow-2xs ${
@@ -1892,12 +1892,12 @@ function BusinessDaySettingsTab({
               icon: Users,
               color: "text-rose-600 bg-rose-50 border-rose-200",
             },
-          ].map(item => {
+          ].map((item, idx) => {
             const Icon = item.icon;
             const checked = form[item.field] !== false;
             return (
               <div
-                key={item.field}
+                key={`settings-item-field-${item.field || idx}-${idx}`}
                 className="flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50/80 transition-colors shadow-2xs"
               >
                 <div className="flex items-start gap-3">

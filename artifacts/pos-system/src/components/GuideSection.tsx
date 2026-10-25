@@ -378,12 +378,12 @@ pnpm dist:win`}
 
       {/* Accordion Steps */}
       <div className="space-y-3">
-        {steps.map((step) => {
+        {steps.map((step, idx) => {
           const StepIcon = step.icon;
           const isOpen = openStep === step.id;
 
           return (
-            <div key={step.id} className="border border-white/5 bg-[#0d0d0d] rounded-2xl overflow-hidden transition-all duration-300">
+            <div key={`GuideSection-step-id-${step.id || idx}-${idx}`} className="border border-white/5 bg-[#0d0d0d] rounded-2xl overflow-hidden transition-all duration-300">
               <button
                 onClick={() => setOpenStep(isOpen ? null : step.id)}
                 className={`w-full px-5 py-4 flex items-center justify-between hover:bg-white/5 transition-colors select-none cursor-pointer ${

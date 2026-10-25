@@ -306,7 +306,7 @@ export default function TravelVisasPage() {
       }
 
       await Promise.all(
-        selectedVisaIds.map(id =>
+        selectedVisaIds.map((id, idx) =>
           fetchWithAuth(`/api/travel/visas/${id}/status-action`, {
             method: "PUT",
             body: JSON.stringify(payload)
@@ -339,7 +339,7 @@ export default function TravelVisasPage() {
       setIsTransitioning(true);
       try {
         await Promise.all(
-          selectedVisaIds.map(id =>
+          selectedVisaIds.map((id, idx) =>
             fetchWithAuth(`/api/travel/visas/${id}/status-action`, {
               method: "PUT",
               body: JSON.stringify({
@@ -367,7 +367,7 @@ export default function TravelVisasPage() {
     if (viewMode === "standard") {
       if (visas.length === 0) return;
       headers = ["رقم المعاملة", "العميل الدافع", "المسافر المتقدم", "رقم الجواز", "نوع التأشيرة", "الدولة", "المكتب المفوض", "سعر البيع", "عملة البيع", "سعر التكلفة", "عملة التكلفة", "عمولة المكتب", "الحالة", "تاريخ التقديم"];
-      rows = visas.map(v => [
+      rows = visas.map((v, idx) => [
         v.visa_number,
         `"${v.customer_name || 'عميل عام'}"`,
         `"${v.passenger_name_ar || v.passenger_name_en || v.customer_name || ''}"`,
@@ -386,7 +386,7 @@ export default function TravelVisasPage() {
     } else {
       if (activeWorkflowTab === "new") {
         headers = ["رقم العميل", "اسم العميل", "الجواز", "نوع الخدمة", "البلد", "نوع التأشيرة", "تاريخ التقديم", "سعر البيع", "رقم الطلب"];
-        rows = filteredVisasForWorkflow.map(v => [
+        rows = filteredVisasForWorkflow.map((v, idx) => [
           v.customer_id || "",
           v.customer_name || "عميل عام",
           v.passport_number || "",
@@ -399,7 +399,7 @@ export default function TravelVisasPage() {
         ]);
       } else if (activeWorkflowTab === "outward") {
         headers = ["رقم العميل", "اسم العميل", "الجواز", "السجل", "رقم الدفعة", "رقم السند", "تاريخ الصادر", "نوع الخدمة", "الوكيل", "التأشيرة", "البيان", "رقم الطلب"];
-        rows = filteredVisasForWorkflow.map(v => [
+        rows = filteredVisasForWorkflow.map((v, idx) => [
           v.customer_id || "",
           v.customer_name || "عميل عام",
           v.passport_number || "",
@@ -415,7 +415,7 @@ export default function TravelVisasPage() {
         ]);
       } else if (activeWorkflowTab === "inward") {
         headers = ["رقم العميل", "اسم العميل", "الجواز", "التأشيرة", "الوكيل", "نوع الخدمة", "تاريخ الوارد", "رقم السند", "الحالة", "بيان الوارد", "رقم الطلب"];
-        rows = filteredVisasForWorkflow.map(v => [
+        rows = filteredVisasForWorkflow.map((v, idx) => [
           v.customer_id || "",
           v.customer_name || "عميل عام",
           v.passport_number || "",
@@ -430,7 +430,7 @@ export default function TravelVisasPage() {
         ]);
       } else if (activeWorkflowTab === "delivered") {
         headers = ["رقم العميل", "اسم العميل", "الجواز", "التأشيرة", "السجل", "رقم الدفعة", "نوع الخدمة", "تاريخ التسليم", "الحالة", "المستلم", "تاريخ الوارد", "بيان الوارد", "رقم الطلب"];
-        rows = filteredVisasForWorkflow.map(v => [
+        rows = filteredVisasForWorkflow.map((v, idx) => [
           v.customer_id || "",
           v.customer_name || "عميل عام",
           v.passport_number || "",
@@ -447,11 +447,11 @@ export default function TravelVisasPage() {
         ]);
       } else {
         headers = ["رقم المعاملة", "العميل", "الجواز", "الحالة"];
-        rows = filteredVisasForWorkflow.map(v => [v.visa_number, v.customer_name, v.passport_number, v.status]);
+        rows = filteredVisasForWorkflow.map((v, idx) => [v.visa_number, v.customer_name, v.passport_number, v.status]);
       }
     }
 
-    const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+    const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((e, idx) => e.join(","))].join("\n");
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -1476,7 +1476,7 @@ export default function TravelVisasPage() {
                               checked={selectedVisaIds.length > 0 && selectedVisaIds.length === filteredVisasForWorkflow.length}
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  setSelectedVisaIds(filteredVisasForWorkflow.map(v => v.id));
+                                  setSelectedVisaIds(filteredVisasForWorkflow.map((v, idx) => v.id));
                                 } else {
                                   setSelectedVisaIds([]);
                                 }
@@ -1505,7 +1505,7 @@ export default function TravelVisasPage() {
                               checked={selectedVisaIds.length > 0 && selectedVisaIds.length === filteredVisasForWorkflow.length}
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  setSelectedVisaIds(filteredVisasForWorkflow.map(v => v.id));
+                                  setSelectedVisaIds(filteredVisasForWorkflow.map((v, idx) => v.id));
                                 } else {
                                   setSelectedVisaIds([]);
                                 }
@@ -1536,7 +1536,7 @@ export default function TravelVisasPage() {
                               checked={selectedVisaIds.length > 0 && selectedVisaIds.length === filteredVisasForWorkflow.length}
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  setSelectedVisaIds(filteredVisasForWorkflow.map(v => v.id));
+                                  setSelectedVisaIds(filteredVisasForWorkflow.map((v, idx) => v.id));
                                 } else {
                                   setSelectedVisaIds([]);
                                 }
@@ -1566,7 +1566,7 @@ export default function TravelVisasPage() {
                               checked={selectedVisaIds.length > 0 && selectedVisaIds.length === filteredVisasForWorkflow.length}
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  setSelectedVisaIds(filteredVisasForWorkflow.map(v => v.id));
+                                  setSelectedVisaIds(filteredVisasForWorkflow.map((v, idx) => v.id));
                                 } else {
                                   setSelectedVisaIds([]);
                                 }
@@ -1830,8 +1830,8 @@ export default function TravelVisasPage() {
                     className="w-full h-10 rounded-md border border-input bg-background px-3 text-xs font-semibold text-slate-900"
                   >
                     <option value="all">جميع أنواع التأشيرات</option>
-                    {VISA_TYPES.map(t => (
-                      <option key={t} value={t}>{t}</option>
+                    {VISA_TYPES.map((t, idx) => (
+                      <option key={`travelvisas-t-${t || idx}-${idx}`} value={t}>{t}</option>
                     ))}
                   </select>
                 </div>
@@ -1889,9 +1889,9 @@ export default function TravelVisasPage() {
                   { key: "credit", label: "⏳ آجل (ذمم)", count: visas.filter(v => v.payment_method === 'credit').length, color: "bg-amber-50 text-amber-900 border-amber-300" },
                   { key: "bank", label: "🏦 تحويل بنكي", count: visas.filter(v => v.payment_method === 'bank').length, color: "bg-blue-50 text-blue-900 border-blue-300" },
                   { key: "card", label: "💳 شبكة", count: visas.filter(v => v.payment_method === 'card').length, color: "bg-purple-50 text-purple-900 border-purple-300" }
-                ].map(pTab => (
+                ].map((pTab, idx) => (
                   <button
-                    key={pTab.key}
+                    key={`travelvisas-pTab-key-${pTab.key || idx}-${idx}`}
                     type="button"
                     onClick={() => setPaymentFilter(pTab.key)}
                     className={`text-xs px-2.5 py-1 rounded-md font-bold border transition-all flex items-center gap-1.5 ${
@@ -1920,9 +1920,9 @@ export default function TravelVisasPage() {
                   { key: "rejected", label: "❌ مرفوضة", count: visas.filter(v => v.status === 'rejected').length, color: "bg-red-100 text-red-900 border-red-300 hover:bg-red-200" },
                   { key: "pending_docs", label: "⚠️ بانتظار الوثائق", count: visas.filter(v => v.status === 'pending_docs').length, color: "bg-orange-100 text-orange-900 border-orange-300 hover:bg-orange-200" },
                   { key: "cancelled", label: "🚫 ملغية ومردودة", count: visas.filter(v => v.status === 'cancelled').length, color: "bg-slate-200 text-slate-800 hover:bg-slate-300" }
-                ].map(tab => (
+                ].map((tab, idx) => (
                   <button
-                    key={tab.key}
+                    key={`travelvisas-tab-key-${tab.key || idx}-${idx}`}
                     type="button"
                     onClick={() => setStatusFilter(tab.key)}
                     className={`text-xs px-2.5 py-1 rounded-full font-bold border transition-all flex items-center gap-1.5 ${
@@ -2372,8 +2372,8 @@ export default function TravelVisasPage() {
                           onChange={e => setForm(f => ({ ...f, customer_currency: e.target.value }))}
                           className="flex h-9 w-full rounded-md border border-input bg-white px-2 text-xs font-bold"
                         >
-                          {CURRENCIES.map(c => (
-                            <option key={c.code} value={c.code}>{c.flag} {c.label}</option>
+                          {CURRENCIES.map((c, idx) => (
+                            <option key={`travelvisas-c-code-${c.code || idx}-${idx}`} value={c.code}>{c.flag} {c.label}</option>
                           ))}
                         </select>
                       </div>
@@ -2533,8 +2533,8 @@ export default function TravelVisasPage() {
                           onChange={e => setForm(f => ({ ...f, supplier_currency: e.target.value }))}
                           className="flex h-9 w-full rounded-md border border-input bg-white px-2 text-xs font-bold text-emerald-900"
                         >
-                          {CURRENCIES.map(c => (
-                            <option key={c.code} value={c.code}>{c.flag} {c.label}</option>
+                          {CURRENCIES.map((c, idx) => (
+                            <option key={`travelvisas-c-code-${c.code || idx}-${idx}`} value={c.code}>{c.flag} {c.label}</option>
                           ))}
                         </select>
                       </div>
@@ -2590,8 +2590,8 @@ export default function TravelVisasPage() {
                       }}
                       className="flex h-8 w-full rounded-md border border-amber-300 bg-amber-50 px-2 py-1 text-xs font-bold text-slate-900 focus:ring-amber-500"
                     >
-                      {VISA_TYPES.map(t => (
-                        <option key={t} value={t}>{t}</option>
+                      {VISA_TYPES.map((t, idx) => (
+                        <option key={`travelvisas-t-${t || idx}-${idx}`} value={t}>{t}</option>
                       ))}
                     </select>
                   </div>
@@ -3004,9 +3004,9 @@ export default function TravelVisasPage() {
                     { id: "under_process", label: "⏳ قيد المعالجة", desc: "بالسفارة أو القنصلية", color: "border-blue-500 bg-blue-50 text-blue-950" },
                     { id: "in_office", label: "🏢 في المكتب", desc: "قيد المراجعة والتجهيز", color: "border-amber-500 bg-amber-50 text-amber-950" },
                     { id: "pending_docs", label: "⚠️ بانتظار الوثائق", desc: "نقص مستندات مطلوبة", color: "border-orange-500 bg-orange-50 text-orange-950" },
-                  ].map((st) => (
+                  ].map((st, idx) => (
                     <button
-                      key={st.id}
+                      key={`travelvisas-st-id-${st.id || idx}-${idx}`}
                       type="button"
                       onClick={() => setActionForm(f => ({ ...f, status: st.id }))}
                       className={`p-2.5 rounded-lg border text-right transition-all flex flex-col justify-between ${
@@ -3199,9 +3199,9 @@ export default function TravelVisasPage() {
                       className="bg-white text-xs"
                     />
                     <div className="flex flex-wrap gap-1.5">
-                      {COMMON_MISSING_DOCS.map(doc => (
+                      {COMMON_MISSING_DOCS.map((doc, idx) => (
                         <button
-                          key={doc}
+                          key={`travelvisas-doc-${doc || idx}-${idx}`}
                           type="button"
                           onClick={() => {
                             const curr = actionForm.missing_docs ? `${actionForm.missing_docs}، ${doc}` : doc;

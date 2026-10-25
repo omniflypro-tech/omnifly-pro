@@ -99,7 +99,7 @@ export default function CashierStatement() {
                 <SelectContent>
                   <SelectItem value="all">الجميع</SelectItem>
                   {users?.map((u: any) => (
-                    <SelectItem key={u.id} value={u.id.toString()}>{u.name}</SelectItem>
+                    <SelectItem key={`cashierstatement-u-id-${u.id || idx}-${idx}`} value={u.id.toString()}>{u.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -149,7 +149,7 @@ export default function CashierStatement() {
                 </TableRow>
               )}
               {Object.entries(groupedData).map(([date, rows]) => (
-                <React.Fragment key={date}>
+                <React.Fragment key={`cashierstatement-date-${date || idx}-${idx}`}>
                   {rows.map((row, idx) => (
                     <TableRow key={`${date}-${row.cashier}-${row.sale_type}`} className="hover:bg-slate-50">
                       <TableCell className="font-semibold text-slate-700">{idx === 0 ? row.date : ""}</TableCell>

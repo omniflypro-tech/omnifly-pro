@@ -85,8 +85,8 @@ export default function BranchesPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y">
-                  {((branches as any[]) || []).map(b => (
-                    <tr key={b.id} className="hover:bg-muted/30">
+                  {((branches as any[]) || []).map((b, idx) => (
+                    <tr key={`branches-b-id-${b.id || idx}-${idx}`} className="hover:bg-muted/30">
                       <td className="p-3 font-medium">{b.name}</td>
                       <td className="p-3 text-muted-foreground">{b.address ?? "—"}</td>
                       <td className="p-3 text-muted-foreground">{b.phone ?? "—"}</td>
@@ -108,7 +108,7 @@ export default function BranchesPage() {
                 <Input value={warehouseName} onChange={e => setWarehouseName(e.target.value)} placeholder="اسم المستودع" />
                 <select value={warehouseBranchId} onChange={e => setWarehouseBranchId(e.target.value)} className="border rounded-md px-3 bg-background text-sm">
                   <option value="">اختر الفرع التابع له</option>
-                  {((branches as any[]) || []).map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                  {((branches as any[]) || []).map((b, idx) => <option key={`branches-b-id-${b.id || idx}-${idx}`} value={b.id}>{b.name}</option>)}
                 </select>
                 <Input value={warehouseLocation} onChange={e => setWarehouseLocation(e.target.value)} placeholder="الموقع / الوصف" />
                 <Button onClick={() => addWarehouse.mutate()} disabled={!warehouseName.trim()} className="gap-1"><Plus className="w-4 h-4" />إضافة مستودع</Button>
@@ -126,8 +126,8 @@ export default function BranchesPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y">
-                  {((warehouses as any[]) || []).map(w => (
-                    <tr key={w.id} className="hover:bg-muted/30">
+                  {((warehouses as any[]) || []).map((w, idx) => (
+                    <tr key={`branches-w-id-${w.id || idx}-${idx}`} className="hover:bg-muted/30">
                       <td className="p-3 font-medium flex items-center gap-2"><Warehouse className="w-4 h-4 text-primary" />{w.name}</td>
                       <td className="p-3 text-muted-foreground">{w.branch_name ?? "عام"}</td>
                       <td className="p-3 text-muted-foreground">{w.location ?? "—"}</td>

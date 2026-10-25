@@ -61,7 +61,7 @@ export function PenaltiesTab() {
             </thead>
             <tbody className="divide-y divide-border">
               {((penalties as any[]) || []).map((p: any) => (
-                <tr key={p.id} className="hover:bg-muted/30">
+                <tr key={`penalties-p-id-${p.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-medium">{p.employee_name}</td>
                   <td className="p-3 font-medium text-destructive">{p.violation_name}</td>
                   <td className="p-3 font-mono font-bold text-red-600">-{fmt(p.amount)}</td>
@@ -88,7 +88,7 @@ export function PenaltiesTab() {
               <label className="text-sm font-medium">الموظف المخالف *</label>
               <Select value={form.employee_id} onValueChange={v => setForm(f => ({ ...f, employee_id: v }))}>
                 <SelectTrigger className="mt-1"><SelectValue placeholder="اختر الموظف" /></SelectTrigger>
-                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={e.id} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={`penalties-e-id-${e.id || idx}-${idx}`} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div>

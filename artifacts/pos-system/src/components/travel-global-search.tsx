@@ -260,9 +260,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">شبكة الموردين والمشتريات</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.suppliers.map((s) => (
+                {results.suppliers.map((s, idx) => (
                   <div
-                    key={s.id}
+                    key={`travelglobalsearch-s-id-${s.id || idx}-${idx}`}
                     onClick={() => navigateTo(`/travel-suppliers?supplierId=${s.id}&action=statement`)}
                     className="p-3 bg-amber-50/50 hover:bg-amber-100/70 border border-amber-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
@@ -307,7 +307,7 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">الحسابات العامة</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.vouchers.map((v) => (
+                {results.vouchers.map((v, idx) => (
                   <div
                     key={`${v.id}-${v.voucher_number}`}
                     onClick={() => navigateTo("/accounting")}
@@ -350,9 +350,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">المبيعات المركزية</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.invoices.map((inv) => (
+                {results.invoices.map((inv, idx) => (
                   <div
-                    key={inv.id}
+                    key={`travelglobalsearch-inv-id-${inv.id || idx}-${idx}`}
                     onClick={() => navigateTo("/travel-invoices")}
                     className="p-3 bg-emerald-50/50 hover:bg-emerald-100/70 border border-emerald-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
@@ -390,9 +390,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">شجرة الحسابات</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.accounts.map((acc) => (
+                {results.accounts.map((acc, idx) => (
                   <div
-                    key={acc.id}
+                    key={`travelglobalsearch-acc-id-${acc.id || idx}-${idx}`}
                     onClick={() => navigateTo("/accounting")}
                     className="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
@@ -424,9 +424,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">إدارة التذاكر والحجوزات</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.bookings.map((b) => (
+                {results.bookings.map((b, idx) => (
                   <div
-                    key={b.id}
+                    key={`travelglobalsearch-b-id-${b.id || idx}-${idx}`}
                     onClick={() => navigateTo("/travel-bookings")}
                     className="p-3 bg-blue-50/50 hover:bg-blue-100/70 border border-blue-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
@@ -467,9 +467,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">النقل البري</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.buses.map((bus) => (
+                {results.buses.map((bus, idx) => (
                   <div
-                    key={bus.id}
+                    key={`travelglobalsearch-bus-id-${bus.id || idx}-${idx}`}
                     onClick={() => navigateTo("/travel-bus-bookings")}
                     className="p-3 bg-cyan-50/50 hover:bg-cyan-100/70 border border-cyan-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
@@ -505,9 +505,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">دليل العملاء</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.customers.map((c) => (
+                {results.customers.map((c, idx) => (
                   <div
-                    key={c.id}
+                    key={`travelglobalsearch-c-id-${c.id || idx}-${idx}`}
                     onClick={() => navigateTo("/customers")}
                     className="p-3 bg-emerald-50/50 hover:bg-emerald-100/70 border border-emerald-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
@@ -540,9 +540,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">سجل المسافرين</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.passengers.map((p) => (
+                {results.passengers.map((p, idx) => (
                   <div
-                    key={p.id}
+                    key={`travelglobalsearch-p-id-${p.id || idx}-${idx}`}
                     onClick={() => navigateTo("/passengers")}
                     className="p-3 bg-indigo-50/50 hover:bg-indigo-100/70 border border-indigo-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
@@ -572,9 +572,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">الموارد البشرية HR</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.employees.map((emp) => (
+                {results.employees.map((emp, idx) => (
                   <div
-                    key={emp.id}
+                    key={`travelglobalsearch-emp-id-${emp.id || idx}-${idx}`}
                     onClick={() => navigateTo("/hr")}
                     className="p-3 bg-teal-50/50 hover:bg-teal-100/70 border border-teal-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
@@ -608,9 +608,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">إدارة التأشيرات</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.visas.map((v) => (
+                {results.visas.map((v, idx) => (
                   <div
-                    key={v.id}
+                    key={`travelglobalsearch-v-id-${v.id || idx}-${idx}`}
                     onClick={() => navigateTo("/travel-visas")}
                     className="p-3 bg-amber-50/50 hover:bg-amber-100/70 border border-amber-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
@@ -645,9 +645,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">دليل الفنادق</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.hotels.map((h) => (
+                {results.hotels.map((h, idx) => (
                   <div
-                    key={h.id}
+                    key={`travelglobalsearch-h-id-${h.id || idx}-${idx}`}
                     onClick={() => navigateTo("/travel-hotels-db")}
                     className="p-3 bg-purple-50/50 hover:bg-purple-100/70 border border-purple-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >
@@ -673,9 +673,9 @@ export function TravelGlobalSearch({
                 <span className="text-[10px] text-slate-400">إدارة المهام</span>
               </h3>
               <div className="grid grid-cols-1 gap-1.5">
-                {results.tasks.map((t) => (
+                {results.tasks.map((t, idx) => (
                   <div
-                    key={t.id}
+                    key={`travelglobalsearch-t-id-${t.id || idx}-${idx}`}
                     onClick={() => navigateTo("/travel-tasks")}
                     className="p-3 bg-purple-50/50 hover:bg-purple-100/70 border border-purple-200 rounded-lg flex items-center justify-between cursor-pointer transition-colors"
                   >

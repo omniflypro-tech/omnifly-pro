@@ -201,11 +201,11 @@ export default function TravelZatcaCompliance() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Invoices List */}
           <div className="lg:col-span-7 space-y-3">
-            {invoices.map((inv) => {
+            {invoices.map((inv, idx) => {
               const isSelected = selectedInvoice?.id === inv.id;
               return (
                 <div
-                  key={inv.id}
+                  key={`travelzatcacompliance-inv-id-${inv.id || idx}-${idx}`}
                   onClick={() => setSelectedInvoice(inv)}
                   className={`cursor-pointer rounded-2xl border p-5 transition space-y-3 ${
                     isSelected
@@ -343,8 +343,8 @@ export default function TravelZatcaCompliance() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {fxRates.map((fx) => (
-                <div key={fx.id} className="p-4 bg-muted/30 border border-border rounded-xl space-y-2">
+              {fxRates.map((fx, idx) => (
+                <div key={`travelzatcacompliance-fx-id-${fx.id || idx}-${idx}`} className="p-4 bg-muted/30 border border-border rounded-xl space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="w-8 h-8 rounded-lg bg-teal-950 text-teal-400 font-bold flex items-center justify-center text-xs border border-teal-800/40">
                       {fx.currency_code}

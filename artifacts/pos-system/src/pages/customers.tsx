@@ -658,7 +658,7 @@ export default function TravelCustomersPage() {
                     >
                       <option value="" disabled>-- اختر المكتب / الوكيل الوسيط --</option>
                       {offices.map((o: any) => (
-                        <option key={o.id} value={o.id}>🏬 {o.name} {o.phone ? `(هاتف: ${o.phone})` : ""}</option>
+                        <option key={`customers-o-id-${o.id || idx}-${idx}`} value={o.id}>🏬 {o.name} {o.phone ? `(هاتف: ${o.phone})` : ""}</option>
                       ))}
                       <option value="NEW_OFFICE" className="font-bold text-primary">+ إضافة مكتب جديد...</option>
                     </select>
@@ -721,7 +721,7 @@ export default function TravelCustomersPage() {
                     >
                       <option value="">✨ إنشاء حساب جديد ومستقل للعميل تلقائياً (الذمم المدينة 11200)</option>
                       {subAccounts.map((acc: any) => (
-                        <option key={acc.code} value={acc.code}>
+                        <option key={`customers-acc-code-${acc.code || idx}-${idx}`} value={acc.code}>
                           {acc.code} - {acc.name} (ذمم مدينة)
                         </option>
                       ))}
@@ -1021,7 +1021,7 @@ export default function TravelCustomersPage() {
                     ["logs", "سجل التواصل والملاحظات", MessageSquare]
                   ].map(([id, title, Icon]: any) => (
                     <button
-                      key={id}
+                      key={`customers-id-${id || idx}-${idx}`}
                       onClick={() => setProfileTab(id)}
                       className={`flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-t-lg transition-colors whitespace-nowrap ${
                         profileTab === id ? "bg-primary text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -1054,7 +1054,7 @@ export default function TravelCustomersPage() {
                           </thead>
                           <tbody>
                             {profileData.bookings.map((b: any) => (
-                              <tr key={b.id} className="border-b">
+                              <tr key={`customers-b-id-${b.id || idx}-${idx}`} className="border-b">
                                 <td className="p-2 font-mono font-bold text-primary">{b.booking_number}</td>
                                 <td className="p-2 font-mono">{b.pnr || "-"}</td>
                                 <td className="p-2">{b.passenger_name || "نفس العميل"}</td>
@@ -1091,7 +1091,7 @@ export default function TravelCustomersPage() {
                           </thead>
                           <tbody>
                             {profileData.visas.map((v: any) => (
-                              <tr key={v.id} className="border-b">
+                              <tr key={`customers-v-id-${v.id || idx}-${idx}`} className="border-b">
                                 <td className="p-2 font-mono font-bold">{v.visa_number}</td>
                                 <td className="p-2 font-bold">{v.country}</td>
                                 <td className="p-2">{v.visa_type}</td>
@@ -1126,7 +1126,7 @@ export default function TravelCustomersPage() {
                           </thead>
                           <tbody>
                             {profileData.hotels.map((h: any) => (
-                              <tr key={h.id} className="border-b">
+                              <tr key={`customers-h-id-${h.id || idx}-${idx}`} className="border-b">
                                 <td className="p-2 font-mono font-bold">{h.booking_ref}</td>
                                 <td className="p-2 font-bold">{h.hotel_name}</td>
                                 <td className="p-2">{h.city_country}</td>
@@ -1161,7 +1161,7 @@ export default function TravelCustomersPage() {
                           </thead>
                           <tbody>
                             {profileData.passengers.map((p: any) => (
-                              <tr key={p.id} className="border-b">
+                              <tr key={`customers-p-id-${p.id || idx}-${idx}`} className="border-b">
                                 <td className="p-2 font-bold">{p.name_ar} <span className="font-normal font-mono opacity-75">({p.name_en})</span></td>
                                 <td className="p-2">{p.title} - {p.gender}</td>
                                 <td className="p-2 font-mono font-bold">{p.passport_number || "-"}</td>
@@ -1307,7 +1307,7 @@ export default function TravelCustomersPage() {
                         <p className="text-xs text-muted-foreground p-4 text-center">لا توجد سجلات تواصل سابقة</p>
                       ) : (
                         profileData.contactLogs.map((log: any) => (
-                          <div key={log.id} className="p-3 border rounded-lg bg-white flex items-center justify-between text-xs">
+                          <div key={`customers-log-id-${log.id || idx}-${idx}`} className="p-3 border rounded-lg bg-white flex items-center justify-between text-xs">
                             <div>
                               <div className="flex items-center gap-2 font-bold text-slate-800">
                                 <span className="bg-slate-100 px-2 py-0.5 rounded text-[11px]">{log.contact_type}</span>

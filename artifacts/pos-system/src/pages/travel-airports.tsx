@@ -198,8 +198,8 @@ export default function TravelAirportsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {filtered.map((a) => (
-                    <tr key={a.id} className="hover:bg-slate-50/80 transition-colors">
+                  {filtered.map((a, idx) => (
+                    <tr key={`travelairports-a-id-${a.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                       <td className="p-4">
                         <span className="px-3 py-1 rounded-lg bg-indigo-50 text-indigo-800 font-mono font-bold text-base border border-indigo-200/50">
                           {a.iata_code}

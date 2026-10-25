@@ -507,7 +507,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
     // Filter sys_admin to keep ONLY "change_password" if user is not admin or developer
     if (!isAdminOrDev) {
-      list = list.map((s) => {
+      list = list.map((s, idx) => {
         if (s.id === "sys_admin") {
           return {
             ...s,
@@ -701,7 +701,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             )}
 
             <div className="flex-1 py-3 px-3 overflow-y-auto space-y-2.5 scrollbar-thin">
-              {visibleSystems.map((sys) => {
+              {visibleSystems.map((sys, idx) => {
                 const SysIcon = sys.icon;
                 const isOpen = !!openSystems[sys.id];
                 return (
@@ -875,12 +875,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
         {/* Sidebar System List - Matched with Image */}
         <div ref={sidebarNavRef} onScroll={handleSidebarScroll} className="flex-1 py-3 px-3 overflow-y-auto space-y-2.5 scrollbar-thin">
-          {visibleSystems.map((sys) => {
+          {visibleSystems.map((sys, idx) => {
             const SysIcon = sys.icon;
             const isOpen = !!openSystems[sys.id];
 
             return (
-              <div key={sys.id} className="space-y-1.5">
+              <div key={`adminlayout-sys-id-${sys.id || idx}-${idx}`} className="space-y-1.5">
                 {/* Main System Button (Matching Image Style) */}
                 <div
                   onClick={() => toggleSystem(sys.id)}

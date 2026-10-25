@@ -204,11 +204,11 @@ export default function TravelBspReconciliationPage() {
 
         {/* Periods List Strip */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {periods?.map((p) => {
+          {periods?.map((p, idx) => {
             const isSelected = p.id === activePeriodId;
             return (
               <Card
-                key={p.id}
+                key={`travelbspreconciliation-p-id-${p.id || idx}-${idx}`}
                 onClick={() => setSelectedPeriodId(p.id)}
                 className={`cursor-pointer transition-all border-2 ${
                   isSelected ? "border-sky-600 bg-sky-50/40 shadow-md" : "border-slate-200 hover:border-slate-300 bg-white"
@@ -333,7 +333,7 @@ export default function TravelBspReconciliationPage() {
                         </thead>
                         <tbody className="divide-y">
                           {tickets.map((t: any) => (
-                            <tr key={t.id} className="hover:bg-slate-50">
+                            <tr key={`travelbspreconciliation-t-id-${t.id || idx}-${idx}`} className="hover:bg-slate-50">
                               <td className="p-3 font-mono font-bold text-slate-900">{t.ticket_number}</td>
                               <td className="p-3 font-mono font-bold text-sky-700">{t.airline_code}</td>
                               <td className="p-3 font-mono text-indigo-600">{t.pnr}</td>
@@ -400,8 +400,8 @@ export default function TravelBspReconciliationPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y">
-                      {memos?.map((m) => (
-                        <tr key={m.id} className="hover:bg-slate-50">
+                      {memos?.map((m, idx) => (
+                        <tr key={`travelbspreconciliation-m-id-${m.id || idx}-${idx}`} className="hover:bg-slate-50">
                           <td className="p-3">
                             <Badge className={m.memo_type === "ADM" ? "bg-red-100 text-red-800" : "bg-emerald-100 text-emerald-800"}>
                               {m.memo_type} ({m.memo_type === "ADM" ? "غرامة" : "إضافة"})

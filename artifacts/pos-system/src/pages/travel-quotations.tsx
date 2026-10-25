@@ -201,7 +201,7 @@ export default function TravelQuotationsPage() {
                   <tr><td colSpan={7} className="text-center p-8 text-slate-400">لا توجد عروض أسعار مسجلة بعد</td></tr>
                 ) : (
                   filtered.map((q: any) => (
-                    <tr key={q.id} className="hover:bg-slate-50/80 transition-colors">
+                    <tr key={`travelquotations-q-id-${q.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                       <td className="p-3.5 font-mono font-bold text-indigo-700">{q.quotation_number}</td>
                       <td className="p-3.5 text-xs">
                         <div className="font-bold text-slate-800">{q.customer_name}</div>
@@ -360,7 +360,7 @@ export default function TravelQuotationsPage() {
                 </thead>
                 <tbody className="divide-y">
                   {quoDetails?.items?.map((it: any) => (
-                    <tr key={it.id}>
+                    <tr key={`travelquotations-it-id-${it.id || idx}-${idx}`}>
                       <td className="p-2">{it.description}</td>
                       <td className="p-2 font-mono font-bold">{it.selling_price?.toLocaleString()} ريال</td>
                     </tr>

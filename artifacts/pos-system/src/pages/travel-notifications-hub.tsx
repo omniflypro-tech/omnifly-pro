@@ -1047,7 +1047,7 @@ export default function TravelNotificationsHubPage() {
                   const count = automations.filter((a) => a.department === deptKey).length;
                   return (
                     <button
-                      key={deptKey}
+                      key={`travelnotificationshub-deptKey-${deptKey || idx}-${idx}`}
                       onClick={() => setSelectedDeptFilter(deptKey)}
                       className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
                         selectedDeptFilter === deptKey ? "bg-slate-900 text-white shadow-sm" : "text-slate-600 hover:bg-slate-100"
@@ -1073,13 +1073,13 @@ export default function TravelNotificationsHubPage() {
 
             {/* Automation Rules Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredAutomations.map((rule) => {
+              {filteredAutomations.map((rule, idx) => {
                 const deptMeta = DEPARTMENTS[rule.department || "travel"] || DEPARTMENTS.travel;
                 const isEnabled = rule.is_enabled === 1;
 
                 return (
                   <Card
-                    key={rule.id}
+                    key={`travelnotificationshub-rule-id-${rule.id || idx}-${idx}`}
                     className={`border transition-all shadow-sm ${
                       isEnabled ? "border-slate-200 hover:border-slate-300" : "border-amber-200/80 bg-amber-50/10"
                     }`}
@@ -1183,9 +1183,9 @@ export default function TravelNotificationsHubPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-4 space-y-3">
-                  {templates.map((tpl) => (
+                  {templates.map((tpl, idx) => (
                     <div
-                      key={tpl.id}
+                      key={`travelnotificationshub-tpl-id-${tpl.id || idx}-${idx}`}
                       onClick={() => setSelectedTemplateForPreview(tpl)}
                       className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
                         selectedTemplateForPreview?.id === tpl.id
@@ -1472,8 +1472,8 @@ export default function TravelNotificationsHubPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {logs.map((log) => (
-                      <tr key={log.id} className="hover:bg-slate-50/70 transition-colors">
+                    {logs.map((log, idx) => (
+                      <tr key={`travelnotificationshub-log-id-${log.id || idx}-${idx}`} className="hover:bg-slate-50/70 transition-colors">
                         <td className="p-3 font-mono text-slate-400">{log.id}</td>
                         <td className="p-3 font-bold text-slate-800">{log.recipient_name || "عميل"}</td>
                         <td className="p-3 font-mono text-slate-600" dir="ltr">
@@ -1728,9 +1728,9 @@ curl -i -X POST "https://graph.facebook.com/v21.0/105544332211000/messages" \\
                       "{due_date}",
                       "{ticket_url}",
                       "{portal_url}"
-                    ].map((placeholder) => (
+                    ].map((placeholder, idx) => (
                       <button
-                        key={placeholder}
+                        key={`travelnotificationshub-placeholder-${placeholder || idx}-${idx}`}
                         type="button"
                         onClick={() => handleInsertPlaceholder(placeholder)}
                         className="text-[10px] font-mono font-bold px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition-colors"

@@ -107,7 +107,7 @@ export function LeavesTab() {
               {((leaves as any[]) || []).map((l: any) => {
                 const diff = Math.ceil((new Date(l.end_date).getTime() - new Date(l.start_date).getTime()) / (1000 * 3600 * 24)) + 1;
                 return (
-                  <tr key={l.id} className="hover:bg-muted/30">
+                  <tr key={`leaves-l-id-${l.id || idx}-${idx}`} className="hover:bg-muted/30">
                     <td className="p-3 font-medium">{l.employee_name}</td>
                     <td className="p-3">
                       <span className={`px-2 py-1 rounded-md text-xs font-semibold ${leaveColors[l.type] ?? "bg-slate-100 text-slate-700"}`}>
@@ -146,7 +146,7 @@ export function LeavesTab() {
               <label className="text-sm font-medium">الموظف طالب الإجازة *</label>
               <Select value={form.employee_id} onValueChange={v => setForm(f => ({ ...f, employee_id: v }))}>
                 <SelectTrigger className="mt-1"><SelectValue placeholder="اختر الموظف" /></SelectTrigger>
-                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={e.id} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={`leaves-e-id-${e.id || idx}-${idx}`} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div>

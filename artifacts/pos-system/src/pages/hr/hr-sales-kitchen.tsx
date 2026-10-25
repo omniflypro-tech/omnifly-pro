@@ -61,8 +61,8 @@ export function OrderVouchersTab() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {vouchers.map((item) => (
-              <tr key={item.id} className="hover:bg-muted/30">
+            {vouchers.map((item, idx) => (
+              <tr key={`hrsaleskitchen-item-id-${item.id || idx}-${idx}`} className="hover:bg-muted/30">
                 <td className="p-3 font-mono font-bold text-slate-800 dark:text-slate-200">{item.id}</td>
                 <td className="p-3">
                   {item.type === "تحصيل" ? (
@@ -176,8 +176,8 @@ export function KitchenQuantitiesTab() {
         <Card className="border shadow-sm">
           <CardHeader><CardTitle className="text-sm font-bold">جرد الكميات الحالي بالمطبخ</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {kitchenItems.filter(item => !item.is_expired).map((item) => (
-              <div key={item.id} className="flex justify-between items-center p-2 rounded-lg bg-slate-50 dark:bg-slate-900 border">
+            {kitchenItems.filter(item => !item.is_expired).map((item, idx) => (
+              <div key={`hrsaleskitchen-item-id-${item.id || idx}-${idx}`} className="flex justify-between items-center p-2 rounded-lg bg-slate-50 dark:bg-slate-900 border">
                 <div>
                   <span className="text-sm font-bold">{item.name}</span>
                   <p className="text-[10px] text-muted-foreground">{item.kitchen}</p>
@@ -195,8 +195,8 @@ export function KitchenQuantitiesTab() {
         <Card className="border border-red-200 bg-red-50/10 shadow-sm">
           <CardHeader><CardTitle className="text-sm font-bold text-red-700 flex items-center gap-2"><Ban className="w-4 h-4 text-red-600" /> الأصناف والكميات المنتهية والنافذة بالمطبخ</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {kitchenItems.filter(item => item.is_expired).map((item) => (
-              <div key={item.id} className="flex justify-between items-center p-2 rounded-lg bg-red-100/50 border border-red-200">
+            {kitchenItems.filter(item => item.is_expired).map((item, idx) => (
+              <div key={`hrsaleskitchen-item-id-${item.id || idx}-${idx}`} className="flex justify-between items-center p-2 rounded-lg bg-red-100/50 border border-red-200">
                 <div>
                   <span className="text-sm font-bold text-red-900">{item.name}</span>
                   <p className="text-[10px] text-red-700 font-semibold">{item.kitchen}</p>
@@ -204,7 +204,7 @@ export function KitchenQuantitiesTab() {
                 <div className="flex items-center gap-2">
                   <Badge variant="destructive" className="font-bold">نفذت بالكامل / مغلق للطلب</Badge>
                   <Button size="sm" onClick={() => {
-                    setKitchenItems(prev => prev.map(p => p.id === item.id ? { ...p, qty: 50, is_expired: false, status: "كافية" } : p));
+                    setKitchenItems(prev => prev.map((p, idx) => p.id === item.id ? { ...p, qty: 50, is_expired: false, status: "كافية" } : p));
                     toast({ title: "تم تموين المطبخ بالكمية المدخلة" });
                   }} className="text-xs h-7 bg-red-600 hover:bg-red-700 text-white">تموين الآن</Button>
                 </div>
@@ -291,7 +291,7 @@ export function SalesControlTab() {
   };
 
   const handleReturnInsurance = (id: string) => {
-    setInsurances(prev => prev.map(p => p.id === id ? { ...p, returned: true } : p));
+    setInsurances(prev => prev.map((p, idx) => p.id === id ? { ...p, returned: true } : p));
     toast({ title: "تم تسوية وإرجاع مبلغ تأمين الأدوات للعميل بنجاح" });
   };
 
@@ -312,8 +312,8 @@ export function SalesControlTab() {
         <Card className="border shadow-sm">
           <CardHeader><CardTitle className="text-sm font-bold">رقابة أصناف المبيعات القصوى</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {salesRules.map((rule) => (
-              <div key={rule.id} className="flex justify-between items-center p-3 rounded-lg border bg-slate-50 dark:bg-slate-900">
+            {salesRules.map((rule, idx) => (
+              <div key={`hrsaleskitchen-rule-id-${rule.id || idx}-${idx}`} className="flex justify-between items-center p-3 rounded-lg border bg-slate-50 dark:bg-slate-900">
                 <div>
                   <span className="text-sm font-bold">{rule.name}</span>
                   <p className="text-[10px] text-muted-foreground">الحد الأقصى للطلب الواحد: {rule.limit_per_customer} قطع</p>
@@ -328,8 +328,8 @@ export function SalesControlTab() {
         <Card className="border shadow-sm">
           <CardHeader><CardTitle className="text-sm font-bold">سجلات ضمان وتأمين أدوات البوفيه</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {insurances.map((ins) => (
-              <div key={ins.id} className="p-3 rounded-lg border flex justify-between items-center bg-slate-50 dark:bg-slate-900">
+            {insurances.map((ins, idx) => (
+              <div key={`hrsaleskitchen-ins-id-${ins.id || idx}-${idx}`} className="p-3 rounded-lg border flex justify-between items-center bg-slate-50 dark:bg-slate-900">
                 <div>
                   <div className="flex gap-2 items-center">
                     <span className="font-mono text-xs font-bold">{ins.id}</span>
@@ -389,12 +389,12 @@ export function PostSalesTab() {
   ]);
 
   const handlePostAll = () => {
-    setInvoicesToPost(prev => prev.map(inv => ({ ...inv, posted: true })));
+    setInvoicesToPost(prev => prev.map((inv, idx) => ({ ...inv, posted: true })));
     toast({ title: "تم ترحيل جميع فواتير مبيعات اليوم للحسابات والقيود اليومية" });
   };
 
   const handleUnpost = (invoiceNum: string) => {
-    setInvoicesToPost(prev => prev.map(inv => inv.invoice === invoiceNum ? { ...inv, posted: false } : inv));
+    setInvoicesToPost(prev => prev.map((inv, idx) => inv.invoice === invoiceNum ? { ...inv, posted: false } : inv));
     toast({ title: "تم فتح ترحيل الفاتورة بنجاح لإعادة المراجعة والتعديل" });
   };
 
@@ -423,8 +423,8 @@ export function PostSalesTab() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {invoicesToPost.map((inv) => (
-              <tr key={inv.invoice} className="hover:bg-muted/30">
+            {invoicesToPost.map((inv, idx) => (
+              <tr key={`hrsaleskitchen-inv-invoice-${inv.invoice || idx}-${idx}`} className="hover:bg-muted/30">
                 <td className="p-3 font-mono font-bold">{inv.invoice}</td>
                 <td className="p-3 font-mono">{inv.date}</td>
                 <td className="p-3 font-semibold text-muted-foreground">{inv.cashier}</td>
@@ -441,7 +441,7 @@ export function PostSalesTab() {
                     <Button size="sm" variant="outline" onClick={() => handleUnpost(inv.invoice)} className="text-xs text-orange-600 border-orange-200 hover:bg-orange-50 font-bold" title="فتح الترحيل للتعديل">إلغاء الترحيل (Unpost)</Button>
                   ) : (
                     <Button size="sm" onClick={() => {
-                      setInvoicesToPost(prev => prev.map(p => p.invoice === inv.invoice ? { ...p, posted: true } : p));
+                      setInvoicesToPost(prev => prev.map((p, idx) => p.invoice === inv.invoice ? { ...p, posted: true } : p));
                       toast({ title: "تم ترحيل الفاتورة للدفتر العام" });
                     }} className="text-xs h-8 bg-orange-600 hover:bg-orange-700 text-white">ترحيل الآن</Button>
                   )}

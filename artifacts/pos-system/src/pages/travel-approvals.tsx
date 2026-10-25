@@ -173,10 +173,10 @@ export default function TravelApprovalsPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredApprovals.map((app) => {
+                    {filteredApprovals.map((app, idx) => {
                       const badge = STATUS_BADGES[app.status] || { label: app.status, class: "bg-slate-100" };
                       return (
-                        <tr key={app.id} className="border-b hover:bg-slate-50 transition-colors">
+                        <tr key={`travelapprovals-app-id-${app.id || idx}-${idx}`} className="border-b hover:bg-slate-50 transition-colors">
                           <td className="p-3 font-mono font-bold text-primary text-xs">
                             {app.request_code || `REQ-${app.id}`}
                           </td>

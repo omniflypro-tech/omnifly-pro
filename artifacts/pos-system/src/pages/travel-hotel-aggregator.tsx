@@ -325,11 +325,11 @@ export default function TravelHotelAggregator() {
           {/* Results Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-7 space-y-4">
-              {searchResults.map((hotel) => {
+              {searchResults.map((hotel, idx) => {
                 const isSelected = selectedHotel?.id === hotel.id;
                 return (
                   <div
-                    key={hotel.id}
+                    key={`travelhotelaggregator-hotel-id-${hotel.id || idx}-${idx}`}
                     onClick={() => {
                       setSelectedHotel(hotel);
                       setBookedSuccess(null);
@@ -502,8 +502,8 @@ export default function TravelHotelAggregator() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {markupRules.map((rule) => (
-                    <tr key={rule.id} className="hover:bg-muted/30 transition">
+                  {markupRules.map((rule, idx) => (
+                    <tr key={`travelhotelaggregator-rule-id-${rule.id || idx}-${idx}`} className="hover:bg-muted/30 transition">
                       <td className="p-3 font-bold">{rule.rule_name}</td>
                       <td className="p-3 font-mono">{rule.channel}</td>
                       <td className="p-3">{rule.service_type}</td>
@@ -540,8 +540,8 @@ export default function TravelHotelAggregator() {
       {/* TAB 3: Suppliers Gateways */}
       {activeTab === "suppliers" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {suppliers.map((supp) => (
-            <div key={supp.id} className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition">
+          {suppliers.map((supp, idx) => (
+            <div key={`travelhotelaggregator-supp-id-${supp.id || idx}-${idx}`} className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition">
               <div className="flex items-center justify-between">
                 <span className="px-2.5 py-1 rounded-xl bg-emerald-950 text-emerald-400 font-bold text-xs border border-emerald-800/40">
                   {supp.supplier_code.toUpperCase()}

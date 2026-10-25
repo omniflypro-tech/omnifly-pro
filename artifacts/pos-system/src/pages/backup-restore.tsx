@@ -612,7 +612,7 @@ export default function BackupRestorePage() {
             ) : (
               <div className="space-y-3">
                 {backups?.map((b: any) => (
-                  <div key={b.name} className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 p-4 bg-slate-50/80 hover:bg-indigo-50/40 transition-colors border rounded-2xl">
+                  <div key={`backuprestore-b-name-${b.name || idx}-${idx}`} className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 p-4 bg-slate-50/80 hover:bg-indigo-50/40 transition-colors border rounded-2xl">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <p className="font-bold text-sm text-slate-800 truncate" dir="ltr">{b.name}</p>
@@ -811,7 +811,7 @@ export default function BackupRestorePage() {
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           {inspectionData.samples?.passengers?.map((p: any) => (
-                            <tr key={p.id} className="hover:bg-slate-50">
+                            <tr key={`backuprestore-p-id-${p.id || idx}-${idx}`} className="hover:bg-slate-50">
                               <td className="p-2.5 font-bold text-slate-900">{p.name}</td>
                               <td className="p-2.5 font-mono text-indigo-700 font-bold">{p.passport_number}</td>
                               <td className="p-2.5 font-mono text-slate-600">{p.travel_date || "---"}</td>
@@ -841,7 +841,7 @@ export default function BackupRestorePage() {
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           {inspectionData.samples?.customers?.map((c: any) => (
-                            <tr key={c.id} className="hover:bg-slate-50">
+                            <tr key={`backuprestore-c-id-${c.id || idx}-${idx}`} className="hover:bg-slate-50">
                               <td className="p-2.5 font-bold text-slate-900">{c.name}</td>
                               <td className="p-2.5 font-mono text-slate-600">{c.phone || "---"}</td>
                               <td className="p-2.5 font-mono font-bold text-emerald-700">{c.balance || 0}</td>
@@ -870,7 +870,7 @@ export default function BackupRestorePage() {
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           {inspectionData.samples?.orders?.map((o: any) => (
-                            <tr key={o.id} className="hover:bg-slate-50">
+                            <tr key={`backuprestore-o-id-${o.id || idx}-${idx}`} className="hover:bg-slate-50">
                               <td className="p-2.5 font-mono font-bold text-indigo-700">#{o.id}</td>
                               <td className="p-2.5 font-bold text-slate-900">{o.customer_name || "عميل عام"}</td>
                               <td className="p-2.5 font-mono font-bold text-emerald-700">{o.total || 0}</td>
@@ -899,7 +899,7 @@ export default function BackupRestorePage() {
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           {inspectionData.samples?.vouchers?.map((v: any) => (
-                            <tr key={v.id} className="hover:bg-slate-50">
+                            <tr key={`backuprestore-v-id-${v.id || idx}-${idx}`} className="hover:bg-slate-50">
                               <td className="p-2.5 font-bold">{v.type === "receipt" ? "قبض" : "صرف"}</td>
                               <td className="p-2.5 font-mono font-bold text-indigo-700">{v.amount}</td>
                               <td className="p-2.5">{v.beneficiary || v.notes || "---"}</td>

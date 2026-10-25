@@ -64,7 +64,7 @@ export function TempEmployeesTab() {
             </thead>
             <tbody className="divide-y divide-border">
               {((tempEmployees as any[]) || []).map((t: any) => (
-                <tr key={t.id} className="hover:bg-muted/30">
+                <tr key={`tempemployees-t-id-${t.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-medium">{t.name}</td>
                   <td className="p-3 text-muted-foreground">{t.position ?? "متعاقد"}</td>
                   <td className="p-3 font-mono text-xs">{t.phone ?? "—"}</td>

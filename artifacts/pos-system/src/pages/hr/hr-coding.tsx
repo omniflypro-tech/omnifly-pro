@@ -172,7 +172,7 @@ export function HrCodingTab({ initialCategory }: { initialCategory?: string }) {
   const handleToggleActive = (id: any) => {
     setDatabases(prev => {
       const db = { ...prev[activeCategory] };
-      db.list = db.list.map(item => item.id === id ? { ...item, active: !item.active } : item);
+      db.list = db.list.map((item, idx) => item.id === id ? { ...item, active: !item.active } : item);
       return { ...prev, [activeCategory]: db };
     });
     toast({ title: "تم تحديث حالة تفعيل الكود بنجاح" });
@@ -214,8 +214,8 @@ export function HrCodingTab({ initialCategory }: { initialCategory?: string }) {
               onChange={(e) => setActiveCategory(e.target.value)}
               className="bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-3 py-2 text-xs font-bold w-full cursor-pointer focus:ring-2 focus:ring-amber-500 focus:outline-hidden appearance-none pl-8"
             >
-              {categoriesList.map((cat) => (
-                <option key={cat.id} value={cat.id} className="bg-slate-900 text-white py-1">
+              {categoriesList.map((cat, idx) => (
+                <option key={`hrcoding-cat-id-${cat.id || idx}-${idx}`} value={cat.id} className="bg-slate-900 text-white py-1">
                   {cat.label}
                 </option>
               ))}
@@ -251,8 +251,8 @@ export function HrCodingTab({ initialCategory }: { initialCategory?: string }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
-            {currentDb.list.map((item) => (
-              <tr key={item.id} className="hover:bg-muted/30">
+            {currentDb.list.map((item, idx) => (
+              <tr key={`hrcoding-item-id-${item.id || idx}-${idx}`} className="hover:bg-muted/30">
                 <td className="p-3 font-mono text-muted-foreground">ID-{item.id}</td>
                 <td className="p-3 font-bold text-slate-800 dark:text-slate-200">{item.name}</td>
                 {currentDb.extraLabel && (

@@ -209,8 +209,8 @@ export function PayrollStatement({ data }: PayrollStatementProps) {
               </tr>
             </thead>
             <tbody>
-              {mealDeductions.map(md => (
-                <tr key={md.id} style={{ borderBottom: "1px dashed #e5e7eb" }}>
+              {mealDeductions.map((md, idx) => (
+                <tr key={`payrollprint-md-id-${md.id || idx}-${idx}`} style={{ borderBottom: "1px dashed #e5e7eb" }}>
                   <td style={{ padding: "4px 8px" }}>{new Date(md.created_at).toLocaleDateString("ar-SA")}</td>
                   <td style={{ padding: "4px 8px" }}>{md.cashier_name}</td>
                   <td style={{ padding: "4px 8px", fontSize: "9pt", color: "#666" }}>{md.notes ?? "—"}</td>

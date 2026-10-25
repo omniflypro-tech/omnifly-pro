@@ -108,7 +108,7 @@ export function MonthlyClosureTab() {
                   </thead>
                   <tbody className="divide-y divide-border">
                     {previewData.map((r: any) => (
-                      <tr key={r.employee_id} className="hover:bg-muted/30">
+                      <tr key={`monthlyclosure-r-employee_id-${r.employee_id || idx}-${idx}`} className="hover:bg-muted/30">
                         <td className="p-3">
                           <div className="font-semibold">{r.employee_name}</div>
                           <div className="text-[10px] text-muted-foreground">{r.position}</div>

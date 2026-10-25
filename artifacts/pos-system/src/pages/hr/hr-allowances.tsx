@@ -58,7 +58,7 @@ export function EmployeeAllowancesTab() {
           </thead>
           <tbody className="divide-y">
             {allowances.map((item: any) => (
-              <tr key={item.id} className="hover:bg-muted/30">
+              <tr key={`hrallowances-item-id-${item.id || idx}-${idx}`} className="hover:bg-muted/30">
                 <td className="p-3 font-medium">{item.employee_name}</td>
                 <td className="p-3"><Badge variant="outline">{item.type}</Badge></td>
                 <td className="p-3 font-mono font-bold text-primary">{fmt(item.amount)}</td>
@@ -256,8 +256,8 @@ export function EmployeeAdminDataTab() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {adminRecords.map((rec) => (
-              <tr key={rec.id} className="hover:bg-muted/30">
+            {adminRecords.map((rec, idx) => (
+              <tr key={`hrallowances-rec-id-${rec.id || idx}-${idx}`} className="hover:bg-muted/30">
                 <td className="p-3 font-medium">{rec.name}</td>
                 <td className="p-3"><Badge variant="secondary">{rec.doc_type}</Badge></td>
                 <td className="p-3 font-mono">{rec.doc_num}</td>
@@ -358,8 +358,8 @@ export function BlacklistedEmployeesTab() {
             </tr>
           </thead>
           <tbody className="divide-y divide-red-50">
-            {blacklist.map((item) => (
-              <tr key={item.id} className="hover:bg-red-50/20 bg-red-50/5">
+            {blacklist.map((item, idx) => (
+              <tr key={`hrallowances-item-id-${item.id || idx}-${idx}`} className="hover:bg-red-50/20 bg-red-50/5">
                 <td className="p-3 font-bold text-red-700">{item.name}</td>
                 <td className="p-3 font-mono">{item.id_number}</td>
                 <td className="p-3 font-mono">{item.phone}</td>

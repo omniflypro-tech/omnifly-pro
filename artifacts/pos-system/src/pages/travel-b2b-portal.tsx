@@ -221,12 +221,12 @@ export default function TravelB2bPortalPage() {
 
         {/* Corporate Selector Cards Bar */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {accounts?.map((acc) => {
+          {accounts?.map((acc, idx) => {
             const isSelected = acc.id === activeCorporateId;
             const creditPct = Math.round(((acc.current_balance || 0) / (acc.credit_limit || 1)) * 100);
             return (
               <Card
-                key={acc.id}
+                key={`travelb2bportal-acc-id-${acc.id || idx}-${idx}`}
                 onClick={() => setSelectedCorporateId(acc.id)}
                 className={`cursor-pointer transition-all border-2 ${
                   isSelected ? "border-indigo-600 bg-indigo-50/40 shadow-md" : "border-slate-200 hover:border-slate-300 bg-white"
@@ -381,7 +381,7 @@ export default function TravelB2bPortalPage() {
                         </thead>
                         <tbody className="divide-y">
                           {requests.map((r: any) => (
-                            <tr key={r.id} className="hover:bg-slate-50">
+                            <tr key={`travelb2bportal-r-id-${r.id || idx}-${idx}`} className="hover:bg-slate-50">
                               <td className="p-3 font-mono font-bold text-indigo-600">{r.request_number}</td>
                               <td className="p-3 font-semibold text-slate-900">{r.passenger_name}</td>
                               <td className="p-3">
@@ -461,7 +461,7 @@ export default function TravelB2bPortalPage() {
                         </thead>
                         <tbody className="divide-y">
                           {employees.map((emp: any) => (
-                            <tr key={emp.id} className="hover:bg-slate-50">
+                            <tr key={`travelb2bportal-emp-id-${emp.id || idx}-${idx}`} className="hover:bg-slate-50">
                               <td className="p-3 font-mono font-bold text-slate-700">{emp.employee_number}</td>
                               <td className="p-3">
                                 <div className="font-bold text-slate-900">{emp.name_ar}</div>

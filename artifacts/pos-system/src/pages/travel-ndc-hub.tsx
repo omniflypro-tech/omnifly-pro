@@ -179,7 +179,7 @@ export default function TravelNdcHub() {
       const res = await fetch(`/api/travel/air-mir/listeners/${listener.id}/toggle`, { method: "POST" });
       const data = await res.json();
       if (data.success) {
-        setListeners(prev => prev.map(l => l.id === listener.id ? { ...l, is_running: data.is_running } : l));
+        setListeners(prev => prev.map((l, idx) => l.id === listener.id ? { ...l, is_running: data.is_running } : l));
         toast({ title: "تحديث الخدمة", description: data.message });
       }
     } catch (e) {
@@ -346,11 +346,11 @@ export default function TravelNdcHub() {
               </span>
             </div>
 
-            {offers.map((offer) => {
+            {offers.map((offer, idx) => {
               const isSelected = selectedOffer?.id === offer.id;
               return (
                 <div
-                  key={offer.id}
+                  key={`travelndchub-offer-id-${offer.id || idx}-${idx}`}
                   onClick={() => {
                     setSelectedOffer(offer);
                     setBookingResult(null);
@@ -461,11 +461,11 @@ export default function TravelNdcHub() {
                   </label>
 
                   <div className="space-y-2">
-                    {(selectedOffer.ancillaries || []).map((anc) => {
+                    {(selectedOffer.ancillaries || []).map((anc, idx) => {
                       const isChecked = !!selectedAncillaries[anc.id];
                       return (
                         <div
-                          key={anc.id}
+                          key={`travelndchub-anc-id-${anc.id || idx}-${idx}`}
                           onClick={() => setSelectedAncillaries(p => ({ ...p, [anc.id]: !p[anc.id] }))}
                           className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition ${
                             isChecked
@@ -604,8 +604,8 @@ export default function TravelNdcHub() {
       {activeTab === "gateways" && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {gateways.map((gw) => (
-              <div key={gw.id} className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition">
+            {gateways.map((gw, idx) => (
+              <div key={`travelndchub-gw-id-${gw.id || idx}-${idx}`} className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition">
                 <div className="flex items-center justify-between">
                   <span className="w-9 h-9 rounded-xl bg-sky-950 text-sky-400 font-bold flex items-center justify-center text-sm border border-sky-800/40">
                     {gw.airline_code}
@@ -686,8 +686,8 @@ export default function TravelNdcHub() {
               </div>
 
               <div className="space-y-3">
-                {listeners.map((listener) => (
-                  <div key={listener.id} className="p-3.5 bg-muted/30 border border-border rounded-xl space-y-2">
+                {listeners.map((listener, idx) => (
+                  <div key={`travelndchub-listener-id-${listener.id || idx}-${idx}`} className="p-3.5 bg-muted/30 border border-border rounded-xl space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-xs">{listener.listener_name}</span>
                       <button
@@ -751,8 +751,8 @@ export default function TravelNdcHub() {
             </div>
 
             <div className="space-y-2.5">
-              {airFiles.map((file) => (
-                <div key={file.id} className="bg-card border border-border rounded-xl p-4 hover:border-sky-500/40 transition space-y-2">
+              {airFiles.map((file, idx) => (
+                <div key={`travelndchub-file-id-${file.id || idx}-${idx}`} className="bg-card border border-border rounded-xl p-4 hover:border-sky-500/40 transition space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="px-2 py-0.5 bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-300 font-mono text-[11px] font-bold rounded">

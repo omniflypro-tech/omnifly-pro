@@ -1968,7 +1968,7 @@ export default function Accounting() {
                   {dashboardStats?.overdueBills && dashboardStats.overdueBills.length > 0 ? (
                     <div className="divide-y divide-slate-100 dark:divide-slate-800">
                       {dashboardStats.overdueBills.map((bill: any) => (
-                        <div key={bill.id} className="p-3.5 flex items-center justify-between text-xs hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                        <div key={`accounting-bill-id-${bill.id || idx}-${idx}`} className="p-3.5 flex items-center justify-between text-xs hover:bg-slate-50 dark:hover:bg-slate-800/50">
                           <div>
                             <p className="font-bold text-slate-900 dark:text-white">{bill.supplier_name}</p>
                             <p className="text-slate-500 text-[11px] mt-0.5">فاتورة رقم #{bill.invoice_number} — استحقاق: {bill.due_date}</p>
@@ -2076,7 +2076,7 @@ export default function Accounting() {
                     { code: "3", name: "3. حقوق الملكية ورأس المال (Equity)", color: "text-purple-700 dark:text-purple-400", bg: "bg-purple-50/80 dark:bg-purple-950/40" },
                     { code: "4", name: "4. الإيرادات والمبيعات (Revenues)", color: "text-emerald-700 dark:text-emerald-400", bg: "bg-emerald-50/80 dark:bg-emerald-950/40" },
                     { code: "5", name: "5. المصروفات والتكاليف (Expenses & COGS)", color: "text-rose-700 dark:text-rose-400", bg: "bg-rose-50/80 dark:bg-rose-950/40" },
-                  ].map(cat => {
+                  ].map((cat, idx) => {
                     const catAccounts = accountsList.filter((a: any) => {
                       const matchCat = a.code.startsWith(cat.code);
                       if (!accountSearch) return matchCat;
@@ -2091,7 +2091,7 @@ export default function Accounting() {
                     if (accountSearch && catAccounts.length === 0) return null;
 
                     return (
-                      <div key={cat.code} className="space-y-1 rounded-lg border border-slate-100 dark:border-slate-800 overflow-hidden">
+                      <div key={`accounting-cat-code-${cat.code || idx}-${idx}`} className="space-y-1 rounded-lg border border-slate-100 dark:border-slate-800 overflow-hidden">
                         <div className={`p-2 font-bold ${cat.bg} ${cat.color} flex items-center justify-between cursor-pointer select-none`}>
                           <span className="flex items-center gap-1.5 text-[11px]">
                             <Folder className="w-3.5 h-3.5" />
@@ -2127,7 +2127,7 @@ export default function Accounting() {
 
                             return (
                               <div
-                                key={acc.id}
+                                key={`accounting-acc-id-${acc.id || idx}-${idx}`}
                                 onClick={() => handleSelectAccount(acc)}
                                 style={{ paddingRight: `${Math.max(6, indent)}px` }}
                                 className={`p-1.5 rounded transition-all cursor-pointer flex items-center justify-between text-[11px] group ${
@@ -2363,10 +2363,10 @@ export default function Accounting() {
                               setAccountForm(prev => {
                                 const exists = prev.currencies.some(c => c.currency_code === v);
                                 const updatedCurrencies = exists 
-                                  ? prev.currencies.map(c => ({ ...c, is_primary: c.currency_code === v }))
+                                  ? prev.currencies.map((c, idx) => ({ ...c, is_primary: c.currency_code === v }))
                                   : [
                                       { currency_code: v, currency_name: v === "YER" ? "ريال يمني (YER)" : v === "SAR" ? "ريال سعودي (SAR)" : v === "USD" ? "دولار أمريكي (USD)" : v, min_balance: 0, max_balance: 100000000, exchange_rate: 1.0, is_primary: true },
-                                      ...prev.currencies.map(c => ({ ...c, is_primary: false }))
+                                      ...prev.currencies.map((c, idx) => ({ ...c, is_primary: false }))
                                     ];
                                 return { ...prev, currency: v, currencies: updatedCurrencies };
                               });
@@ -2380,7 +2380,7 @@ export default function Accounting() {
                               {systemCurrenciesList
                                 .filter((c: any) => !["YER", "SAR", "USD"].includes(c.symbol))
                                 .map((c: any) => (
-                                  <SelectItem key={c.id} value={c.symbol}>
+                                  <SelectItem key={`accounting-c-id-${c.id || idx}-${idx}`} value={c.symbol}>
                                     {c.name} ({c.symbol})
                                   </SelectItem>
                                 ))}
@@ -2440,7 +2440,7 @@ export default function Accounting() {
                             const isChecked = accountForm.linked_safe_ids.includes(s.id);
                             return (
                               <label
-                                key={s.id}
+                                key={`accounting-s-id-${s.id || idx}-${idx}`}
                                 className={`flex items-center justify-between p-1 rounded cursor-pointer transition-colors ${
                                   isChecked ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 font-bold" : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                                 }`}
@@ -2486,7 +2486,7 @@ export default function Accounting() {
                             const isChecked = accountForm.linked_customer_ids.includes(c.id);
                             return (
                               <label
-                                key={c.id}
+                                key={`accounting-c-id-${c.id || idx}-${idx}`}
                                 className={`flex items-center justify-between p-1 rounded cursor-pointer transition-colors ${
                                   isChecked ? "bg-blue-50 dark:bg-blue-950/40 text-blue-900 dark:text-blue-200 font-bold" : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                                 }`}
@@ -2705,7 +2705,7 @@ export default function Accounting() {
                               const isChildSelected = selectedAccountId === subAcc.id;
                               return (
                                 <tr 
-                                  key={subAcc.id}
+                                  key={`accounting-subAcc-id-${subAcc.id || idx}-${idx}`}
                                   className={`transition-colors ${
                                     isChildSelected ? "bg-amber-100/80 font-bold" : "hover:bg-amber-50/50 dark:hover:bg-amber-950/30"
                                   }`}
@@ -2888,7 +2888,7 @@ export default function Accounting() {
                       {systemCurrenciesList
                         .filter((c: any) => !["YER", "SAR", "USD", "EUR", "AED", "OMR", "QAR", "KWD", "JOD", "GBP"].includes(c.symbol))
                         .map((c: any) => (
-                          <option key={c.id} value={c.symbol}>
+                          <option key={`accounting-c-id-${c.id || idx}-${idx}`} value={c.symbol}>
                             {c.name} ({c.symbol})
                           </option>
                         ))}
@@ -3249,7 +3249,7 @@ export default function Accounting() {
                         const entryDebitSum = (entry.lines || []).reduce((s: number, l: any) => s + (Number(l.debit) || 0), 0);
                         return (
                           <tr
-                            key={entry.id}
+                            key={`accounting-entry-id-${entry.id || idx}-${idx}`}
                             className={`hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors ${
                               entry.is_reversed ? "bg-rose-50/30 dark:bg-rose-950/20" : ""
                             }`}
@@ -3493,9 +3493,9 @@ export default function Accounting() {
                       بحسب المستوى:
                     </label>
                     <div className="flex items-center gap-1">
-                      {[1, 2, 3, 4].map(lvl => (
+                      {[1, 2, 3, 4].map((lvl, idx) => (
                         <Button
-                          key={lvl}
+                          key={`accounting-lvl-${lvl || idx}-${idx}`}
                           size="sm"
                           type="button"
                           variant={reportOpts.selectedLevel === lvl ? "default" : "outline"}
@@ -3535,8 +3535,8 @@ export default function Accounting() {
                     { id: "group", label: "حسب مجموعة الحساب" },
                     { id: "analytical_only", label: "تحليلي فقط" },
                     { id: "account_party", label: "الحساب والجهة" },
-                  ].map((opt) => (
-                    <label key={opt.id} className="flex items-center gap-1.5 cursor-pointer hover:text-indigo-600">
+                  ].map((opt, idx) => (
+                    <label key={`accounting-opt-id-${opt.id || idx}-${idx}`} className="flex items-center gap-1.5 cursor-pointer hover:text-indigo-600">
                       <input
                         type="radio"
                         name="trialViewMode"
@@ -3568,7 +3568,7 @@ export default function Accounting() {
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                     {filteredTrialAccounts?.map((acc: any, idx: number) => (
-                      <tr key={acc.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                      <tr key={`accounting-acc-id-${acc.id || idx}-${idx}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                         <td className="p-2.5 border-l font-mono font-bold text-indigo-600 dark:text-indigo-400 flex items-center justify-between">
                           <span>{acc.code}</span>
                           <span className="text-slate-400 font-normal text-[10px]">{idx + 1}</span>
@@ -3675,7 +3675,7 @@ export default function Accounting() {
                       </SelectTrigger>
                       <SelectContent>
                         {safes.map((s: any) => (
-                          <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>
+                          <SelectItem key={`accounting-s-id-${s.id || idx}-${idx}`} value={String(s.id)}>{s.name}</SelectItem>
                         ))}
                         {safes.length === 0 && <SelectItem value="1">صندوق رئيسي</SelectItem>}
                       </SelectContent>
@@ -3866,7 +3866,7 @@ export default function Accounting() {
                     </thead>
                     <tbody>
                       {(vouchers || []).filter((v: any) => v.type === "receipt").map((v: any) => (
-                        <tr key={v.id} className="border-b hover:bg-slate-50">
+                        <tr key={`accounting-v-id-${v.id || idx}-${idx}`} className="border-b hover:bg-slate-50">
                           <td className="p-2 border font-mono font-bold text-emerald-700">{v.voucher_number}</td>
                           <td className="p-2 border font-mono">{v.created_at ? v.created_at.slice(0, 10) : "—"}</td>
                           <td className="p-2 border font-bold">{v.party_name || v.received_from || "—"}</td>
@@ -3963,7 +3963,7 @@ export default function Accounting() {
                       </SelectTrigger>
                       <SelectContent>
                         {safes.map((s: any) => (
-                          <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>
+                          <SelectItem key={`accounting-s-id-${s.id || idx}-${idx}`} value={String(s.id)}>{s.name}</SelectItem>
                         ))}
                         {safes.length === 0 && <SelectItem value="1">صندوق رئيسي</SelectItem>}
                       </SelectContent>
@@ -4154,7 +4154,7 @@ export default function Accounting() {
                     </thead>
                     <tbody>
                       {(vouchers || []).filter((v: any) => v.type === "payment").map((v: any) => (
-                        <tr key={v.id} className="border-b hover:bg-slate-50">
+                        <tr key={`accounting-v-id-${v.id || idx}-${idx}`} className="border-b hover:bg-slate-50">
                           <td className="p-2 border font-mono font-bold text-rose-700">{v.voucher_number}</td>
                           <td className="p-2 border font-mono">{v.created_at ? v.created_at.slice(0, 10) : "—"}</td>
                           <td className="p-2 border font-bold">{v.party_name || v.received_from || "—"}</td>
@@ -4228,7 +4228,7 @@ export default function Accounting() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {safes.map((safe: any) => (
-                <Card key={safe.id} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+                <Card key={`accounting-safe-id-${safe.id || idx}-${idx}`} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                   <CardHeader className="pb-2 border-b border-slate-100 dark:border-slate-800 flex flex-row items-center justify-between">
                     <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                       <Wallet className="w-4 h-4 text-indigo-600" />
@@ -4311,7 +4311,7 @@ export default function Accounting() {
             {/* Bank Accounts Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {bankAccounts.map((b: any) => (
-                <Card key={b.id} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+                <Card key={`accounting-b-id-${b.id || idx}-${idx}`} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                   <CardHeader className="pb-2 border-b border-slate-100 dark:border-slate-800 flex flex-row items-center justify-between">
                     <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                       <Landmark className="w-4 h-4 text-purple-600" />
@@ -4351,7 +4351,7 @@ export default function Accounting() {
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                     {transfers.map((t: any) => (
-                      <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                      <tr key={`accounting-t-id-${t.id || idx}-${idx}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                         <td className="p-3 font-mono font-bold text-indigo-600">{t.transfer_number}</td>
                         <td className="p-3 text-slate-600">{t.transfer_date}</td>
                         <td className="p-3 font-semibold text-rose-600 dark:text-rose-400">{t.from_name}</td>
@@ -4696,7 +4696,7 @@ export default function Accounting() {
                     Object.entries(statementData?.currencySummaries || {}).map(([cur, summary]: [string, any]) => {
                       if (summary.totalDebit === 0 && summary.totalCredit === 0) return null;
                       return (
-                        <div key={cur} className="flex items-center gap-2 border rounded px-2.5 py-1 text-xs font-bold bg-slate-50 dark:bg-slate-800/60 font-mono">
+                        <div key={`accounting-cur-${cur || idx}-${idx}`} className="flex items-center gap-2 border rounded px-2.5 py-1 text-xs font-bold bg-slate-50 dark:bg-slate-800/60 font-mono">
                           <span className="text-slate-600 dark:text-slate-300 font-extrabold">{cur}:</span>
                           <span className="text-emerald-600 font-bold">+{fmt(summary.totalDebit)}</span>
                           <span className="text-rose-600 font-bold">-{fmt(summary.totalCredit)}</span>
@@ -4780,7 +4780,7 @@ export default function Accounting() {
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                     {fixedAssets.map((asset: any) => (
-                      <tr key={asset.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                      <tr key={`accounting-asset-id-${asset.id || idx}-${idx}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                         <td className="p-3 font-mono font-bold text-indigo-600">{asset.asset_code}</td>
                         <td className="p-3 font-bold text-slate-900 dark:text-white">{asset.name}</td>
                         <td className="p-3"><Badge variant="outline" className="text-[10px]">{asset.category}</Badge></td>
@@ -4819,7 +4819,7 @@ export default function Accounting() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {recurringExpenses.map((rec: any) => (
-                <Card key={rec.id} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+                <Card key={`accounting-rec-id-${rec.id || idx}-${idx}`} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                   <CardHeader className="pb-2 border-b border-slate-100 dark:border-slate-800 flex flex-row items-center justify-between">
                     <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-amber-500" />
@@ -4998,7 +4998,7 @@ export default function Accounting() {
                         </tr>
                       ) : (
                         filteredAccountsForOpening.map((acc: any) => (
-                          <tr key={acc.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
+                          <tr key={`accounting-acc-id-${acc.id || idx}-${idx}`} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
                             <td className="p-3 font-mono text-indigo-600 dark:text-indigo-400 font-bold">{acc.code}</td>
                             <td className="p-3 text-slate-900 dark:text-white font-medium">{acc.name}</td>
                             <td className="p-3 text-slate-500">
@@ -5154,9 +5154,9 @@ export default function Accounting() {
                       بحسب المستوى:
                     </label>
                     <div className="flex items-center gap-1">
-                      {[1, 2, 3, 4].map(lvl => (
+                      {[1, 2, 3, 4].map((lvl, idx) => (
                         <Button
-                          key={lvl}
+                          key={`accounting-lvl-${lvl || idx}-${idx}`}
                           size="sm"
                           type="button"
                           variant={reportOpts.selectedLevel === lvl ? "default" : "outline"}
@@ -5196,8 +5196,8 @@ export default function Accounting() {
                     { id: "group", label: "حسب مجموعة الحساب" },
                     { id: "analytical_only", label: "تحليلي فقط" },
                     { id: "account_party", label: "الحساب والجهة" },
-                  ].map((opt) => (
-                    <label key={opt.id} className="flex items-center gap-1.5 cursor-pointer hover:text-emerald-600">
+                  ].map((opt, idx) => (
+                    <label key={`accounting-opt-id-${opt.id || idx}-${idx}`} className="flex items-center gap-1.5 cursor-pointer hover:text-emerald-600">
                       <input
                         type="radio"
                         name="pandlViewMode"
@@ -5431,7 +5431,7 @@ export default function Accounting() {
                   <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                     {Array.isArray(costCenters) && costCenters.length > 0 ? (
                       costCenters.map((cc: any) => (
-                        <tr key={cc.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                        <tr key={`accounting-cc-id-${cc.id || idx}-${idx}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                           <td className="p-3 font-mono font-bold text-indigo-600">{cc.code}</td>
                           <td className="p-3 font-bold text-slate-900 dark:text-white">{cc.name}</td>
                           <td className="p-3 text-slate-600 dark:text-slate-400">{cc.notes || 'مركز تكلفة معتمد'}</td>
@@ -5545,7 +5545,7 @@ export default function Accounting() {
                   <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                     {Array.isArray(fiscalPeriods) && fiscalPeriods.length > 0 ? (
                       fiscalPeriods.map((fp: any) => (
-                        <tr key={fp.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                        <tr key={`accounting-fp-id-${fp.id || idx}-${idx}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                           <td className="p-3 font-bold text-slate-900 dark:text-white">{fp.name}</td>
                           <td className="p-3 font-mono font-bold text-indigo-600">{fp.fiscal_year}</td>
                           <td className="p-3 text-slate-600 font-mono">{fp.start_date}</td>
@@ -5605,8 +5605,8 @@ export default function Accounting() {
                 { id: 'ledger', title: 'دفتر الأستاذ العام (General Ledger)', desc: 'تفاصيل الحركات المالية المعتمدة لكل حساب فرعي ورئيسي بدقة عالية.', icon: BookOpen, color: 'text-blue-600 bg-blue-50 dark:bg-blue-950/40' },
                 { id: 'cc', title: 'تقرير مراكز التكلفة (Cost Centers Report)', desc: 'تحليل الإيرادات والمصروفات الخاصة بكل فرع وخدمة سياحية (طيران، حجوزات).', icon: FileSpreadsheet, color: 'text-amber-600 bg-amber-50 dark:bg-amber-950/40' },
                 { id: 'tax', title: 'التقرير الضريبي والمبيعات (Tax & VAT Report)', desc: 'ملخص ضريبة القيمة المضافة والمستحقات والرسوم الحكومية.', icon: ShieldCheck, color: 'text-rose-600 bg-rose-50 dark:bg-rose-950/40' },
-              ].map((rep) => (
-                <div key={rep.id} className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
+              ].map((rep, idx) => (
+                <div key={`accounting-rep-id-${rep.id || idx}-${idx}`} className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold ${rep.color}`}>
                       <rep.icon className="w-5 h-5" />
@@ -5849,7 +5849,7 @@ export default function Accounting() {
                   <SelectTrigger><SelectValue placeholder="اختر الخزينة..." /></SelectTrigger>
                   <SelectContent>
                     {safes.map((s: any) => (
-                      <SelectItem key={s.id} value={String(s.id)}>{s.name} (رصيد: {fmt(s.balance)} ريال)</SelectItem>
+                      <SelectItem key={`accounting-s-id-${s.id || idx}-${idx}`} value={String(s.id)}>{s.name} (رصيد: {fmt(s.balance)} ريال)</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -6076,9 +6076,9 @@ export default function Accounting() {
                     <SelectTrigger><SelectValue placeholder="اختر..." /></SelectTrigger>
                     <SelectContent>
                       {transferForm.from_type === "safe" ? safes.map((s: any) => (
-                        <SelectItem key={s.id} value={String(s.id)}>{s.name} ({fmt(s.balance)} ريال)</SelectItem>
+                        <SelectItem key={`accounting-s-id-${s.id || idx}-${idx}`} value={String(s.id)}>{s.name} ({fmt(s.balance)} ريال)</SelectItem>
                       )) : bankAccounts.map((b: any) => (
-                        <SelectItem key={b.id} value={String(b.id)}>{b.bank_name} ({fmt(b.balance)} ريال)</SelectItem>
+                        <SelectItem key={`accounting-b-id-${b.id || idx}-${idx}`} value={String(b.id)}>{b.bank_name} ({fmt(b.balance)} ريال)</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -6090,9 +6090,9 @@ export default function Accounting() {
                     <SelectTrigger><SelectValue placeholder="اختر..." /></SelectTrigger>
                     <SelectContent>
                       {transferForm.to_type === "safe" ? safes.map((s: any) => (
-                        <SelectItem key={s.id} value={String(s.id)}>{s.name} ({fmt(s.balance)} ريال)</SelectItem>
+                        <SelectItem key={`accounting-s-id-${s.id || idx}-${idx}`} value={String(s.id)}>{s.name} ({fmt(s.balance)} ريال)</SelectItem>
                       )) : bankAccounts.map((b: any) => (
-                        <SelectItem key={b.id} value={String(b.id)}>{b.bank_name} ({fmt(b.balance)} ريال)</SelectItem>
+                        <SelectItem key={`accounting-b-id-${b.id || idx}-${idx}`} value={String(b.id)}>{b.bank_name} ({fmt(b.balance)} ريال)</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -6288,7 +6288,7 @@ export default function Accounting() {
                     {accountsList
                       .filter((a: any) => a.code.length <= 4)
                       .map((a: any) => (
-                        <SelectItem key={a.id} value={a.code}>{a.code} - {a.name}</SelectItem>
+                        <SelectItem key={`accounting-a-id-${a.id || idx}-${idx}`} value={a.code}>{a.code} - {a.name}</SelectItem>
                       ))
                     }
                   </SelectContent>
@@ -6400,7 +6400,7 @@ export default function Accounting() {
                         {Object.entries(statementData?.currencySummaries || {}).map(([cur, summary]: [string, any]) => {
                           if (summary.totalDebit === 0 && summary.totalCredit === 0) return null;
                           return (
-                            <div key={cur} className="bg-white dark:bg-slate-700 p-1.5 rounded border text-[11px] font-semibold text-center font-mono shadow-sm">
+                            <div key={`accounting-cur-${cur || idx}-${idx}`} className="bg-white dark:bg-slate-700 p-1.5 rounded border text-[11px] font-semibold text-center font-mono shadow-sm">
                               <span className="text-indigo-600 dark:text-indigo-400 font-bold">{cur}</span>
                               <div className="text-slate-700 dark:text-slate-200 mt-0.5">{fmt(summary.balance)}</div>
                             </div>
@@ -6456,7 +6456,7 @@ export default function Accounting() {
                       {Object.entries(statementData.currencySummaries).map(([cur, summary]: [string, any]) => {
                         if (summary.totalDebit === 0 && summary.totalCredit === 0) return null;
                         return (
-                          <tr key={cur} className="border-b font-semibold">
+                          <tr key={`accounting-cur-${cur || idx}-${idx}`} className="border-b font-semibold">
                             <td className="p-1 text-indigo-700 dark:text-indigo-300 font-bold">{cur === 'SAR' ? 'ريال سعودي (SAR)' : cur === 'YER' ? 'ريال يمني (YER)' : 'دولار أمريكي (USD)'}</td>
                             <td className="p-1 text-center text-emerald-700 dark:text-emerald-400 font-mono">{fmt(summary.totalDebit)}</td>
                             <td className="p-1 text-center text-rose-700 dark:text-rose-400 font-mono">{fmt(summary.totalCredit)}</td>
@@ -6669,7 +6669,7 @@ export default function Accounting() {
                     </SelectTrigger>
                     <SelectContent>
                       {safes.map((s: any) => (
-                        <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>
+                        <SelectItem key={`accounting-s-id-${s.id || idx}-${idx}`} value={String(s.id)}>{s.name}</SelectItem>
                       ))}
                       {safes.length === 0 && <SelectItem value="1">صندوق رئيسي</SelectItem>}
                     </SelectContent>
@@ -7112,7 +7112,7 @@ export default function Accounting() {
                     </SelectTrigger>
                     <SelectContent>
                       {safes.map((s: any) => (
-                        <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>
+                        <SelectItem key={`accounting-s-id-${s.id || idx}-${idx}`} value={String(s.id)}>{s.name}</SelectItem>
                       ))}
                       {safes.length === 0 && <SelectItem value="1">صندوق رئيسي</SelectItem>}
                     </SelectContent>
@@ -7591,7 +7591,7 @@ export default function Accounting() {
                       ) : (
                         filteredVouchersForSearch.map((v: any) => (
                           <tr
-                            key={v.id}
+                            key={`accounting-v-id-${v.id || idx}-${idx}`}
                             className="hover:bg-indigo-50/60 dark:hover:bg-indigo-950/40 cursor-pointer transition-colors"
                             onClick={() => handleSelectVoucherFromSearch(v)}
                           >

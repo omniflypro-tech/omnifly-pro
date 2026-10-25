@@ -112,7 +112,7 @@ export function TravelWorkflowStepper({
 
           return (
             <div
-              key={step.key}
+              key={`travelworkflowstepper-step-key-${step.key || idx}-${idx}`}
               className={`p-2.5 rounded-lg border text-center relative transition-all ${
                 isCurrent
                   ? "border-primary bg-primary/10 shadow-sm ring-1 ring-primary/40"

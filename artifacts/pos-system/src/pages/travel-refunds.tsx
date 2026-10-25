@@ -360,9 +360,9 @@ export default function TravelRefundsPage() {
                   { key: "flight", label: "✈️ تذاكر طيران", count: returnsList.filter(r => r.service_type === "flight").length },
                   { key: "visa", label: "🌐 معاملات تأشيرات", count: returnsList.filter(r => r.service_type === "visa").length },
                   { key: "hotel", label: "🏨 فنادق", count: returnsList.filter(r => r.service_type === "hotel").length }
-                ].map(tab => (
+                ].map((tab, idx) => (
                   <button
-                    key={tab.key}
+                    key={`travelrefunds-tab-key-${tab.key || idx}-${idx}`}
                     type="button"
                     onClick={() => setTypeFilter(tab.key)}
                     className={`text-xs px-2.5 py-1 rounded-full font-bold border transition-all flex items-center gap-1.5 ${
@@ -425,13 +425,13 @@ export default function TravelRefundsPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200">
-                        {filteredReturns.map(r => {
+                        {filteredReturns.map((r, idx) => {
                           const srvInfo = SERVICE_TYPE_MAP[r.service_type] || SERVICE_TYPE_MAP.general_service;
                           const SrvIcon = srvInfo.icon;
                           const curr = r.currency || "SAR";
 
                           return (
-                            <tr key={r.id} className="hover:bg-slate-50/80 transition-colors">
+                            <tr key={`travelrefunds-r-id-${r.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                               {/* Col 1: Return Voucher No & Date */}
                               <td className="p-3">
                                 <div className="font-mono font-bold text-rose-700 text-xs">

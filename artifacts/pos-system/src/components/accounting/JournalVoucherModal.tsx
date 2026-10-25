@@ -469,7 +469,7 @@ export const JournalVoucherModal: React.FC<JournalVoucherModalProps> = ({
         entry_class: entryClass,
         tx_code: txCode,
         attachments,
-        lines: lines.map((l) => ({
+        lines: lines.map((l, idx) => ({
           account_code: l.account_code,
           currency: l.currency || currency,
           exchange_rate: Number(l.exchange_rate) || 1.0,

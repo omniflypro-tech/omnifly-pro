@@ -193,7 +193,7 @@ export default function TravelPackagesPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((pkg: any) => (
-              <div key={pkg.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow p-5 flex flex-col justify-between">
+              <div key={`travelpackages-pkg-id-${pkg.id || idx}-${idx}`} className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow p-5 flex flex-col justify-between">
                 <div className="space-y-4">
                   <div className="flex justify-between items-start">
                     <span className="px-2.5 py-1 text-xs font-mono font-bold bg-emerald-50 text-emerald-700 rounded-lg">
@@ -413,7 +413,7 @@ export default function TravelPackagesPage() {
                 </div>
               ) : (
                 activePackageDetails.itinerary.map((day: any) => (
-                  <div key={day.id} className="p-3.5 bg-white rounded-xl border border-slate-200 flex items-start justify-between gap-4">
+                  <div key={`travelpackages-day-id-${day.id || idx}-${idx}`} className="p-3.5 bg-white rounded-xl border border-slate-200 flex items-start justify-between gap-4">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-md">
@@ -468,7 +468,7 @@ export default function TravelPackagesPage() {
               <div className="space-y-2">
                 <h4 className="font-bold text-xs text-slate-700 border-b pb-1">المسار اليومي المعتمد:</h4>
                 {activePackageDetails?.itinerary?.map((day: any) => (
-                  <div key={day.id} className="text-xs border-r-2 border-emerald-500 pr-3 py-1">
+                  <div key={`travelpackages-day-id-${day.id || idx}-${idx}`} className="text-xs border-r-2 border-emerald-500 pr-3 py-1">
                     <span className="font-bold text-emerald-800">اليوم {day.day_number}: {day.title}</span>
                     <p className="text-slate-600 mt-0.5">{day.description}</p>
                   </div>

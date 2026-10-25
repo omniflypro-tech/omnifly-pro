@@ -856,7 +856,7 @@ export default function PassengersPage() {
             return;
           }
 
-          const parsedPassengers = rawJson.map((row) => {
+          const parsedPassengers = rawJson.map((row, idx) => {
             const nameAr = row["اسم المعتمر"] || row["الاسم بالعربي"] || row["الاسم"] || row["Name"] || row["name_ar"] || "";
             const nameEn = row["الاسم بالانجليزي"] || row["Name EN"] || row["name_en"] || nameAr;
             const passportNo = String(row["رقم الجواز"] || row["الجواز"] || row["Passport"] || row["passport_number"] || "").trim();
@@ -1498,8 +1498,8 @@ export default function PassengersPage() {
                 className="h-9 px-3 rounded-md border border-slate-300 text-xs font-bold bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary/20"
               >
                 <option value="">كافة العملاء والوكلاء</option>
-                {allCustomerOptions.map((c: any) => (
-                  <option key={c.id} value={c.id}>{c.label || c.name}</option>
+                {allCustomerOptions.map((c: any, idx: number) => (
+                  <option key={`pass-copt-${c.id || idx}-${idx}`} value={c.id}>{c.label || c.name}</option>
                 ))}
               </select>
             </div>
@@ -1649,7 +1649,7 @@ export default function PassengersPage() {
 
                         return (
                           <tr 
-                            key={p.id} 
+                            key={`umrah-p-${p.id || idx}-${idx}`} 
                             className={`hover:bg-slate-50/80 transition-colors ${
                               isRed ? "bg-[#ffd2d2]! text-black font-semibold" : isYellow ? "bg-[#ffff00]! text-black font-semibold" : isUrgent ? "bg-red-50/40" : isWarning ? "bg-amber-50/30" : ""
                             }`}
@@ -1859,14 +1859,14 @@ export default function PassengersPage() {
                         <td colSpan={8} className="border-[1.5px] border-black py-6 text-slate-500">لا يوجد بيانات للعرض</td>
                       </tr>
                     ) : (
-                      (selectedCustomerId ? filteredPassengers : umrahPassengers).map((p) => {
+                      (selectedCustomerId ? filteredPassengers : umrahPassengers).map((p, idx) => {
                         const remaining = p.remaining_days !== null && p.remaining_days !== undefined ? p.remaining_days : "---";
                         const daysSpent = calcDaysSpent(p.travel_date);
                         const isRed = daysSpent >= 80;
                         const isYellow = daysSpent >= 70 && daysSpent < 80;
                         const rowBgClass = isRed ? "bg-[#ffd2d2]! text-black font-semibold" : isYellow ? "bg-[#ffff00]! text-black font-semibold" : "";
                         return (
-                          <tr key={p.id} className={`border-b-[1.5px] border-black ${rowBgClass}`}>
+                          <tr key={`print-umrah-${p.id || idx}-${idx}`} className={`border-b-[1.5px] border-black ${rowBgClass}`}>
                             <td className="border-[1.5px] border-black py-2.5 px-3 font-bold text-right text-black">{p.name_ar || p.name_en}</td>
                             <td className="border-[1.5px] border-black py-2.5 px-3 font-mono font-bold text-black">{p.passport_number || "---"}</td>
                             <td className="border-[1.5px] border-black py-2.5 px-3 text-black">{p.visa_type || "تأشيرة عمره"}</td>
@@ -1954,7 +1954,7 @@ export default function PassengersPage() {
                     const daysSpent = calcDaysSpent(p.travel_date);
                     const rowClass = daysSpent >= 80 ? "bg-[#ffd2d2]! text-black font-semibold" : daysSpent >= 70 ? "bg-[#ffff00]! text-black font-semibold" : "";
                       return (
-                        <tr key={p.id} className={`hover:bg-slate-50 transition-colors ${rowClass}`}>
+                        <tr key={`filt-p-${p.id || idx}-${idx}`} className={`hover:bg-slate-50 transition-colors ${rowClass}`}>
                           <td className="py-3 px-4 font-mono text-slate-400">{idx + 1}</td>
                           <td className="py-3 px-4 font-bold text-slate-900">{p.name_ar}</td>
                           <td className="py-3 px-4 text-slate-600 font-mono">{p.name_en}</td>
@@ -2073,8 +2073,8 @@ export default function PassengersPage() {
                       className="w-full h-10 px-3 rounded-md border border-slate-300 text-xs font-bold bg-white text-slate-800 focus:ring-2 focus:ring-primary/20"
                     >
                       <option value="">اختر العميل من دليل الحسابات (افتراضي: محمد اليمني)</option>
-                      {allCustomerOptions.map((c: any) => (
-                        <option key={c.id} value={c.id}>{c.label || c.name}</option>
+                      {allCustomerOptions.map((c: any, idx: number) => (
+                        <option key={`form-cust-${c.id || idx}-${idx}`} value={c.id}>{c.label || c.name}</option>
                       ))}
                     </select>
                   </div>
@@ -2130,9 +2130,9 @@ export default function PassengersPage() {
                       {/* Quick Selection Buttons */}
                       <div className="flex items-center gap-1.5 mt-2">
                         <span className="text-[10px] text-slate-500 font-bold">اختيار سريع:</span>
-                        {["86", "90", "85", "30", "15"].map((d) => (
+                        {["86", "90", "85", "30", "15"].map((d, idx) => (
                           <button
-                            key={d}
+                            key={`dur-btn-${d}-${idx}`}
                             type="button"
                             onClick={() => setForm({ ...form, program_duration_days: d })}
                             className={`text-[11px] px-2 py-0.5 rounded border font-bold transition-colors ${
@@ -2415,14 +2415,14 @@ export default function PassengersPage() {
                         <td colSpan={8} className="border-[1.5px] border-black py-6 text-slate-500">لا يوجد بيانات للعرض</td>
                       </tr>
                     ) : (
-                      (selectedCustomerId ? filteredPassengers : umrahPassengers).map((p) => {
+                      (selectedCustomerId ? filteredPassengers : umrahPassengers).map((p, idx) => {
                         const remaining = p.remaining_days !== null && p.remaining_days !== undefined ? p.remaining_days : "---";
                         const daysSpent = calcDaysSpent(p.travel_date);
                         const isRed = daysSpent >= 80;
                         const isYellow = daysSpent >= 70 && daysSpent < 80;
                         const rowBgClass = isRed ? "bg-[#ffd2d2]! text-black font-semibold" : isYellow ? "bg-[#ffff00]! text-black font-semibold" : "";
                         return (
-                          <tr key={p.id} className={`border-b-[1.5px] border-black ${rowBgClass}`}>
+                          <tr key={`print-umrah2-${p.id || idx}-${idx}`} className={`border-b-[1.5px] border-black ${rowBgClass}`}>
                             <td className="border-[1.5px] border-black py-2.5 px-3 font-bold text-right text-black">{p.name_ar || p.name_en}</td>
                             <td className="border-[1.5px] border-black py-2.5 px-3 font-mono font-bold text-black">{p.passport_number || "---"}</td>
                             <td className="border-[1.5px] border-black py-2.5 px-3 text-black">{p.visa_type || "تأشيرة عمره"}</td>
@@ -2537,8 +2537,8 @@ export default function PassengersPage() {
                   className="w-full h-10 px-3 rounded-md border border-slate-300 text-xs font-bold bg-white text-slate-800"
                 >
                   <option value="">استخدام العميل المحدد بالملف (أو محمد اليمني)</option>
-                  {customers.map((c: any) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
+                  {customers.map((c: any, idx: number) => (
+                    <option key={`imp-copt-${c.id || idx}-${idx}`} value={c.id}>{c.name}</option>
                   ))}
                 </select>
               </div>
@@ -2640,7 +2640,7 @@ export default function PassengersPage() {
                       ? <span className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-[10px] font-bold">قريباً</span>
                       : null;
                     return (
-                      <tr key={p.id} className={`hover:bg-slate-50 transition-colors ${rowClass}`}>
+                      <tr key={`stat-p-${p.id || idx}-${idx}`} className={`hover:bg-slate-50 transition-colors ${rowClass}`}>
                         <td className="py-3 px-4 font-mono text-slate-400">{idx + 1}</td>
                         <td className="py-3 px-4 font-bold text-slate-900">{p.name_ar}</td>
                         <td className="py-3 px-4 text-slate-600 font-mono">{p.name_en || "---"}</td>

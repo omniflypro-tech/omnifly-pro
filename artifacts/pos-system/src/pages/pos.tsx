@@ -135,7 +135,7 @@ function generateReceiptText(order: Order, settings: any, cashierName: string, p
   }
 
   // Prepend left margin to all lines
-  return lines.map(l => l ? padLeft + l : l).join("\n");
+  return lines.map((l, idx) => l ? padLeft + l : l).join("\n");
 }
 
 function generateDeptReceiptText(order: Order, dept: any, items: any[], settings: any, printerSettings?: any): string {
@@ -195,7 +195,7 @@ function generateDeptReceiptText(order: Order, dept: any, items: any[], settings
   }
 
   // Prepend left margin to all lines
-  return lines.map(l => l ? padLeft + l : l).join("\n");
+  return lines.map((l, idx) => l ? padLeft + l : l).join("\n");
 }
 
 export default function Pos() {
@@ -299,7 +299,7 @@ export default function Pos() {
   const activeTab = tabs.find(t => t.id === activeTabId) || tabs[0];
 
   const updateActiveTab = useCallback((patch: Partial<PosOrderTab> | ((prev: PosOrderTab) => PosOrderTab)) => {
-    setTabs(prev => prev.map(t => {
+    setTabs(prev => prev.map((t, idx) => {
       if (t.id !== (activeTab?.id || prev[0]?.id)) return t;
       const updated = typeof patch === "function" ? patch(t) : { ...t, ...patch };
       return updated;
@@ -730,9 +730,9 @@ export default function Pos() {
       console.warn(`❌ NO INVENTORY MATCH for scanned barcode: "${clean}".`, {
         attemptedBarcode: clean,
         totalInventoryProducts: products.length,
-        activeProductsWithBarcode: products.filter(p => p.barcode && p.active !== false).map(p => ({ id: p.id, name: p.name, barcode: p.barcode }))
+        activeProductsWithBarcode: products.filter(p => p.barcode && p.active !== false).map((p, idx) => ({ id: p.id, name: p.name, barcode: p.barcode }))
       });
-      console.table(products.filter(p => p.barcode).map(p => ({ ID: p.id, Name: p.name, Barcode: p.barcode, Active: p.active })));
+      console.table(products.filter(p => p.barcode).map((p, idx) => ({ ID: p.id, Name: p.name, Barcode: p.barcode, Active: p.active })));
       toast({ 
         variant: "destructive", 
         title: "تنبيه: الباركود غير مضاف", 
@@ -1001,7 +1001,7 @@ export default function Pos() {
     return Array.from(categoryMap.values())
       .filter(g => g.items.length > 0)
       .sort((a, b) => a.printOrder - b.printOrder)
-      .map(g => {
+      .map((g, idx) => {
         const config = deptConfigs.find(d => d.categoryId === g.categoryId);
         return {
           dept: {
@@ -1504,7 +1504,7 @@ export default function Pos() {
 
               return (
                 <div
-                  key={tab.id}
+                  key={`pos-tab-id-${tab.id || idx}-${idx}`}
                   onClick={() => setActiveTabId(tab.id)}
                   className={cn(
                     "group relative flex items-center gap-1.5 px-3 py-1 rounded-t-md text-xs font-bold transition-all cursor-pointer border-t-2 shrink-0",
@@ -1578,9 +1578,9 @@ export default function Pos() {
                 className={cn("px-2 py-0.5 text-[11px] rounded font-bold transition-colors",
                   selectedCategory === null ? "bg-amber-400 text-[#0f1e3c]" : "bg-white/10 text-white hover:bg-white/20")}
               >الكل</button>
-              {categories.map(cat => (
+              {categories.map((cat, idx) => (
                 <button
-                  key={cat.id}
+                  key={`pos-cat-id-${cat.id || idx}-${idx}`}
                   onClick={() => setSelectedCategory(cat.id)}
                   className={cn("px-2 py-0.5 text-[11px] rounded font-bold transition-colors",
                     selectedCategory === cat.id ? "bg-amber-400 text-[#0f1e3c]" : "bg-white/10 text-white hover:bg-white/20")}
@@ -1592,8 +1592,8 @@ export default function Pos() {
 
           {/* ── Order type + table ── */}
           <div className="bg-slate-50 border-b border-slate-200 px-2 py-1.5 flex items-center gap-1.5 shrink-0">
-            {(["dine-in", "takeout", "delivery"] as OrderType[]).map(t => (
-              <button key={t} onClick={() => setOrderType(t)}
+            {(["dine-in", "takeout", "delivery"] as OrderType[]).map((t, idx) => (
+              <button key={`pos-t-${t || idx}-${idx}`} onClick={() => setOrderType(t)}
                 className={cn("flex-1 py-1 text-[11px] font-bold rounded border transition-colors",
                   orderType === t ? "bg-[#0f1e3c] text-white border-[#0f1e3c]" : "border-slate-300 text-slate-600 hover:border-[#0f1e3c]")}
               >{ORDER_TYPE_LABELS[t]}</button>
@@ -1724,8 +1724,8 @@ export default function Pos() {
 
             {/* Payment method */}
             <div className="flex gap-1 pt-0.5">
-              {(["cash", "card", "mixed", "credit"] as const).map(m => (
-                <button key={m} onClick={() => setPaymentMethod(m as any)}
+              {(["cash", "card", "mixed", "credit"] as const).map((m, idx) => (
+                <button key={`pos-m-${m || idx}-${idx}`} onClick={() => setPaymentMethod(m as any)}
                   className={cn("flex-1 py-1 text-[11px] rounded border font-bold transition-colors",
                     paymentMethod === m ? "bg-blue-700 text-white border-blue-700" : "border-slate-300 text-slate-600 hover:border-blue-500")}
                 >{m === "cash" ? "نقدي" : m === "card" ? "شبكة" : m === "mixed" ? "مختلط" : "آجل"}</button>
@@ -1812,7 +1812,7 @@ export default function Pos() {
                   />
                   <datalist id="pos-employees-list">
                     {employees.map((emp: any) => (
-                      <option key={emp.id} value={emp.employee_number}>
+                      <option key={`pos-emp-id-${emp.id || idx}-${idx}`} value={emp.employee_number}>
                         {emp.name}
                       </option>
                     ))}
@@ -1851,9 +1851,9 @@ export default function Pos() {
           {/* ── Product grid ── */}
           <div className="flex-1 overflow-y-auto p-2 bg-[#e8eaf0]">
             <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2">
-              {filteredProducts.map(prod => (
+              {filteredProducts.map((prod, idx) => (
                 <button
-                  key={prod.id}
+                  key={`pos-prod-id-${prod.id || idx}-${idx}`}
                   onClick={() => addToCart(prod)}
                   className="bg-amber-400 hover:bg-amber-300 active:scale-95 border border-amber-500 hover:border-amber-400 rounded-lg p-0 text-center transition-all duration-100 cursor-pointer flex flex-col overflow-hidden shadow-sm hover:shadow-md"
                 >
@@ -2204,7 +2204,7 @@ export default function Pos() {
               })
               .map((emp: any) => (
                 <div
-                  key={emp.id}
+                  key={`pos-emp-id-${emp.id || idx}-${idx}`}
                   onClick={() => {
                     setEmpNumInput(String(emp.employee_number || ""));
                     setFoundEmployee(emp);

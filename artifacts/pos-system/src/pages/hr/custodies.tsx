@@ -104,7 +104,7 @@ export function CustodiesTab() {
             </thead>
             <tbody className="divide-y divide-border">
               {((custodies as any[]) || []).map((c: any) => (
-                <tr key={c.id} className="hover:bg-muted/30">
+                <tr key={`custodies-c-id-${c.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-medium">{c.employee_name}</td>
                   <td className="p-3 font-medium text-amber-700">{c.item_name}</td>
                   <td className="p-3 font-mono text-xs">{c.received_date}</td>
@@ -133,7 +133,7 @@ export function CustodiesTab() {
               <label className="text-sm font-medium">الموظف المستلم *</label>
               <Select value={form.employee_id} onValueChange={v => setForm(f => ({ ...f, employee_id: v }))}>
                 <SelectTrigger className="mt-1"><SelectValue placeholder="اختر الموظف" /></SelectTrigger>
-                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={e.id} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={`custodies-e-id-${e.id || idx}-${idx}`} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><label className="text-sm font-medium">بيان العهدة (اسم الجهاز / المفتاح / السيارة) *</label><Input value={form.item_name} onChange={e => setForm(f => ({ ...f, item_name: e.target.value }))} className="mt-1" placeholder="مثال: لابتوب ديل 2026، مفاتيح الفرع الرئيسي" /></div>

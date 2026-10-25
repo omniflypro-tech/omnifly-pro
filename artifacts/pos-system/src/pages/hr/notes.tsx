@@ -50,7 +50,7 @@ export function NotesTab() {
       {isLoading ? <div className="text-center py-8 text-muted-foreground">جاري التحميل...</div> : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {((notes as any[]) || []).map((n: any) => (
-            <div key={n.id} className="bg-card rounded-xl border border-border p-4 relative flex flex-col justify-between shadow-sm hover:shadow-md transition">
+            <div key={`notes-n-id-${n.id || idx}-${idx}`} className="bg-card rounded-xl border border-border p-4 relative flex flex-col justify-between shadow-sm hover:shadow-md transition">
               <div className="space-y-2">
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-2 text-amber-600">
@@ -89,7 +89,7 @@ export function NotesTab() {
                 <SelectTrigger className="mt-1"><SelectValue placeholder="اختر القسم (اتركه فارغاً لملاحظة عامة)" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">ملاحظة عامة لكافة الأقسام</SelectItem>
-                  {((depts as any[]) || []).map((d: any) => <SelectItem key={d.id} value={String(d.id)}>{d.name}</SelectItem>)}
+                  {((depts as any[]) || []).map((d: any) => <SelectItem key={`notes-d-id-${d.id || idx}-${idx}`} value={String(d.id)}>{d.name}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>

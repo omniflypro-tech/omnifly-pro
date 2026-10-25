@@ -1894,8 +1894,8 @@ export default function TravelHotelsPage() {
                       onChange={e => setForm(f => ({ ...f, room_type: e.target.value }))}
                       className="flex h-8 w-full rounded-md border border-input bg-white px-2 py-1 text-xs font-medium"
                     >
-                      {ROOM_TYPES.map(r => (
-                        <option key={r} value={r}>{r}</option>
+                      {ROOM_TYPES.map((r, idx) => (
+                        <option key={`travelhotels-r-${r || idx}-${idx}`} value={r}>{r}</option>
                       ))}
                     </select>
                   </div>
@@ -1929,8 +1929,8 @@ export default function TravelHotelsPage() {
                       onChange={e => setForm(f => ({ ...f, meal_plan: e.target.value }))}
                       className="flex h-8 w-full rounded-md border border-input bg-white px-2 py-1 text-xs font-medium"
                     >
-                      {MEAL_PLANS.map(m => (
-                        <option key={m} value={m}>{m}</option>
+                      {MEAL_PLANS.map((m, idx) => (
+                        <option key={`travelhotels-m-${m || idx}-${idx}`} value={m}>{m}</option>
                       ))}
                     </select>
                   </div>

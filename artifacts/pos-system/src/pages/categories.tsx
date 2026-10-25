@@ -69,8 +69,8 @@ export default function Categories() {
           <div className="text-center py-16 text-muted-foreground">جاري التحميل...</div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {categories.map(cat => (
-              <div key={cat.id} className="bg-card rounded-xl border border-border p-4 flex items-center gap-3">
+            {categories.map((cat, idx) => (
+              <div key={`categories-cat-id-${cat.id || idx}-${idx}`} className="bg-card rounded-xl border border-border p-4 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full shrink-0" style={{ backgroundColor: cat.color ?? "#e5e7eb" }} />
                 <span className="flex-1 font-medium">{cat.name}</span>
                 <button onClick={() => openEdit(cat)} className="text-muted-foreground hover:text-primary"><Pencil className="w-4 h-4" /></button>

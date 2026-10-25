@@ -117,8 +117,8 @@ export default function TravelAtbPrintingPage() {
                 value={selectedBookingId}
                 onChange={(e) => setSelectedBookingId(Number(e.target.value))}
               >
-                {bookings?.map((b) => (
-                  <option key={b.id} value={b.id}>
+                {bookings?.map((b, idx) => (
+                  <option key={`travelatbprinting-b-id-${b.id || idx}-${idx}`} value={b.id}>
                     {b.pnr} - {b.passenger_name || "مسافر"} ({b.flight_number || "SV"})
                   </option>
                 ))}

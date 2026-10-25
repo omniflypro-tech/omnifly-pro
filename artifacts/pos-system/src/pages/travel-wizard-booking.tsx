@@ -280,13 +280,13 @@ export default function TravelWizardBookingPage() {
 
         {/* Step Indicator Bar */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
-          {STEPS.map((step) => {
+          {STEPS.map((step, idx) => {
             const Icon = step.icon;
             const isActive = currentStep === step.id;
             const isCompleted = currentStep > step.id;
             return (
               <div
-                key={step.id}
+                key={`travelwizardbooking-step-id-${step.id || idx}-${idx}`}
                 onClick={() => {
                   if (step.id < currentStep || form.customer_id) {
                     setCurrentStep(step.id);
@@ -340,7 +340,7 @@ export default function TravelWizardBookingPage() {
                       >
                         <option value="">-- اضغط لاختيار العميل من قاعدة البيانات --</option>
                         {customers.map((c: any) => (
-                          <option key={c.id} value={c.id}>
+                          <option key={`travelwizardbooking-c-id-${c.id || idx}-${idx}`} value={c.id}>
                             {c.name} {c.customer_type === 'corporate' ? '🏢 [شركة]' : c.customer_type === 'vip' ? '⭐ [VIP]' : '👤 [أفراد]'} {c.affiliation_type === 'agency' ? `🏬 [تابع لمكتب: ${c.office_name || 'وكيل وسيط'}]` : ""} - هاتف: {c.phone || '—'}
                           </option>
                         ))}
@@ -478,7 +478,7 @@ export default function TravelWizardBookingPage() {
                     >
                       <option value="">-- اضغط للاختيار من المسافرين --</option>
                       {passengers.map((p: any) => (
-                        <option key={p.id} value={p.id}>
+                        <option key={`travelwizardbooking-p-id-${p.id || idx}-${idx}`} value={p.id}>
                           {p.name_ar} ({p.name_en}) - جواز: {p.passport_number || 'بدون'}
                         </option>
                       ))}
@@ -894,7 +894,7 @@ export default function TravelWizardBookingPage() {
                       className="w-full h-10 rounded-md border border-input bg-white px-3 text-sm"
                     >
                       {safes.map((s: any) => (
-                        <option key={s.id} value={s.id}>{s.name} ({s.currency || 'ريال'})</option>
+                        <option key={`travelwizardbooking-s-id-${s.id || idx}-${idx}`} value={s.id}>{s.name} ({s.currency || 'ريال'})</option>
                       ))}
                     </select>
                   </div>

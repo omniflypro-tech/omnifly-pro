@@ -142,7 +142,7 @@ export default function TravelInsurancePage() {
                   <tr><td colSpan={8} className="text-center p-8 text-slate-400">لا توجد وثائق تأمين مسجلة</td></tr>
                 ) : (
                   filtered.map((item: any) => (
-                    <tr key={item.id} className="hover:bg-slate-50/80 transition-colors">
+                    <tr key={`travelinsurance-item-id-${item.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                       <td className="p-3.5 font-mono font-bold text-teal-700">{item.policy_number}</td>
                       <td className="p-3.5 font-bold text-slate-800">{item.insurance_company}</td>
                       <td className="p-3.5 text-xs">

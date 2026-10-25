@@ -508,7 +508,7 @@ export default function TravelInvoicesPage() {
       return;
     }
 
-    const cleanItems = items.map(it => ({
+    const cleanItems = items.map((it, idx) => ({
       service_type: it.service_type || "flight",
       supplier_type: it.supplier_type || "airline",
       supplier_id: it.supplier_id ? String(it.supplier_id) : null,
@@ -561,7 +561,7 @@ export default function TravelInvoicesPage() {
           >
             <option value="">-- اختر شركة الطيران الناقلة --</option>
             {airlines.map((air: any) => (
-              <option key={air.id} value={air.id}>
+              <option key={`travelinvoices-air-id-${air.id || idx}-${idx}`} value={air.id}>
                 ✈️ {air.name_ar} {air.iata_code ? `[${air.iata_code}]` : ""} {air.country ? `(${air.country})` : ""}
               </option>
             ))}
@@ -577,7 +577,7 @@ export default function TravelInvoicesPage() {
           >
             <option value="">-- اختر الفندق أو المنتجع --</option>
             {hotels.map((h: any) => (
-              <option key={h.id} value={h.id}>
+              <option key={`travelinvoices-h-id-${h.id || idx}-${idx}`} value={h.id}>
                 🏨 {h.hotel_name || h.name} {h.stars ? `(${h.stars}★)` : ""} - {h.city || h.country || ""}
               </option>
             ))}
@@ -593,7 +593,7 @@ export default function TravelInvoicesPage() {
           >
             <option value="">-- اختر المكتب المفوض / السفارة --</option>
             {partnerOffices.map((off: any) => (
-              <option key={off.id} value={off.id}>
+              <option key={`travelinvoices-off-id-${off.id || idx}-${idx}`} value={off.id}>
                 🏛️ {off.name} {off.city ? `(${off.city})` : ""} {off.phone ? ` - ${off.phone}` : ""}
               </option>
             ))}
@@ -609,7 +609,7 @@ export default function TravelInvoicesPage() {
           >
             <option value="">-- اختر شركة النقل البري / الباصات --</option>
             {transportCompanies.map((tc: any) => (
-              <option key={tc.id} value={tc.id}>
+              <option key={`travelinvoices-tc-id-${tc.id || idx}-${idx}`} value={tc.id}>
                 🚌 {tc.company_name || tc.name} {tc.phone ? `(${tc.phone})` : ""}
               </option>
             ))}
@@ -625,7 +625,7 @@ export default function TravelInvoicesPage() {
           >
             <option value="">-- اختر مورد الخدمة السياحية --</option>
             {generalSuppliers.map((s: any) => (
-              <option key={s.id} value={s.id}>
+              <option key={`travelinvoices-s-id-${s.id || idx}-${idx}`} value={s.id}>
                 🏢 {s.supplier_name || s.name} {s.service_type ? `(${s.service_type})` : ""}
               </option>
             ))}
@@ -803,7 +803,7 @@ export default function TravelInvoicesPage() {
                     const isSelected = selectedInvoice?.id === inv.id;
                     return (
                       <tr
-                        key={inv.id}
+                        key={`travelinvoices-inv-id-${inv.id || idx}-${idx}`}
                         onClick={() => setSelectedInvoice(inv)}
                         className={`cursor-pointer transition-colors ${
                           isSelected
@@ -1099,8 +1099,8 @@ export default function TravelInvoicesPage() {
                       onChange={e => setCurrency(e.target.value)}
                       className="h-9 w-full rounded-md border border-input bg-white px-2.5 text-xs font-bold text-slate-900"
                     >
-                      {CURRENCIES.map(c => (
-                        <option key={c.code} value={c.code}>
+                      {CURRENCIES.map((c, idx) => (
+                        <option key={`travelinvoices-c-code-${c.code || idx}-${idx}`} value={c.code}>
                           {c.flag} {c.label}
                         </option>
                       ))}
@@ -1148,8 +1148,8 @@ export default function TravelInvoicesPage() {
                             onChange={e => updateItem(idx, "service_type", e.target.value)}
                             className="h-8 w-full rounded-md border border-input bg-slate-50 px-2 text-xs font-bold text-slate-900"
                           >
-                            {SERVICE_TYPES.map(st => (
-                              <option key={st.id} value={st.id}>{st.label}</option>
+                            {SERVICE_TYPES.map((st, idx) => (
+                              <option key={`travelinvoices-st-id-${st.id || idx}-${idx}`} value={st.id}>{st.label}</option>
                             ))}
                           </select>
                         </div>
@@ -1692,8 +1692,8 @@ export default function TravelInvoicesPage() {
                         className="h-9 w-full rounded-md border border-input bg-white px-2 text-xs font-semibold text-slate-700"
                       >
                         <option value="all">جميع العملات</option>
-                        {CURRENCIES.map(c => (
-                          <option key={c.code} value={c.code}>{c.label} ({c.symbol})</option>
+                        {CURRENCIES.map((c, idx) => (
+                          <option key={`travelinvoices-c-code-${c.code || idx}-${idx}`} value={c.code}>{c.label} ({c.symbol})</option>
                         ))}
                       </select>
                     </div>
@@ -1783,7 +1783,7 @@ export default function TravelInvoicesPage() {
                           </tr>
                         ) : (
                           advFilteredInvoices.map((inv: any) => (
-                            <tr key={inv.id} className="hover:bg-blue-50/50 transition-colors">
+                            <tr key={`travelinvoices-inv-id-${inv.id || idx}-${idx}`} className="hover:bg-blue-50/50 transition-colors">
                               <td className="p-2.5 font-mono font-bold text-blue-800">
                                 {inv.invoice_number}
                               </td>
@@ -1892,7 +1892,7 @@ export default function TravelInvoicesPage() {
                       ) : (
                         filteredSearchCustomers.map((c: any) => (
                           <div
-                            key={c.id}
+                            key={`travelinvoices-c-id-${c.id || idx}-${idx}`}
                             onClick={() => {
                               handleCustomerSelect(String(c.id));
                               setShowSearchModal(false);

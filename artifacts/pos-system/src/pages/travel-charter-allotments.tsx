@@ -204,8 +204,8 @@ export default function TravelCharterAllotments() {
       {activeTab === "charter" && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {charters.map((blk) => (
-              <div key={blk.id} className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition">
+            {charters.map((blk, idx) => (
+              <div key={`travelcharterallotments-blk-id-${blk.id || idx}-${idx}`} className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 font-bold flex items-center justify-center text-xs border border-amber-500/20">
@@ -288,10 +288,10 @@ export default function TravelCharterAllotments() {
       {activeTab === "hotel_allotments" && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {allotments.map((alt) => {
+            {allotments.map((alt, idx) => {
               const isUrgent = alt.days_until_release <= 7;
               return (
-                <div key={alt.id} className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition">
+                <div key={`travelcharterallotments-alt-id-${alt.id || idx}-${idx}`} className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition">
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-bold text-sm">{alt.hotel_name}</h3>

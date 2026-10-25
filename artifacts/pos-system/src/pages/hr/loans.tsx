@@ -107,7 +107,7 @@ export function LoansTab() {
             </thead>
             <tbody className="divide-y divide-border">
               {((loans as any[]) || []).map((l: any) => (
-                <tr key={l.id} className="hover:bg-muted/30">
+                <tr key={`loans-l-id-${l.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-medium">{l.employee_name}</td>
                   <td className="p-3 text-muted-foreground">{typeLabel[l.type] ?? l.type}</td>
                   <td className="p-3 font-mono font-bold text-primary">{fmt(l.amount)}</td>
@@ -137,7 +137,7 @@ export function LoansTab() {
               <label className="text-sm font-medium">الموظف *</label>
               <Select value={form.employee_id} onValueChange={v => setForm(f => ({ ...f, employee_id: v }))}>
                 <SelectTrigger className="mt-1"><SelectValue placeholder="اختر الموظف" /></SelectTrigger>
-                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={e.id} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={`loans-e-id-${e.id || idx}-${idx}`} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="grid grid-cols-2 gap-3">

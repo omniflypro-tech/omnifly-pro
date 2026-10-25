@@ -219,9 +219,9 @@ _${agencyName}_`;
                 { id: "visa_update", label: "🛂 إشعار حالة التأشيرة" },
                 { id: "payment_receipt", label: "💳 سند استلام دفعة" },
                 { id: "general_reminder", label: "⏰ تذكير موعد السفر" },
-              ].map((t) => (
+              ].map((t, idx) => (
                 <button
-                  key={t.id}
+                  key={`travelmessagingmodal-t-id-${t.id || idx}-${idx}`}
                   type="button"
                   onClick={() => {
                     handleTemplateChange(t.id);

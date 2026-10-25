@@ -161,11 +161,11 @@ export function TravelAttachmentsManager({
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {attachments.map((file) => {
+          {attachments.map((file, idx) => {
             const isImage = file.file_type?.startsWith("image/");
             return (
               <div
-                key={file.id}
+                key={`travelattachmentsmanager-file-id-${file.id || idx}-${idx}`}
                 className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-lg transition-colors"
               >
                 <div className="flex items-center gap-2.5 overflow-hidden">

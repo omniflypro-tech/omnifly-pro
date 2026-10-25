@@ -676,7 +676,7 @@ export default function InventoryPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {summary?.warehouses?.map((w: any) => (
-                    <div key={w.id} className="p-3.5 border rounded-xl bg-slate-50 flex items-center justify-between">
+                    <div key={`inventory-w-id-${w.id || idx}-${idx}`} className="p-3.5 border rounded-xl bg-slate-50 flex items-center justify-between">
                       <div>
                         <div className="flex items-center gap-2">
                           <Badge className="bg-slate-900 text-white font-mono">{w.code}</Badge>
@@ -705,7 +705,7 @@ export default function InventoryPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {summary?.internalRequests?.slice(0, 5).map((req: any) => (
-                    <div key={req.id} className="p-3 border rounded-xl bg-blue-50/40 border-blue-200 flex items-center justify-between">
+                    <div key={`inventory-req-id-${req.id || idx}-${idx}`} className="p-3 border rounded-xl bg-blue-50/40 border-blue-200 flex items-center justify-between">
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-mono font-bold text-blue-900 text-xs">{req.request_number}</span>
@@ -768,7 +768,7 @@ export default function InventoryPage() {
                     filteredProducts.map((p: any) => {
                       const stock = p.stock ?? 0;
                       return (
-                        <tr key={p.id} className="hover:bg-slate-50/50">
+                        <tr key={`inventory-p-id-${p.id || idx}-${idx}`} className="hover:bg-slate-50/50">
                           <td className="p-3 font-mono font-bold text-blue-600">{p.number}</td>
                           <td className="p-3 font-medium text-slate-800">{p.name}</td>
                           <td className="p-3 text-slate-500">{p.categoryName || "-"}</td>
@@ -830,7 +830,7 @@ export default function InventoryPage() {
                     </tr>
                   ) : (
                     summary?.internalRequests?.map((req: any) => (
-                      <tr key={req.id} className="hover:bg-slate-50/50">
+                      <tr key={`inventory-req-id-${req.id || idx}-${idx}`} className="hover:bg-slate-50/50">
                         <td className="p-3 font-mono font-bold text-blue-700">{req.request_number}</td>
                         <td className="p-3 font-bold text-slate-800">{req.requesting_department}</td>
                         <td className="p-3 text-slate-600">{req.target_warehouse_name}</td>
@@ -931,7 +931,7 @@ export default function InventoryPage() {
                       </tr>
                     ) : (
                       summary.purchaseReturns.map((pr: any) => (
-                        <tr key={pr.id} className="hover:bg-slate-50/50">
+                        <tr key={`inventory-pr-id-${pr.id || idx}-${idx}`} className="hover:bg-slate-50/50">
                           <td className="p-3 font-mono font-bold text-emerald-700">{pr.return_number}</td>
                           <td className="p-3 font-bold text-slate-800">{pr.supplier_name}</td>
                           <td className="p-3 text-slate-600">{pr.invoice_number || "-"}</td>
@@ -1001,7 +1001,7 @@ export default function InventoryPage() {
                         </tr>
                       ) : (
                         summary.receiptVouchers.map((v: any) => (
-                          <tr key={v.id}>
+                          <tr key={`inventory-v-id-${v.id || idx}-${idx}`}>
                             <td className="p-3 font-mono font-bold text-emerald-700">{v.voucher_number}</td>
                             <td className="p-3 font-bold text-slate-800">{v.supplier_name || v.receipt_type}</td>
                             <td className="p-3 font-mono text-slate-500">{v.created_at?.slice(0, 10)}</td>
@@ -1060,7 +1060,7 @@ export default function InventoryPage() {
                         </tr>
                       ) : (
                         summary.issueVouchers.map((v: any) => (
-                          <tr key={v.id}>
+                          <tr key={`inventory-v-id-${v.id || idx}-${idx}`}>
                             <td className="p-3 font-mono font-bold text-amber-700">{v.voucher_number}</td>
                             <td className="p-3 font-bold">{v.recipient || v.issue_type}</td>
                             <td className="p-3 font-mono text-slate-500">{v.created_at?.slice(0, 10)}</td>
@@ -1118,7 +1118,7 @@ export default function InventoryPage() {
                         </tr>
                       ) : (
                         summary.transfers.map((t: any) => (
-                          <tr key={t.id}>
+                          <tr key={`inventory-t-id-${t.id || idx}-${idx}`}>
                             <td className="p-3 font-mono font-bold text-blue-700">{t.transfer_number}</td>
                             <td className="p-3 font-semibold">{t.from_warehouse_name} ➔ {t.to_warehouse_name}</td>
                             <td className="p-3 font-mono text-slate-500">{t.created_at?.slice(0, 10)}</td>
@@ -1165,7 +1165,7 @@ export default function InventoryPage() {
                     </tr>
                   ) : (
                     summary?.stocktakes?.map((st: any) => (
-                      <tr key={st.id} className="hover:bg-slate-50/50">
+                      <tr key={`inventory-st-id-${st.id || idx}-${idx}`} className="hover:bg-slate-50/50">
                         <td className="p-3 font-mono font-bold text-indigo-700">{st.stocktake_number}</td>
                         <td className="p-3 font-bold text-slate-800">{st.warehouse_name}</td>
                         <td className="p-3"><Badge className="bg-indigo-100 text-indigo-800 border-0">{st.type || "شامل"}</Badge></td>
@@ -1209,7 +1209,7 @@ export default function InventoryPage() {
                     </tr>
                   ) : (
                     summary?.wasteRecords?.map((w: any) => (
-                      <tr key={w.id} className="hover:bg-rose-50/20">
+                      <tr key={`inventory-w-id-${w.id || idx}-${idx}`} className="hover:bg-rose-50/20">
                         <td className="p-3 font-mono font-bold text-rose-700">{w.waste_number}</td>
                         <td className="p-3 font-bold text-slate-800">{w.product_name}</td>
                         <td className="p-3 font-bold text-rose-600">{w.quantity} حبة</td>
@@ -1255,7 +1255,7 @@ export default function InventoryPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {summary?.auditLogs?.map((log: any) => (
-                    <tr key={log.id} className="hover:bg-slate-50/50">
+                    <tr key={`inventory-log-id-${log.id || idx}-${idx}`} className="hover:bg-slate-50/50">
                       <td className="p-3 font-mono text-slate-400">{log.id}</td>
                       <td className="p-3 font-bold text-slate-800">{log.user_name || "النظام"}</td>
                       <td className="p-3 font-semibold text-purple-800">{log.action}</td>
@@ -1351,7 +1351,7 @@ export default function InventoryPage() {
                         const cost = p.cost ?? 0;
                         const price = p.price ?? 0;
                         return (
-                          <tr key={p.id}>
+                          <tr key={`inventory-p-id-${p.id || idx}-${idx}`}>
                             <td className="p-3 font-mono font-bold text-blue-600">{p.number}</td>
                             <td className="p-3 font-bold">{p.name}</td>
                             <td className="p-3 font-mono font-bold">{stock} حبة</td>
@@ -1386,7 +1386,7 @@ export default function InventoryPage() {
                     </thead>
                     <tbody className="divide-y">
                       {movements?.map((m: any) => (
-                        <tr key={m.id}>
+                        <tr key={`inventory-m-id-${m.id || idx}-${idx}`}>
                           <td className="p-3 font-bold">{m.productName}</td>
                           <td className="p-3">
                             <Badge className={m.type === 'in' ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"}>
@@ -1565,7 +1565,7 @@ export default function InventoryPage() {
                         const maxStock = p.max_stock ?? 100;
                         const suggestedPoQty = Math.max(0, maxStock - stock);
                         return (
-                          <tr key={p.id} className="hover:bg-rose-50/30">
+                          <tr key={`inventory-p-id-${p.id || idx}-${idx}`} className="hover:bg-rose-50/30">
                             <td className="p-3 font-mono font-bold text-rose-700">{p.number}</td>
                             <td className="p-3 font-bold text-slate-800">{p.name}</td>
                             <td className="p-3 text-center font-mono font-bold text-rose-600">{stock} حبة</td>
@@ -1638,7 +1638,7 @@ export default function InventoryPage() {
                     {summary?.products?.map((p: any, idx: number) => {
                       const isExpired = p.expiry_date && p.expiry_date <= new Date().toISOString().slice(0, 10);
                       return (
-                        <tr key={p.id} className={isExpired ? "bg-rose-50/50" : "hover:bg-slate-50/50"}>
+                        <tr key={`inventory-p-id-${p.id || idx}-${idx}`} className={isExpired ? "bg-rose-50/50" : "hover:bg-slate-50/50"}>
                           <td className="p-3 font-mono font-bold text-amber-800">{p.batch_number || `BATCH-2026-${idx+1}`}</td>
                           <td className="p-3 font-bold text-slate-800">{p.name}</td>
                           <td className="p-3 text-center font-mono font-bold text-slate-700">{p.expiry_date || "2027-06-30"}</td>
@@ -1696,7 +1696,7 @@ export default function InventoryPage() {
                       </tr>
                     ) : (
                       summary?.suppliers?.map((sup: any) => (
-                        <tr key={sup.id} className="hover:bg-emerald-50/30">
+                        <tr key={`inventory-sup-id-${sup.id || idx}-${idx}`} className="hover:bg-emerald-50/30">
                           <td className="p-3 font-bold text-slate-800">{sup.name}</td>
                           <td className="p-3 text-slate-600">مواد خام، دجاج، بطاطس، مشروبات</td>
                           <td className="p-3 text-left font-mono font-bold text-emerald-700">$10.50 / كجم</td>
@@ -1737,7 +1737,7 @@ export default function InventoryPage() {
                   >
                     <option value="">-- اختر الصنف --</option>
                     {summary?.products?.map((p: any) => (
-                      <option key={p.id} value={p.id}>{p.name} ({p.number})</option>
+                      <option key={`inventory-p-id-${p.id || idx}-${idx}`} value={p.id}>{p.name} ({p.number})</option>
                     ))}
                   </select>
                 </div>
@@ -1949,7 +1949,7 @@ export default function InventoryPage() {
                 >
                   <option value="">-- اختر الصنف --</option>
                   {summary?.products?.map((p: any) => (
-                    <option key={p.id} value={p.id}>{p.name} (المتوفر: {p.stock ?? 0})</option>
+                    <option key={`inventory-p-id-${p.id || idx}-${idx}`} value={p.id}>{p.name} (المتوفر: {p.stock ?? 0})</option>
                   ))}
                 </select>
               </div>
@@ -2023,7 +2023,7 @@ export default function InventoryPage() {
                 >
                   <option value="">-- اختر الصنف --</option>
                   {summary?.products?.map((p: any) => (
-                    <option key={p.id} value={p.id}>{p.name} (المتوفر: {p.stock ?? 0})</option>
+                    <option key={`inventory-p-id-${p.id || idx}-${idx}`} value={p.id}>{p.name} (المتوفر: {p.stock ?? 0})</option>
                   ))}
                 </select>
               </div>
@@ -2075,7 +2075,7 @@ export default function InventoryPage() {
                 >
                   <option value="">-- اختر الصنف --</option>
                   {summary?.products?.map((p: any) => (
-                    <option key={p.id} value={p.id}>{p.name} (المتوفر: {p.stock ?? 0})</option>
+                    <option key={`inventory-p-id-${p.id || idx}-${idx}`} value={p.id}>{p.name} (المتوفر: {p.stock ?? 0})</option>
                   ))}
                 </select>
               </div>
@@ -2125,7 +2125,7 @@ export default function InventoryPage() {
                 >
                   <option value="">-- اختر الصنف --</option>
                   {summary?.products?.map((p: any) => (
-                    <option key={p.id} value={p.id}>{p.name} (المتوفر الحالي: {p.stock ?? 0})</option>
+                    <option key={`inventory-p-id-${p.id || idx}-${idx}`} value={p.id}>{p.name} (المتوفر الحالي: {p.stock ?? 0})</option>
                   ))}
                 </select>
               </div>
@@ -2256,7 +2256,7 @@ export default function InventoryPage() {
                     {stocktakeItems.map((item, idx) => {
                       const diff = item.actualQty - item.expectedQty;
                       return (
-                        <tr key={item.productId}>
+                        <tr key={`inventory-item-productId-${item.productId || idx}-${idx}`}>
                           <td className="p-2 font-bold">{item.name}</td>
                           <td className="p-2 text-center font-mono">{item.expectedQty}</td>
                           <td className="p-2 text-center">

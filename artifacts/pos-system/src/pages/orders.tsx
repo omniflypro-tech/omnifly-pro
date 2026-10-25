@@ -116,8 +116,8 @@ export default function Orders() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {orders.map(order => (
-                  <tr key={order.id} className="hover:bg-muted/30">
+                {orders.map((order, idx) => (
+                  <tr key={`orders-order-id-${order.id || idx}-${idx}`} className="hover:bg-muted/30">
                     <td className="p-3 font-mono font-bold text-primary">{order.invoiceNumber}</td>
                     <td className="p-3 text-xs">{new Date(order.createdAt).toLocaleString("ar-SA")}</td>
                     <td className="p-3">{order.userName}</td>

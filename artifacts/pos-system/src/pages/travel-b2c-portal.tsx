@@ -347,8 +347,8 @@ export default function TravelB2cPortalPage() {
                       { step: 5, title: "قيد الدراسة بالقنصلية", desc: "التدقيق الأمني النهائي", done: true, current: true },
                       { step: 6, title: "صدور التأشيرة", desc: "طباعة الاستيكر بالجواز", done: false },
                       { step: 7, title: "جاهز للتسليم", desc: "استلام الجواز من الفرع", done: false }
-                    ].map((m) => (
-                      <div key={m.step} className="flex flex-col items-center text-center space-y-2">
+                    ].map((m, idx) => (
+                      <div key={`travelb2cportal-m-step-${m.step || idx}-${idx}`} className="flex flex-col items-center text-center space-y-2">
                         <div
                           className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shadow-md transition-all ${
                             m.current
@@ -503,7 +503,7 @@ export default function TravelB2cPortalPage() {
                         </thead>
                         <tbody className="divide-y">
                           {agentRequests?.map((reqItem: any) => (
-                            <tr key={reqItem.id} className="hover:bg-slate-50">
+                            <tr key={`travelb2cportal-reqItem-id-${reqItem.id || idx}-${idx}`} className="hover:bg-slate-50">
                               <td className="p-3 font-mono font-bold text-indigo-600">{reqItem.request_code}</td>
                               <td className="p-3 font-semibold text-slate-900">
                                 <div>{reqItem.customer_name}</div>

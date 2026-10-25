@@ -697,7 +697,7 @@ export default function SuppliersPage() {
                 <CardContent className="p-0">
                   <div className="divide-y max-h-[300px] overflow-y-auto text-xs">
                     {autoReorders.map((item: any) => (
-                      <div key={item.product_id} className="p-3 flex items-center justify-between hover:bg-muted/40">
+                      <div key={`suppliers-item-product_id-${item.product_id || idx}-${idx}`} className="p-3 flex items-center justify-between hover:bg-muted/40">
                         <div>
                           <p className="font-bold text-sm">{item.product_name}</p>
                           <p className="text-muted-foreground text-[11px] mt-0.5">{item.reason}</p>
@@ -732,7 +732,7 @@ export default function SuppliersPage() {
                 <CardContent className="p-0">
                   <div className="divide-y max-h-[300px] overflow-y-auto text-xs">
                     {(dashboard?.priceSurges || []).map((surge: any) => (
-                      <div key={surge.id} className="p-3 flex items-center justify-between hover:bg-muted/40">
+                      <div key={`suppliers-surge-id-${surge.id || idx}-${idx}`} className="p-3 flex items-center justify-between hover:bg-muted/40">
                         <div>
                           <p className="font-bold text-sm">{surge.name}</p>
                           <p className="text-muted-foreground text-[11px] mt-0.5">
@@ -802,7 +802,7 @@ export default function SuppliersPage() {
                     </thead>
                     <tbody className="divide-y">
                       {(dashboard?.topItems || []).map((i: any) => (
-                        <tr key={i.id} className="hover:bg-muted/30">
+                        <tr key={`suppliers-i-id-${i.id || idx}-${idx}`} className="hover:bg-muted/30">
                           <td className="p-2.5 font-medium">{i.name}</td>
                           <td className="p-2.5 text-center font-mono font-bold">{i.total_qty} كجم</td>
                           <td className="p-2.5 text-left font-mono font-bold text-emerald-600">{fmt(i.total_cost)} ريال</td>
@@ -843,7 +843,7 @@ export default function SuppliersPage() {
                 </thead>
                 <tbody className="divide-y">
                   {requests.map((pr: any) => (
-                    <tr key={pr.id} className="hover:bg-muted/30">
+                    <tr key={`suppliers-pr-id-${pr.id || idx}-${idx}`} className="hover:bg-muted/30">
                       <td className="p-3 font-mono font-bold text-primary">{pr.pr_number}</td>
                       <td className="p-3 font-medium">{pr.requester_name}</td>
                       <td className="p-3 text-muted-foreground">{pr.department} - {pr.branch_name || "الفرع الرئيسي"}</td>
@@ -909,7 +909,7 @@ export default function SuppliersPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {rfqs.map((q: any) => (
-                <Card key={q.id} className={`shadow-sm ${q.status === 'accepted' ? 'border-emerald-500 bg-emerald-500/5' : ''}`}>
+                <Card key={`suppliers-q-id-${q.id || idx}-${idx}`} className={`shadow-sm ${q.status === 'accepted' ? 'border-emerald-500 bg-emerald-500/5' : ''}`}>
                   <CardHeader className="p-4 pb-2 border-b">
                     <div className="flex items-center justify-between">
                       <Badge variant="outline" className="font-mono">{q.rfq_number}</Badge>
@@ -983,7 +983,7 @@ export default function SuppliersPage() {
                 </thead>
                 <tbody className="divide-y">
                   {orders.map((po: any) => (
-                    <tr key={po.id} className="hover:bg-muted/30">
+                    <tr key={`suppliers-po-id-${po.id || idx}-${idx}`} className="hover:bg-muted/30">
                       <td className="p-3 font-mono font-bold text-primary">{po.po_number}</td>
                       <td className="p-3 font-medium">{po.supplier_name || "مورد عام"}</td>
                       <td className="p-3 text-muted-foreground font-mono">{po.order_date || po.created_at?.slice(0, 10)}</td>
@@ -1059,7 +1059,7 @@ export default function SuppliersPage() {
                 </thead>
                 <tbody className="divide-y">
                   {grns.map((g: any) => (
-                    <tr key={g.id} className="hover:bg-muted/30">
+                    <tr key={`suppliers-g-id-${g.id || idx}-${idx}`} className="hover:bg-muted/30">
                       <td className="p-3 font-mono font-bold text-primary">{g.grn_number}</td>
                       <td className="p-3 font-mono text-muted-foreground">{g.po_number || "استلام مباشر"}</td>
                       <td className="p-3 font-medium">{g.supplier_name}</td>
@@ -1117,7 +1117,7 @@ export default function SuppliersPage() {
                 </thead>
                 <tbody className="divide-y">
                   {invoices.map((inv: any) => (
-                    <tr key={inv.id} className="hover:bg-muted/30">
+                    <tr key={`suppliers-inv-id-${inv.id || idx}-${idx}`} className="hover:bg-muted/30">
                       <td className="p-3 font-mono font-bold text-primary">{inv.invoice_number}</td>
                       <td className="p-3 font-mono text-muted-foreground">{inv.supplier_invoice_ref || "—"}</td>
                       <td className="p-3 font-medium">{inv.supplier_name}</td>
@@ -1307,7 +1307,7 @@ export default function SuppliersPage() {
                     </thead>
                     <tbody className="divide-y">
                       {payments.map((p: any) => (
-                        <tr key={p.id} className="hover:bg-muted/30">
+                        <tr key={`suppliers-p-id-${p.id || idx}-${idx}`} className="hover:bg-muted/30">
                           <td className="p-2.5 font-mono font-bold text-emerald-600">{p.payment_number}</td>
                           <td className="p-2.5 font-medium">{p.supplier_name}</td>
                           <td className="p-2.5 text-muted-foreground font-mono">{p.payment_date}</td>
@@ -1348,7 +1348,7 @@ export default function SuppliersPage() {
                     </thead>
                     <tbody className="divide-y">
                       {returns.map((r: any) => (
-                        <tr key={r.id} className="hover:bg-muted/30">
+                        <tr key={`suppliers-r-id-${r.id || idx}-${idx}`} className="hover:bg-muted/30">
                           <td className="p-2.5 font-mono font-bold text-rose-600">{r.return_number}</td>
                           <td className="p-2.5 font-medium">{r.supplier_name}</td>
                           <td className="p-2.5 text-muted-foreground font-mono">{r.return_date || r.created_at?.slice(0, 10)}</td>
@@ -1384,7 +1384,7 @@ export default function SuppliersPage() {
             {/* Contracts List */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {contracts.map((c: any) => (
-                <Card key={c.id}>
+                <Card key={`suppliers-c-id-${c.id || idx}-${idx}`}>
                   <CardHeader className="p-4 pb-2 border-b">
                     <div className="flex justify-between items-center">
                       <Badge variant="outline" className="font-mono">{c.contract_number}</Badge>
@@ -1432,7 +1432,7 @@ export default function SuppliersPage() {
                   </thead>
                   <tbody className="divide-y">
                     {priceTrends.map((pt: any) => (
-                      <tr key={pt.product_id} className="hover:bg-muted/30">
+                      <tr key={`suppliers-pt-product_id-${pt.product_id || idx}-${idx}`} className="hover:bg-muted/30">
                         <td className="p-3 font-bold">{pt.product_name}</td>
                         <td className="p-3 text-muted-foreground">{pt.latest_supplier || "عام"}</td>
                         <td className="p-3 text-center font-mono">{fmt(pt.previous_price)} ريال</td>
@@ -1577,7 +1577,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-mono font-bold text-blue-600">{row.invoice_number}</td>
                             <td className="p-3 font-bold">{row.supplier_name}</td>
                             <td className="p-3">{row.branch_name || "الرئيسي"}</td>
@@ -1611,7 +1611,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-mono font-bold text-blue-600">{row.invoice_number}</td>
                             <td className="p-3 font-bold">{row.supplier_name}</td>
                             <td className="p-3 font-mono">{row.invoice_date}</td>
@@ -1643,7 +1643,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-bold text-slate-800">{row.name}</td>
                             <td className="p-3 font-mono">{row.phone || "بدون جوال"}</td>
                             <td className="p-3 text-center font-bold font-mono">{row.invoice_count}</td>
@@ -1670,7 +1670,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-bold text-emerald-800">{row.item_name}</td>
                             <td className="p-3 text-center font-bold font-mono text-blue-600">{row.total_qty}</td>
                             <td className="p-3 text-left font-mono">{row.avg_price?.toFixed(2)} ر.س</td>
@@ -1696,7 +1696,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-bold text-slate-800">{row.branch_name || "الفرع الرئيسي"}</td>
                             <td className="p-3 text-center font-bold font-mono">{row.invoice_count}</td>
                             <td className="p-3 text-left font-mono font-bold text-slate-800">{row.total_purchases?.toFixed(2)} ر.س</td>
@@ -1723,7 +1723,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-mono font-bold text-rose-600">{row.invoice_number}</td>
                             <td className="p-3 font-bold text-slate-800">{row.supplier_name}</td>
                             <td className="p-3 font-mono">{row.invoice_date}</td>
@@ -1753,7 +1753,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-bold text-slate-800">{row.supplier_name}</td>
                             <td className="p-3 font-mono">{row.phone || "لا يوجد"}</td>
                             <td className="p-3 text-center font-bold font-mono text-red-600 bg-red-50/30">{row.unpaid_invoices_count}</td>
@@ -1819,7 +1819,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-bold text-slate-800">{row.item_name}</td>
                             <td className="p-3 text-left font-mono font-bold text-slate-700">{row.current_cost?.toFixed(2)} ر.س</td>
                             <td className="p-3 text-left font-mono text-blue-600">{row.average_purchase_price?.toFixed(2)} ر.س</td>
@@ -1843,7 +1843,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any, i: number) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-bold text-slate-800">
                               <span className="inline-block w-5 h-5 rounded-full bg-slate-100 text-slate-700 text-center text-[10px] leading-5 font-bold ml-2">
                                 {i + 1}
@@ -1872,7 +1872,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-bold text-slate-800">{row.supplier_name}</td>
                             <td className="p-3 text-left font-mono font-bold text-slate-900 bg-slate-50">{row.total_balance?.toFixed(2)} ر.س</td>
                             <td className="p-3 text-left font-mono text-emerald-600">{row.age_0_30?.toFixed(2)} ر.س</td>
@@ -1900,7 +1900,7 @@ export default function SuppliersPage() {
                       </thead>
                       <tbody>
                         {reportData.map((row: any) => (
-                          <tr key={row.id} className="border-b hover:bg-slate-50/50">
+                          <tr key={`suppliers-row-id-${row.id || idx}-${idx}`} className="border-b hover:bg-slate-50/50">
                             <td className="p-3 font-mono font-bold text-slate-800">{row.invoice_number}</td>
                             <td className="p-3 font-bold">{row.supplier_name}</td>
                             <td className="p-3 font-mono">{row.invoice_date}</td>
@@ -1982,7 +1982,7 @@ export default function SuppliersPage() {
                         <SelectTrigger><SelectValue placeholder="اختر الصنف" /></SelectTrigger>
                         <SelectContent>
                           {products.map((p: any) => (
-                            <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>
+                            <SelectItem key={`suppliers-p-id-${p.id || idx}-${idx}`} value={String(p.id)}>{p.name}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -2060,7 +2060,7 @@ export default function SuppliersPage() {
                     <SelectContent>
                       <SelectItem value="none">بدون طلب شراء مباشر</SelectItem>
                       {requests.map((r: any) => (
-                        <SelectItem key={r.id} value={String(r.id)}>{r.pr_number} - {r.requester_name}</SelectItem>
+                        <SelectItem key={`suppliers-r-id-${r.id || idx}-${idx}`} value={String(r.id)}>{r.pr_number} - {r.requester_name}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -2075,7 +2075,7 @@ export default function SuppliersPage() {
                       <SelectTrigger className="w-1/2"><SelectValue placeholder="من القائمة" /></SelectTrigger>
                       <SelectContent>
                         {products.map((p: any) => (
-                          <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>
+                          <SelectItem key={`suppliers-p-id-${p.id || idx}-${idx}`} value={String(p.id)}>{p.name}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -2221,7 +2221,7 @@ export default function SuppliersPage() {
                         <SelectTrigger><SelectValue placeholder="اختر الصنف" /></SelectTrigger>
                         <SelectContent>
                           {products.map((p: any) => (
-                            <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>
+                            <SelectItem key={`suppliers-p-id-${p.id || idx}-${idx}`} value={String(p.id)}>{p.name}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -2312,7 +2312,7 @@ export default function SuppliersPage() {
                     <SelectContent>
                       <SelectItem value="direct">استلام مباشر بدون أمر شراء</SelectItem>
                       {orders.map((o: any) => (
-                        <SelectItem key={o.id} value={String(o.id)}>{o.po_number} - {o.supplier_name || "مورد"}</SelectItem>
+                        <SelectItem key={`suppliers-o-id-${o.id || idx}-${idx}`} value={String(o.id)}>{o.po_number} - {o.supplier_name || "مورد"}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -2376,7 +2376,7 @@ export default function SuppliersPage() {
                             <SelectTrigger className="w-1/2"><SelectValue placeholder="اختر الصنف" /></SelectTrigger>
                             <SelectContent>
                               {products.map((p: any) => (
-                                <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>
+                                <SelectItem key={`suppliers-p-id-${p.id || idx}-${idx}`} value={String(p.id)}>{p.name}</SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
@@ -2550,7 +2550,7 @@ export default function SuppliersPage() {
                         <SelectTrigger><SelectValue placeholder="اختر الصنف" /></SelectTrigger>
                         <SelectContent>
                           {products.map((p: any) => (
-                            <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>
+                            <SelectItem key={`suppliers-p-id-${p.id || idx}-${idx}`} value={String(p.id)}>{p.name}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -2862,7 +2862,7 @@ export default function SuppliersPage() {
                   <SelectTrigger><SelectValue placeholder="اختر الصنف" /></SelectTrigger>
                   <SelectContent>
                     {products.map((p: any) => (
-                      <SelectItem key={p.id} value={String(p.id)}>{p.name}</SelectItem>
+                      <SelectItem key={`suppliers-p-id-${p.id || idx}-${idx}`} value={String(p.id)}>{p.name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

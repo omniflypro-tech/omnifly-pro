@@ -767,7 +767,7 @@ export default function TravelBusTicketsPage() {
       "طريقة الدفع", "حالة الدفع", "الحالة"
     ];
 
-    const rows = bookings.map(b => [
+    const rows = bookings.map((b, idx) => [
       b.booking_number,
       b.ticket_number,
       b.pnr_number,
@@ -791,7 +791,7 @@ export default function TravelBusTicketsPage() {
       BUS_STATUS[b.status]?.label || b.status
     ]);
 
-    const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+    const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r, idx) => r.join(","))].join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");

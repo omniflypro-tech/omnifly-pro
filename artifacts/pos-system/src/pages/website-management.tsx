@@ -470,8 +470,8 @@ export default function WebsiteManagementPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 font-medium">
-                      {bookings.map((b) => (
-                        <tr key={b.id} className="hover:bg-slate-50/70 transition-colors">
+                      {bookings.map((b, idx) => (
+                        <tr key={`websitemanagement-b-id-${b.id || idx}-${idx}`} className="hover:bg-slate-50/70 transition-colors">
                           <td className="p-3 font-mono font-bold text-sky-700">
                             <div>{b.booking_ref}</div>
                             <div className="text-[10px] text-slate-400">{b.pnr}</div>
@@ -738,9 +738,9 @@ export default function WebsiteManagementPage() {
                     { id: "packages", label: "باقات سياحية وعمرة" },
                     { id: "visas", label: "تأشيرات سفر" },
                     { id: "general", label: "عروض أخرى" }
-                  ].map((cat) => (
+                  ].map((cat, idx) => (
                     <button
-                      key={cat.id}
+                      key={`websitemanagement-cat-id-${cat.id || idx}-${idx}`}
                       onClick={() => setServiceCategoryFilter(cat.id)}
                       className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
                         serviceCategoryFilter === cat.id
@@ -764,9 +764,9 @@ export default function WebsiteManagementPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {customServices
                       .filter((s) => serviceCategoryFilter === "all" || s.category === serviceCategoryFilter)
-                      .map((service) => (
+                      .map((service, idx) => (
                         <Card
-                          key={service.id}
+                          key={`websitemanagement-service-id-${service.id || idx}-${idx}`}
                           className={`rounded-2xl border transition-all ${
                             service.is_active === 1
                               ? "border-slate-200 shadow-xs hover:border-orange-300"
@@ -1289,8 +1289,8 @@ export default function WebsiteManagementPage() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {inquiries.map((inq) => (
-                    <div key={inq.id} className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  {inquiries.map((inq, idx) => (
+                    <div key={`websitemanagement-inq-id-${inq.id || idx}-${idx}`} className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-slate-900 text-sm">{inq.name}</span>

@@ -315,7 +315,7 @@ export default function CurrenciesPage() {
                   </thead>
                   <tbody className="divide-y divide-border">
                     {currencies.map((c: any) => (
-                      <tr key={c.id} className="hover:bg-muted/30 transition-colors">
+                      <tr key={`currencies-c-id-${c.id || idx}-${idx}`} className="hover:bg-muted/30 transition-colors">
                         <td className="p-3 font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                           <span className="text-xl">{c.flag || "🌐"}</span>
                           <span>{c.name}</span>
@@ -417,7 +417,7 @@ export default function CurrenciesPage() {
                     className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-background text-sm font-bold"
                   >
                     {currencies.map((c: any) => (
-                      <option key={c.id} value={c.id}>{c.flag || ""} {c.name} ({c.symbol})</option>
+                      <option key={`currencies-c-id-${c.id || idx}-${idx}`} value={c.id}>{c.flag || ""} {c.name} ({c.symbol})</option>
                     ))}
                   </select>
                 </div>
@@ -434,7 +434,7 @@ export default function CurrenciesPage() {
                     className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-background text-sm font-bold"
                   >
                     {currencies.map((c: any) => (
-                      <option key={c.id} value={c.id}>{c.flag || ""} {c.name} ({c.symbol})</option>
+                      <option key={`currencies-c-id-${c.id || idx}-${idx}`} value={c.id}>{c.flag || ""} {c.name} ({c.symbol})</option>
                     ))}
                   </select>
                 </div>
@@ -500,9 +500,9 @@ export default function CurrenciesPage() {
                   قوالب عملات جاهزة ومعتمدة دولياً (انقر للتعبئة التلقائية):
                 </span>
                 <div className="flex flex-wrap gap-1.5 pt-1">
-                  {POPULAR_CURRENCY_PRESETS.map(p => (
+                  {POPULAR_CURRENCY_PRESETS.map((p, idx) => (
                     <button
-                      key={p.symbol}
+                      key={`currencies-p-symbol-${p.symbol || idx}-${idx}`}
                       type="button"
                       onClick={() => applyPreset(p)}
                       className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-colors flex items-center gap-1 ${

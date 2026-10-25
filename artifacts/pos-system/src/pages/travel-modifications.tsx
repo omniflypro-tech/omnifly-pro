@@ -180,8 +180,8 @@ export default function TravelModificationsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {filtered.map((m) => (
-                    <tr key={m.id} className="hover:bg-slate-50/80 transition-colors">
+                  {filtered.map((m, idx) => (
+                    <tr key={`travelmodifications-m-id-${m.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                       <td className="p-4 font-mono font-bold text-sky-800">{m.pnr || "—"}</td>
 
                       <td className="p-4 font-semibold text-slate-900">{m.modification_type}</td>
@@ -228,8 +228,8 @@ export default function TravelModificationsPage() {
                   className="w-full border border-slate-200 rounded-xl p-2.5 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 >
                   <option value="">-- اختر الحجز من القائمة --</option>
-                  {bookings.map((b) => (
-                      <option key={b.id} value={b.id}>
+                  {bookings.map((b, idx) => (
+                      <option key={`travelmodifications-b-id-${b.id || idx}-${idx}`} value={b.id}>
                         {b.pnr || "بدون PNR"} | {b.passenger_name_ar || b.customer_name} | {b.origin_city} إلى {b.destination_city}
                       </option>
                   ))}

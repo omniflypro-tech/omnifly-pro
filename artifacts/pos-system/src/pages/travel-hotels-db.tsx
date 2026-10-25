@@ -187,9 +187,9 @@ export default function TravelHotelsDbPage() {
           <div className="p-12 text-center text-slate-500 bg-white rounded-2xl border">لا توجد فنادق مطابقة للبحث</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((h) => (
+            {filtered.map((h, idx) => (
               <div
-                key={h.id}
+                key={`travelhotelsdb-h-id-${h.id || idx}-${idx}`}
                 className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:shadow-md transition-all space-y-4 flex flex-col justify-between"
               >
                 <div>

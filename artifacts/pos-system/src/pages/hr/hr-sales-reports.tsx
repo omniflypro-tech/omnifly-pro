@@ -292,8 +292,8 @@ export function SalesReportsTab({ initialReport }: { initialReport?: string }) {
               onChange={(e) => setSelectedReport(e.target.value)}
               className="bg-slate-800 border border-slate-700 text-slate-100 rounded-lg px-3 py-2 text-xs font-bold w-full cursor-pointer focus:ring-2 focus:ring-amber-500 focus:outline-hidden appearance-none pl-8"
             >
-              {reportTypes.map((rep) => (
-                <option key={rep.id} value={rep.id} className="bg-slate-900 text-white py-1">
+              {reportTypes.map((rep, idx) => (
+                <option key={`hrsalesreports-rep-id-${rep.id || idx}-${idx}`} value={rep.id} className="bg-slate-900 text-white py-1">
                   {rep.label}
                 </option>
               ))}

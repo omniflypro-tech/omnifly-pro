@@ -514,7 +514,7 @@ export default function CustomerPortalPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                     {availableRides.map((ride: any) => (
                       <Card
-                        key={ride.id}
+                        key={`customerportal-ride-id-${ride.id || idx}-${idx}`}
                         className="rounded-2xl border border-slate-200 hover:border-blue-500 hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden group bg-white"
                       >
                         <CardHeader className="p-4 pb-2 bg-gradient-to-l from-blue-50/50 to-white border-b border-slate-100">
@@ -594,7 +594,7 @@ export default function CustomerPortalPage() {
                   <div className="grid grid-cols-1 gap-3">
                     {flights.map((f: any) => (
                       <div
-                        key={f.id}
+                        key={`customerportal-f-id-${f.id || idx}-${idx}`}
                         className="bg-white p-4 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4"
                       >
                         <div className="flex items-center gap-3">
@@ -655,7 +655,7 @@ export default function CustomerPortalPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     {hotels.map((h: any) => (
-                      <Card key={h.id} className="rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all">
+                      <Card key={`customerportal-h-id-${h.id || idx}-${idx}`} className="rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all">
                         <CardHeader className="p-4 pb-2 border-b border-slate-100 flex flex-row items-start justify-between">
                           <div>
                             <CardTitle className="text-sm font-bold text-slate-900">{h.hotel_name}</CardTitle>
@@ -696,7 +696,7 @@ export default function CustomerPortalPage() {
                 <TabsContent value="packages" className="space-y-4 mt-0">
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                     {(catalog?.packages || []).map((pkg: any) => (
-                      <Card key={pkg.id} className="rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden">
+                      <Card key={`customerportal-pkg-id-${pkg.id || idx}-${idx}`} className="rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden">
                         <div className="bg-gradient-to-r from-blue-950 to-indigo-900 text-white p-4">
                           <Badge className="bg-amber-400 text-slate-950 font-bold text-[10px] mb-2">{pkg.package_type || "برنامج سياحي"}</Badge>
                           <h4 className="text-base font-bold leading-tight">{pkg.package_name}</h4>
@@ -821,7 +821,7 @@ export default function CustomerPortalPage() {
                 {lookupResults && (
                   <div className="space-y-3 pt-4 border-t border-slate-100">
                     {(lookupResults.online_bookings || []).map((b: any) => (
-                      <div key={b.id} className="p-3 sm:p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-4">
+                      <div key={`customerportal-b-id-${b.id || idx}-${idx}`} className="p-3 sm:p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-4">
                         <div>
                           <div className="flex items-center gap-2">
                             <Badge className="bg-blue-900 text-white text-xs">{b.booking_ref}</Badge>

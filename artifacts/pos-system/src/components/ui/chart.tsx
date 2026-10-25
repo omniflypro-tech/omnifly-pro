@@ -185,7 +185,7 @@ const ChartTooltipContent = React.forwardRef<
 
               return (
                 <div
-                  key={item.dataKey}
+                  key={`chart-item-dataKey-${item.dataKey || idx}-${idx}`}
                   className={cn(
                     "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
                     indicator === "dot" && "items-center"
@@ -276,13 +276,13 @@ const ChartLegendContent = React.forwardRef<
       >
         {payload
           .filter((item) => item.type !== "none")
-          .map((item) => {
+          .map((item, idx) => {
             const key = `${nameKey || item.dataKey || "value"}`
             const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
             return (
               <div
-                key={item.value}
+                key={`chart-item-value-${item.value || idx}-${idx}`}
                 className={cn(
                   "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
                 )}

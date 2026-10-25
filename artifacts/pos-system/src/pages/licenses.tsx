@@ -972,7 +972,7 @@ export default function LicensesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y">
-                {((licenses as any[]) || []).map(l => {
+                {((licenses as any[]) || []).map((l, idx) => {
                   const isExpanded = expandedLicenseId === l.id;
                   const activeCount = l.devices?.filter((d: any) => d.status === 'authorized' || !d.status).length ?? 0;
                   const isExpired = l.expires_at && l.expires_at !== "غير محدد" && new Date(l.expires_at) < new Date();
@@ -980,7 +980,7 @@ export default function LicensesPage() {
                   const isCloud = l.license_type === "cloud" || !l.license_type;
 
                   return (
-                    <React.Fragment key={l.id}>
+                    <React.Fragment key={`licenses-l-id-${l.id || idx}-${idx}`}>
                       <tr className="hover:bg-muted/30 transition-colors">
                         <td className="p-3 font-mono text-red-600 font-extrabold dir-ltr text-right">{l.license_key}</td>
                         <td className="p-3 font-bold text-slate-800">{l.client_name}</td>
@@ -1117,7 +1117,7 @@ export default function LicensesPage() {
                                     const isBlocked = d.status === 'blocked';
                                     const isCurrent = d.device_id === currentDevId;
                                     return (
-                                      <div key={d.id} className={`p-3 rounded-xl border flex flex-col justify-between gap-2 text-xs transition-colors ${
+                                      <div key={`licenses-d-id-${d.id || idx}-${idx}`} className={`p-3 rounded-xl border flex flex-col justify-between gap-2 text-xs transition-colors ${
                                         isBlocked ? "bg-red-50/70 border-red-200" : isCurrent ? "bg-emerald-50/70 border-emerald-300" : "bg-slate-50 border-slate-200"
                                       }`}>
                                         <div className="space-y-1">

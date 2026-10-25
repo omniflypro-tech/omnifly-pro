@@ -204,9 +204,9 @@ export default function TravelAirlinesPage() {
           <div className="p-12 text-center text-slate-500 bg-white rounded-2xl border">لا توجد نتائج مطابقة</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((a) => (
+            {filtered.map((a, idx) => (
               <div
-                key={a.id}
+                key={`travelairlines-a-id-${a.id || idx}-${idx}`}
                 className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:shadow-md transition-all space-y-4 flex flex-col justify-between"
               >
                 <div>

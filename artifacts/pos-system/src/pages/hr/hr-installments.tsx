@@ -61,8 +61,8 @@ export function MonthlyInstallmentsTab() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {installments.map((item) => (
-              <tr key={item.id} className="hover:bg-muted/30">
+            {installments.map((item, idx) => (
+              <tr key={`hrinstallments-item-id-${item.id || idx}-${idx}`} className="hover:bg-muted/30">
                 <td className="p-3 font-medium">{item.name}</td>
                 <td className="p-3 text-muted-foreground">{item.purpose}</td>
                 <td className="p-3 font-mono">{fmt(item.total_amount)}</td>
@@ -169,8 +169,8 @@ export function MonthlyAbsenceTab() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {absences.map((item) => (
-              <tr key={item.id} className="hover:bg-muted/30">
+            {absences.map((item, idx) => (
+              <tr key={`hrinstallments-item-id-${item.id || idx}-${idx}`} className="hover:bg-muted/30">
                 <td className="p-3 font-medium">{item.name}</td>
                 <td className="p-3 font-mono font-bold text-red-500">{item.days} أيام</td>
                 <td className="p-3 font-mono">{fmt(item.cost_day)}</td>
@@ -271,8 +271,8 @@ export function TemporaryAdvancesTab() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {advances.map((item) => (
-              <tr key={item.id} className="hover:bg-muted/30">
+            {advances.map((item, idx) => (
+              <tr key={`hrinstallments-item-id-${item.id || idx}-${idx}`} className="hover:bg-muted/30">
                 <td className="p-3 font-medium">{item.name}</td>
                 <td className="p-3 font-mono font-bold text-primary">{fmt(item.amount)}</td>
                 <td className="p-3 font-mono">{item.date_given}</td>
@@ -374,8 +374,8 @@ export function EntitlementsTab() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {entitlements.map((item) => (
-              <tr key={item.id} className="hover:bg-muted/30">
+            {entitlements.map((item, idx) => (
+              <tr key={`hrinstallments-item-id-${item.id || idx}-${idx}`} className="hover:bg-muted/30">
                 <td className="p-3 font-medium">{item.name}</td>
                 <td className="p-3 font-semibold"><Badge variant="outline">{item.type}</Badge></td>
                 <td className="p-3 font-mono font-bold text-green-600">+{fmt(item.amount)} ر.س</td>

@@ -176,9 +176,9 @@ export function ScannerDiagnosticDialog({
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {logs.map((log) => (
+                    {logs.map((log, idx) => (
                       <div
-                        key={log.id}
+                        key={`scannerdiagnosticdialog-log-id-${log.id || idx}-${idx}`}
                         className={`p-3 rounded-lg border text-xs transition-all ${
                           log.matched
                             ? "bg-emerald-950/40 border-emerald-500/40 text-emerald-200"
@@ -262,8 +262,8 @@ export function ScannerDiagnosticDialog({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">
-                    {filteredProducts.map((p) => (
-                      <tr key={p.id} className="hover:bg-slate-900/50 transition-colors">
+                    {filteredProducts.map((p, idx) => (
+                      <tr key={`scannerdiagnosticdialog-p-id-${p.id || idx}-${idx}`} className="hover:bg-slate-900/50 transition-colors">
                         <td className="p-2.5 font-mono text-slate-400">{p.number || p.id}</td>
                         <td className="p-2.5 font-semibold text-white">{p.name}</td>
                         <td className="p-2.5 font-mono text-amber-300 font-bold" dir="ltr">

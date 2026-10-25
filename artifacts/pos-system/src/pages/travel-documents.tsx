@@ -283,8 +283,8 @@ export default function TravelDocumentsPage() {
               className="border border-slate-200 rounded-xl px-3 py-2 text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             >
               <option value="all">جميع الأنواع</option>
-              {docTypes.map((t) => (
-                <option key={t} value={t}>
+              {docTypes.map((t, idx) => (
+                <option key={`traveldocuments-t-${t || idx}-${idx}`} value={t}>
                   {t}
                 </option>
               ))}
@@ -312,7 +312,7 @@ export default function TravelDocumentsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {filtered.map((doc) => {
+                  {filtered.map((doc, idx) => {
                     let isExpiring = false;
                     let isExpired = false;
                     if (doc.expiry_date) {
@@ -323,7 +323,7 @@ export default function TravelDocumentsPage() {
                     }
 
                     return (
-                      <tr key={doc.id} className="hover:bg-slate-50/80 transition-colors">
+                      <tr key={`traveldocuments-doc-id-${doc.id || idx}-${idx}`} className="hover:bg-slate-50/80 transition-colors">
                         <td className="p-4 font-semibold text-slate-900">
                           <div className="flex items-center gap-2">
                             <FileText className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -433,8 +433,8 @@ export default function TravelDocumentsPage() {
                     onChange={(e) => setForm({ ...form, document_type: e.target.value })}
                     className="w-full border border-slate-200 rounded-xl p-2.5 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   >
-                    {docTypes.map((t) => (
-                      <option key={t} value={t}>
+                    {docTypes.map((t, idx) => (
+                      <option key={`traveldocuments-t-${t || idx}-${idx}`} value={t}>
                         {t}
                       </option>
                     ))}
@@ -461,8 +461,8 @@ export default function TravelDocumentsPage() {
                     className="w-full border border-slate-200 rounded-xl p-2.5 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   >
                     <option value="">-- اختياري --</option>
-                    {passengers.map((p) => (
-                      <option key={p.id} value={p.id}>
+                    {passengers.map((p, idx) => (
+                      <option key={`traveldocuments-p-id-${p.id || idx}-${idx}`} value={p.id}>
                         {p.name_ar} ({p.passport_number || "بدون جواز"})
                       </option>
                     ))}
@@ -477,8 +477,8 @@ export default function TravelDocumentsPage() {
                     className="w-full border border-slate-200 rounded-xl p-2.5 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   >
                     <option value="">-- اختياري --</option>
-                    {customers.map((c) => (
-                      <option key={c.id} value={c.id}>
+                    {customers.map((c, idx) => (
+                      <option key={`traveldocuments-c-id-${c.id || idx}-${idx}`} value={c.id}>
                         {c.name}
                       </option>
                     ))}

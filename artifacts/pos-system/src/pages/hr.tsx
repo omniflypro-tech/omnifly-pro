@@ -109,7 +109,7 @@ function DepartmentsTab() {
             </thead>
             <tbody className="divide-y divide-border">
               {((depts as any[]) || []).map((d: any) => (
-                <tr key={d.id} className="hover:bg-muted/30">
+                <tr key={`hr-d-id-${d.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-medium">{d.name}</td>
                   <td className="p-3 text-primary font-mono">{fmt(d.budget)}</td>
                   <td className="p-3">
@@ -200,7 +200,7 @@ function EmployeesTab() {
             </thead>
             <tbody className="divide-y divide-border">
               {((employees as any[]) || []).map((e: any) => (
-                <tr key={e.id} className="hover:bg-muted/30">
+                <tr key={`hr-e-id-${e.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-mono text-xs">{e.employee_number}</td>
                   <td className="p-3 font-medium">{e.name}</td>
                   <td className="p-3 text-muted-foreground">{e.position ?? "—"}</td>
@@ -338,7 +338,7 @@ function SalariesTab() {
             </thead>
             <tbody className="divide-y divide-border">
               {((salaries as any[]) || []).map((s: any) => (
-                <tr key={s.id} className="hover:bg-muted/30">
+                <tr key={`hr-s-id-${s.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-medium">{s.employee_name}</td>
                   <td className="p-3 text-muted-foreground">{s.month}</td>
                   <td className="p-3 font-mono">{fmt(s.basic_salary)}</td>
@@ -455,7 +455,7 @@ function AttendanceTab() {
             </thead>
             <tbody className="divide-y divide-border">
               {((attendance as any[]) || []).map((a: any) => (
-                <tr key={a.id} className="hover:bg-muted/30">
+                <tr key={`hr-a-id-${a.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-medium">{a.employee_name}</td>
                   <td className="p-3 text-muted-foreground">{a.date}</td>
                   <td className="p-3 font-mono">{a.check_in ?? "—"}</td>
@@ -575,7 +575,7 @@ function MealDeductionsTab() {
             </thead>
             <tbody className="divide-y divide-border">
               {((deductions as any[]) || []).map((d: any) => (
-                <tr key={d.id} className="hover:bg-muted/30">
+                <tr key={`hr-d-id-${d.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-medium">{d.employee_name}</td>
                   <td className="p-3 font-mono text-xs text-muted-foreground">{d.employee_number}</td>
                   <td className="p-3 text-muted-foreground">{d.cashier_name}</td>
@@ -772,14 +772,14 @@ export default function HR() {
   const renderTree = (items: TreeItem[], depth = 0) => {
     return (
       <ul className="space-y-1">
-        {items.map((item) => {
+        {items.map((item, idx) => {
           const isFolder = !!item.children;
           const isExpanded = expandedFolders.has(item.id);
           const isActive = activeView === item.id;
           const Icon = item.icon || FileText;
 
           return (
-            <li key={item.id} className="text-sm">
+            <li key={`hr-item-id-${item.id || idx}-${idx}`} className="text-sm">
               {isFolder ? (
                 <div>
                   <button

@@ -121,8 +121,8 @@ export default function TravelReportsPage() {
               className="h-9 text-xs border rounded-lg px-2.5 bg-slate-50 text-slate-700 focus:outline-none focus:ring-1 focus:ring-primary"
             >
               <option value="all">🏢 كافة الفروع</option>
-              {branches.map((b) => (
-                <option key={b.id} value={b.id}>{b.name}</option>
+              {branches.map((b, idx) => (
+                <option key={`travelreports-b-id-${b.id || idx}-${idx}`} value={b.id}>{b.name}</option>
               ))}
             </select>
 
@@ -176,12 +176,12 @@ export default function TravelReportsPage() {
             { id: "visas_hotels", label: "🛂 التأشيرات والفنادق", icon: Globe },
             { id: "employees", label: "👤 أداء الموظفين والوكلاء", icon: Users },
             { id: "branches", label: "🏢 مقارنة أداء الفروع", icon: Building2 },
-          ].map((tab) => {
+          ].map((tab, idx) => {
             const Icon = tab.icon;
             const active = activeTab === tab.id;
             return (
               <button
-                key={tab.id}
+                key={`travelreports-tab-id-${tab.id || idx}-${idx}`}
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition-colors ${
                   active
@@ -472,7 +472,7 @@ export default function TravelReportsPage() {
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {branchSummaries.map((b: any) => (
-                <div key={b.id} className="bg-white p-4 border rounded-xl shadow-sm space-y-3">
+                <div key={`travelreports-b-id-${b.id || idx}-${idx}`} className="bg-white p-4 border rounded-xl shadow-sm space-y-3">
                   <div className="flex items-center justify-between border-b pb-2">
                     <span className="font-bold text-sm text-slate-900 flex items-center gap-1.5">
                       <Building2 className="w-4 h-4 text-primary" />

@@ -319,7 +319,7 @@ export default function Products() {
   // Utility calculations for Recipe Costs
   const selectedProduct = products.find(p => p.id === selectedRecipeProductId);
   let totalBOMCost = 0;
-  const processedIngredients = recipeIngredients.map(ing => {
+  const processedIngredients = recipeIngredients.map((ing, idx) => {
     const matchingProduct = products.find(p => p.name.toLowerCase() === ing.ingredient_name.toLowerCase());
     const unitCost = matchingProduct ? (matchingProduct.cost || 0) : 0;
     const totalCost = unitCost * ing.quantity;
@@ -365,7 +365,7 @@ export default function Products() {
     }
   }, [productionProductId]);
 
-  const productionIngredientsPreview = prodRecipes.map(rec => {
+  const productionIngredientsPreview = prodRecipes.map((rec, idx) => {
     const ingProduct = products.find(p => p.name.toLowerCase() === rec.ingredient_name.toLowerCase());
     const neededQty = rec.quantity * productionQty;
     const availableStock = ingProduct ? (ingProduct.stock ?? 0) : 0;
@@ -470,10 +470,10 @@ export default function Products() {
                       <td colSpan={11} className="text-center py-12 text-slate-400 text-xs">لا توجد أصناف مسجلة في المخازن تطابق بحثك.</td>
                     </tr>
                   ) : (
-                    products?.map((product) => {
+                    products?.map((product, idx) => {
                       const typeObj = ITEM_TYPES.find(t => t.value === product.item_type) || ITEM_TYPES[0];
                       return (
-                        <tr key={product.id} className="hover:bg-slate-50/50 transition-colors">
+                        <tr key={`products-product-id-${product.id || idx}-${idx}`} className="hover:bg-slate-50/50 transition-colors">
                           <td className="p-4 font-mono font-bold text-blue-600 text-xs">{product.number}</td>
                           <td className="p-4 font-medium text-slate-800 text-xs">{product.name}</td>
                           <td className="p-4">
@@ -539,8 +539,8 @@ export default function Products() {
                     <option value="">-- اختر صنف/وجبة --</option>
                     {products
                       .filter(p => p.item_type === "composite" || p.item_type === "semi_finished" || p.item_type === "sellable")
-                      .map(p => (
-                        <option key={p.id} value={p.id}>
+                      .map((p, idx) => (
+                        <option key={`products-p-id-${p.id || idx}-${idx}`} value={p.id}>
                           {p.name} [{p.item_type === "composite" ? "منتج مركب" : p.item_type === "semi_finished" ? "نصف مصنع" : "منتج بيع"}]
                         </option>
                       ))}
@@ -619,8 +619,8 @@ export default function Products() {
                       <option value="">-- اختر مادة خام / تعبئة --</option>
                       {products
                         .filter(p => p.id !== selectedRecipeProductId && p.item_type !== "sellable")
-                        .map(p => (
-                          <option key={p.id} value={p.name}>
+                        .map((p, idx) => (
+                          <option key={`products-p-id-${p.id || idx}-${idx}`} value={p.name}>
                             {p.name} (متوفر: {p.stock ?? 0} {p.unit})
                           </option>
                         ))}
@@ -703,8 +703,8 @@ export default function Products() {
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 text-slate-700">
-                          {processedIngredients.map(ing => (
-                            <tr key={ing.id} className="hover:bg-slate-50/50 transition-colors">
+                          {processedIngredients.map((ing, idx) => (
+                            <tr key={`products-ing-id-${ing.id || idx}-${idx}`} className="hover:bg-slate-50/50 transition-colors">
                               <td className="p-3 font-medium text-slate-800">{ing.ingredient_name}</td>
                               <td className="p-3 text-center font-bold font-mono text-purple-600">{ing.quantity}</td>
                               <td className="p-3 text-center text-slate-500">{ing.unit}</td>
@@ -759,8 +759,8 @@ export default function Products() {
                     <option value="">-- اختر الصنف المصنع --</option>
                     {products
                       .filter(p => p.item_type === "composite" || p.item_type === "semi_finished")
-                      .map(p => (
-                        <option key={p.id} value={p.id}>
+                      .map((p, idx) => (
+                        <option key={`products-p-id-${p.id || idx}-${idx}`} value={p.id}>
                           {p.name} (الرصيد الحالي بالمخازن: {p.stock ?? 0} {p.unit})
                         </option>
                       ))}
@@ -898,7 +898,7 @@ export default function Products() {
                   value={form.item_type || "sellable"}
                   onChange={e => handleItemTypeChange(e.target.value)}
                 >
-                  {ITEM_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                  {ITEM_TYPES.map((t, idx) => <option key={`products-t-value-${t.value || idx}-${idx}`} value={t.value}>{t.label}</option>)}
                 </select>
               </div>
               
@@ -981,7 +981,7 @@ export default function Products() {
                   onChange={e => setForm({ ...form, categoryId: e.target.value ? parseInt(e.target.value) : null })}
                 >
                   <option value="">بدون تصنيف</option>
-                  {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  {categories.map((c, idx) => <option key={`products-c-id-${c.id || idx}-${idx}`} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
 
@@ -1086,7 +1086,7 @@ export default function Products() {
                   }}
                 >
                   <option value="">بدون مورد</option>
-                  {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                  {suppliers.map((s, idx) => <option key={`products-s-id-${s.id || idx}-${idx}`} value={s.id}>{s.name}</option>)}
                 </select>
               </div>
 
@@ -1102,7 +1102,7 @@ export default function Products() {
                   }}
                 >
                   <option value="المخزن الرئيسي">المخزن الرئيسي</option>
-                  {warehouses.map((w: any) => <option key={w.id} value={w.name}>{w.name}</option>)}
+                  {warehouses.map((w: any) => <option key={`products-w-id-${w.id || idx}-${idx}`} value={w.name}>{w.name}</option>)}
                 </select>
               </div>
             </div>

@@ -69,7 +69,7 @@ export function OvertimeTab() {
             </thead>
             <tbody className="divide-y divide-border">
               {((overtime as any[]) || []).map((o: any) => (
-                <tr key={o.id} className="hover:bg-muted/30">
+                <tr key={`overtime-o-id-${o.id || idx}-${idx}`} className="hover:bg-muted/30">
                   <td className="p-3 font-medium">{o.employee_name}</td>
                   <td className="p-3 text-muted-foreground">{o.date}</td>
                   <td className="p-3 font-mono font-bold text-primary">{o.hours} ساعة</td>
@@ -97,7 +97,7 @@ export function OvertimeTab() {
               <label className="text-sm font-medium">الموظف المستحق *</label>
               <Select value={form.employee_id} onValueChange={v => setForm(f => ({ ...f, employee_id: v }))}>
                 <SelectTrigger className="mt-1"><SelectValue placeholder="اختر الموظف" /></SelectTrigger>
-                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={e.id} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{((employees as any[]) || []).filter((e: any) => e.active).map((e: any) => <SelectItem key={`overtime-e-id-${e.id || idx}-${idx}`} value={String(e.id)}>{e.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="grid grid-cols-2 gap-3">

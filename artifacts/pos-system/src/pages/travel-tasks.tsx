@@ -307,7 +307,7 @@ export default function TravelTasksPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {tasks.map((task: any) => (
               <div
-                key={task.id}
+                key={`traveltasks-task-id-${task.id || idx}-${idx}`}
                 className={`bg-white border rounded-2xl p-4 shadow-sm transition-all hover:shadow-md flex flex-col justify-between ${
                   task.status === "completed"
                     ? "border-emerald-200 bg-emerald-50/20 opacity-80"
@@ -510,7 +510,7 @@ export default function TravelTasksPage() {
                       >
                         <option value="">-- اختر من موظفي النظام أو اكتب أدناه --</option>
                         {users.map((u: any) => (
-                          <option key={u.id} value={u.full_name || u.username}>
+                          <option key={`traveltasks-u-id-${u.id || idx}-${idx}`} value={u.full_name || u.username}>
                             {u.full_name || u.username} ({u.role || 'موظف'})
                           </option>
                         ))}

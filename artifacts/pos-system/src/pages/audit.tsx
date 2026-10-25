@@ -20,8 +20,8 @@ export default function AuditPage() {
   const [actionFilter, setActionFilter] = useState("");
 
   // Get unique users and actions for the dropdown filters
-  const uniqueUsers = Array.from(new Set(logs.map(l => l.user_name || "النظام"))).filter(Boolean);
-  const uniqueActions = Array.from(new Set(logs.map(l => l.action))).filter(Boolean);
+  const uniqueUsers = Array.from(new Set(logs.map((l, idx) => l.user_name || "النظام"))).filter(Boolean);
+  const uniqueActions = Array.from(new Set(logs.map((l, idx) => l.action))).filter(Boolean);
 
   // Apply filters
   const filteredLogs = logs.filter(l => {
@@ -83,7 +83,7 @@ export default function AuditPage() {
             >
               <option value="">كل المستخدمين</option>
               {uniqueUsers.map((u: string) => (
-                <option key={u} value={u}>{u}</option>
+                <option key={`audit-u-${u || idx}-${idx}`} value={u}>{u}</option>
               ))}
             </select>
           </div>
@@ -97,7 +97,7 @@ export default function AuditPage() {
             >
               <option value="">كل العمليات</option>
               {uniqueActions.map((a: string) => (
-                <option key={a} value={a}>{a}</option>
+                <option key={`audit-a-${a || idx}-${idx}`} value={a}>{a}</option>
               ))}
             </select>
           </div>
@@ -130,8 +130,8 @@ export default function AuditPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y text-xs">
-                  {filteredLogs.map(l => (
-                    <tr key={l.id} className="hover:bg-muted/30 transition-colors">
+                  {filteredLogs.map((l, idx) => (
+                    <tr key={`audit-l-id-${l.id || idx}-${idx}`} className="hover:bg-muted/30 transition-colors">
                       <td className="p-3 text-muted-foreground font-mono whitespace-nowrap">
                         <span className="inline-flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5" />
