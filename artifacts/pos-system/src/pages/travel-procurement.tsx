@@ -230,6 +230,8 @@ export default function TravelProcurementPage() {
     service_category: "تذاكر طيران",
     total_cost: 15000,
     expected_selling_price: 19000,
+    currency: "SAR",
+    exchange_rate: "1",
     delivery_date: new Date().toISOString().slice(0, 10),
     notes: "أمر شراء خدمات وتذاكر"
   });
@@ -254,16 +256,19 @@ export default function TravelProcurementPage() {
   const supplierAccountOptions = useMemo(() => {
     const opts: { value: string; label: string }[] = [];
     (suppliersList || []).forEach((s: any) => {
-      opts.push({ value: s.name, label: `مورد: ${s.name} (${s.supplier_type || 'خدمات'})` });
+      opts.push({ value: s.name, label: `مورد/وكيل: ${s.name} (${s.supplier_type || 'خدمات وتذاكر'})` });
     });
     (accountsList || []).forEach((a: any) => {
-      if (a.code?.startsWith('211') || a.code?.startsWith('21') || a.name?.includes('مورد') || a.name?.includes('دائن')) {
-        opts.push({ value: a.name, label: `حساب: [${a.code}] ${a.name}` });
+      if (!opts.some((o) => o.value === a.name)) {
+        opts.push({ value: a.name, label: `حساب دليل: [${a.code}] ${a.name}` });
       }
     });
     if (opts.length === 0) {
-      opts.push({ value: "شركة الخطوط السعودية (Saudia)", label: "شركة الخطوط السعودية (Saudia)" });
-      opts.push({ value: "فندق هيلتون مكة", label: "فندق هيلتون مكة" });
+      opts.push({ value: "شركة الخطوط السعودية (Saudia)", label: "حساب: [210101] شركة الخطوط السعودية (Saudia)" });
+      opts.push({ value: "شركة طيران ناس (Flynas)", label: "حساب: [210102] شركة طيران ناس (Flynas)" });
+      opts.push({ value: "فندق هيلتون مكة", label: "حساب: [210103] فندق هيلتون مكة" });
+      opts.push({ value: "سلسلة فنادق دار التوحيد مكة", label: "حساب: [210104] سلسلة فنادق دار التوحيد مكة" });
+      opts.push({ value: "شركة Bupa العربية للتأمين", label: "حساب: [210105] شركة Bupa العربية للتأمين" });
     }
     return opts;
   }, [suppliersList, accountsList]);
@@ -312,10 +317,13 @@ export default function TravelProcurementPage() {
 
   const allProcurementInvoices = [...serverInvoices, ...localInvoices];
 
-  // Invoice Items
+  // Invoice Items & Procurement Invoice State
   const [invSupplierName, setInvSupplierName] = useState("شركة الخطوط السعودية (Saudia)");
   const [supplierRef, setSupplierRef] = useState("SDA-INV-8899");
+  const [invCurrency, setInvCurrency] = useState("SAR");
+  const [invExchangeRate, setInvExchangeRate] = useState("1");
   const [paymentMethod, setPaymentMethod] = useState("bank");
+  const [invTreasuryAccount, setInvTreasuryAccount] = useState("البنك الأهلي السعودي - حساب المشتريات");
   const [invNotes, setInvNotes] = useState("");
   const [items, setItems] = useState<any[]>([
     {
@@ -657,10 +665,14 @@ export default function TravelProcurementPage() {
       supplier_invoice_ref: supplierRef,
       pi_date: new Date().toISOString().slice(0, 10),
       payment_method: paymentMethod,
+      treasury_account: invTreasuryAccount,
+      currency: invCurrency,
+      exchange_rate: invExchangeRate,
       cost_subtotal: totalCost,
       fees_subtotal: totalFees,
       selling_subtotal: totalSelling,
       net_profit: expectedProfit,
+      notes: invNotes,
       status: "مرحلة ومكتملة"
     };
     setLocalInvoices([newPi, ...localInvoices]);
@@ -668,24 +680,38 @@ export default function TravelProcurementPage() {
     toast({ title: "نجاح", description: "تم اعتماد وتأكيد فاتورة المشتريات وتحديث شجرة الحسابات ✅" });
   };
 
+  const getPaymentMethodLabel = (method: string) => {
+    switch (method) {
+      case "bank": return "تحويل بنكي direct bank";
+      case "cash": return "نقداً من الخزينة";
+      case "credit": return "آجل / على الحساب (ائتمان)";
+      case "cheque": return "شيك بنكي";
+      case "vcc": return "بطاقة إلكترونية (VCC)";
+      default: return method || "تحويل بنكي";
+    }
+  };
+
   // Preview Procurement Invoice
   const handlePreviewProcurementInvoice = (pi: any) => {
+    const currSymbol = currenciesList.find(c => c.code === (pi.currency || "SAR"))?.symbol || "ر.س";
     const html = `
       <div style="direction: rtl; font-family: Tajawal, sans-serif; padding: 30px; border: 2px solid #0d9488; border-radius: 12px; background: #fff;">
         <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #0d9488; padding-bottom: 15px;">
           <div>
-            <h1 style="margin: 0; color: #0d9488; font-size: 22px;">فاتورة مشتريات خدمات وتذاكر سياحية</h1>
+            <h1 style="margin: 0; color: #0d9488; font-size: 22px;">فاتورة مشتريات خدمات وتذاكر سياحية (Procurement Invoice)</h1>
             <p style="margin: 5px 0 0; color: #64748b; font-size: 13px;">رقم فاتورة المشتريات: ${pi.pi_number}</p>
           </div>
           <div style="text-align: left;">
             <div style="font-weight: bold; font-size: 13px;">تاريخ الفاتورة: ${pi.pi_date}</div>
-            <div style="font-size: 12px; color: #64748b;">طريقة السداد: ${pi.payment_method === 'bank' ? 'تحويل بنكي' : 'نقداً'}</div>
+            <div style="font-size: 12px; color: #64748b;">طريقة السداد: ${getPaymentMethodLabel(pi.payment_method)}</div>
           </div>
         </div>
 
         <div style="margin: 20px 0; font-size: 13px; line-height: 2; background: #f8fafc; padding: 12px; border-radius: 8px;">
-          <p><strong>المورد / الوكيل:</strong> ${pi.supplier_name}</p>
+          <p><strong>المورد / الوكيل (دليل الحسابات):</strong> ${pi.supplier_name}</p>
           <p><strong>مرجع فاتورة المورد:</strong> ${pi.supplier_invoice_ref || "غ/م"}</p>
+          <p><strong>عملة الشراء:</strong> ${pi.currency || "SAR"} ${pi.exchange_rate && pi.exchange_rate !== "1" ? `(سعر الصرف: ${pi.exchange_rate})` : ""}</p>
+          <p><strong>حساب السداد / البنك:</strong> ${pi.treasury_account || "البنك الأهلي السعودي - حساب المشتريات"}</p>
           <p><strong>حالة القيد المحاسبي:</strong> <span style="font-weight: bold; color: #166534;">${pi.status || 'مكتمل ومرحل'}</span></p>
         </div>
 
@@ -700,10 +726,10 @@ export default function TravelProcurementPage() {
           </thead>
           <tbody>
             <tr>
-              <td style="font-family: monospace; font-weight: bold; font-size: 15px; color: #0f766e;">${fmt(pi.cost_subtotal)} ريال</td>
-              <td style="font-family: monospace; font-weight: bold; font-size: 15px;">${fmt(pi.fees_subtotal)} ريال</td>
-              <td style="font-family: monospace; font-weight: bold; font-size: 15px; color: #15803d;">${fmt(pi.selling_subtotal)} ريال</td>
-              <td style="font-family: monospace; font-weight: bold; font-size: 15px; color: #1d4ed8;">+${fmt(pi.net_profit)} ريال</td>
+              <td style="font-family: monospace; font-weight: bold; font-size: 15px; color: #0f766e;">${fmt(pi.cost_subtotal)} ${currSymbol}</td>
+              <td style="font-family: monospace; font-weight: bold; font-size: 15px;">${fmt(pi.fees_subtotal)} ${currSymbol}</td>
+              <td style="font-family: monospace; font-weight: bold; font-size: 15px; color: #15803d;">${fmt(pi.selling_subtotal)} ${currSymbol}</td>
+              <td style="font-family: monospace; font-weight: bold; font-size: 15px; color: #1d4ed8;">+${fmt(pi.net_profit)} ${currSymbol}</td>
             </tr>
           </tbody>
         </table>
@@ -756,7 +782,7 @@ export default function TravelProcurementPage() {
       };
       setPaymentsList([newPv, ...paymentsList]);
       setOpenPaymentModal(false);
-      qc.invalidateQueries({ queryKey: ["vouchers-list"] });
+      queryClient.invalidateQueries({ queryKey: ["vouchers-list"] });
       toast({ title: "تم الصرف بنجاح", description: "تم إصدار سند الدفع للمورد بالعملة المحددة وترحيل القيد المالي بدون مشاكل ✅" });
     } catch (e) {
       const newPv = {
@@ -1300,7 +1326,7 @@ export default function TravelProcurementPage() {
                           <div className="font-bold text-slate-800">{pi.supplier_name}</div>
                           <div className="text-slate-500">{pi.pi_date}</div>
                         </td>
-                        <td className="p-3.5 text-xs font-bold text-slate-700">{pi.payment_method === 'bank' ? 'تحويل بنكي' : 'نقداً'}</td>
+                        <td className="p-3.5 text-xs font-bold text-slate-700">{getPaymentMethodLabel(pi.payment_method)}</td>
                         <td className="p-3.5 text-xs font-bold text-slate-800 font-mono">
                           {fmt(pi.cost_subtotal + (pi.fees_subtotal || 0))} ريال
                         </td>
@@ -1506,8 +1532,13 @@ export default function TravelProcurementPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 text-sm">
               <div className="space-y-1">
-                <Label className="font-bold">المورد المقترح *</Label>
-                <Input value={requestForm.supplier_name} onChange={(e) => setRequestForm({ ...requestForm, supplier_name: e.target.value })} placeholder="اسم الشركة الموردة" />
+                <Label className="font-bold">المورد المقترح (من دليل الحسابات) *</Label>
+                <SearchableSelect
+                  options={supplierAccountOptions}
+                  value={requestForm.supplier_name}
+                  onChange={(val) => setRequestForm({ ...requestForm, supplier_name: val })}
+                  placeholder="اختر أو ابحث عن المورد أو الحساب..."
+                />
               </div>
 
               <div className="space-y-1">
@@ -1618,10 +1649,15 @@ export default function TravelProcurementPage() {
               </DialogTitle>
             </DialogHeader>
 
-            <div className="grid grid-cols-2 gap-4 my-4 text-sm">
-              <div className="space-y-1">
-                <Label className="font-bold">اسم المورد / الشركة *</Label>
-                <Input value={orderForm.supplier_name} onChange={(e) => setOrderForm({ ...orderForm, supplier_name: e.target.value })} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4 text-sm">
+              <div className="space-y-1 col-span-2 md:col-span-1">
+                <Label className="font-bold">اسم المورد / الشركة (من دليل الحسابات) *</Label>
+                <SearchableSelect
+                  options={supplierAccountOptions}
+                  value={orderForm.supplier_name}
+                  onChange={(val) => setOrderForm({ ...orderForm, supplier_name: val })}
+                  placeholder="اختر أو ابحث عن المورد أو الشركة من دليل الحسابات..."
+                />
               </div>
 
               <div className="space-y-1">
@@ -1632,18 +1668,66 @@ export default function TravelProcurementPage() {
                     <SelectItem value="تذاكر طيران">تذاكر طيران</SelectItem>
                     <SelectItem value="غرف واجنيح فنادق">غرف وإقامات فنادق</SelectItem>
                     <SelectItem value="نقل بري ولوجستيات">نقل بري ولوجستيات</SelectItem>
+                    <SelectItem value="معاملات تأشيرات">معاملات تأشيرات</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-1">
-                <Label className="font-bold">إجمالي تكلفة الشراء (ريال سعودي) *</Label>
+                <Label className="font-bold">عملة أمر الشراء *</Label>
+                <Select
+                  value={orderForm.currency || "SAR"}
+                  onValueChange={(curr) => {
+                    const cObj = currenciesList.find((c) => c.code === curr);
+                    setOrderForm({
+                      ...orderForm,
+                      currency: curr,
+                      exchange_rate: cObj ? cObj.rate : "1"
+                    });
+                  }}
+                >
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="اختر العملة" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currenciesList.map((c, idx) => (
+                      <SelectItem key={`po-cur-${c.code}-${idx}`} value={c.code}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {orderForm.currency !== "SAR" && (
+                <div className="space-y-1">
+                  <Label className="font-bold">سعر الصرف مقابل SAR</Label>
+                  <Input
+                    type="number"
+                    step="0.0001"
+                    value={orderForm.exchange_rate}
+                    onChange={(e) => setOrderForm({ ...orderForm, exchange_rate: e.target.value })}
+                  />
+                </div>
+              )}
+
+              <div className="space-y-1">
+                <Label className="font-bold">
+                  إجمالي تكلفة الشراء ({currenciesList.find(c => c.code === orderForm.currency)?.symbol || "ر.س"}) *
+                </Label>
                 <Input type="number" value={orderForm.total_cost} onChange={(e) => setOrderForm({ ...orderForm, total_cost: Number(e.target.value) })} />
               </div>
 
               <div className="space-y-1">
-                <Label className="font-bold">سعر البيع المستهدف (ريال سعودي) *</Label>
+                <Label className="font-bold">
+                  سعر البيع المستهدف ({currenciesList.find(c => c.code === orderForm.currency)?.symbol || "ر.س"}) *
+                </Label>
                 <Input type="number" value={orderForm.expected_selling_price} onChange={(e) => setOrderForm({ ...orderForm, expected_selling_price: Number(e.target.value) })} />
+              </div>
+
+              <div className="space-y-1">
+                <Label className="font-bold">تاريخ التسليم المتوقع</Label>
+                <Input type="date" value={orderForm.delivery_date} onChange={(e) => setOrderForm({ ...orderForm, delivery_date: e.target.value })} />
               </div>
 
               <div className="space-y-1 col-span-2">
@@ -1673,24 +1757,74 @@ export default function TravelProcurementPage() {
             </DialogHeader>
 
             <div className="space-y-6 my-4 text-sm">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border">
-                <div className="space-y-1">
-                  <Label className="font-bold">المورد / الوكيل *</Label>
-                  <Input value={invSupplierName} onChange={(e) => setInvSupplierName(e.target.value)} placeholder="اسم الشركة الموردة" />
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl border">
+                <div className="space-y-1 md:col-span-2">
+                  <Label className="font-bold">المورد / الوكيل (من دليل الحسابات) *</Label>
+                  <SearchableSelect
+                    options={supplierAccountOptions}
+                    value={invSupplierName}
+                    onChange={(val) => setInvSupplierName(val)}
+                    placeholder="اختر أو ابحث عن المورد أو الوكيل من دليل الحسابات..."
+                  />
                 </div>
+
+                <div className="space-y-1">
+                  <Label className="font-bold">عملة الشراء *</Label>
+                  <Select
+                    value={invCurrency}
+                    onValueChange={(curr) => {
+                      const cObj = currenciesList.find((c) => c.code === curr);
+                      setInvCurrency(curr);
+                      setInvExchangeRate(cObj ? cObj.rate : "1");
+                    }}
+                  >
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="اختر عملة الشراء" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {currenciesList.map((c, idx) => (
+                        <SelectItem key={`pi-cur-sel-${c.code}-${idx}`} value={c.code}>
+                          {c.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {invCurrency !== "SAR" && (
+                  <div className="space-y-1">
+                    <Label className="font-bold">سعر الصرف مقابل SAR</Label>
+                    <Input
+                      type="number"
+                      step="0.0001"
+                      value={invExchangeRate}
+                      onChange={(e) => setInvExchangeRate(e.target.value)}
+                    />
+                  </div>
+                )}
+
                 <div className="space-y-1">
                   <Label className="font-bold">رقم فاتورة المورد المرجعي</Label>
                   <Input value={supplierRef} onChange={(e) => setSupplierRef(e.target.value)} placeholder="SDA-INV-1020" />
                 </div>
+
                 <div className="space-y-1">
-                  <Label className="font-bold">طريقة الدفع للمورد</Label>
+                  <Label className="font-bold">طريقة الدفع للمورد *</Label>
                   <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectTrigger className="bg-white"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="bank">تحويل بنكي direct bank</SelectItem>
-                      <SelectItem value="cash">نقداً من الخزينة</SelectItem>
+                      <SelectItem value="cash">نقداً من الخزينة (Cash)</SelectItem>
+                      <SelectItem value="credit">آجل / على الحساب (ائتمان)</SelectItem>
+                      <SelectItem value="cheque">شيك بنكي (Cheque)</SelectItem>
+                      <SelectItem value="vcc">بطاقة إلكترونية / VCC (Virtual Card)</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div className="space-y-1 md:col-span-2">
+                  <Label className="font-bold">حساب البنك / الخزينة / الحساب الدائن</Label>
+                  <Input value={invTreasuryAccount} onChange={(e) => setInvTreasuryAccount(e.target.value)} placeholder="البنك الأهلي السعودي - حساب المشتريات / الخزينة" />
                 </div>
               </div>
 
@@ -1704,17 +1838,17 @@ export default function TravelProcurementPage() {
                 </div>
 
                 {items.map((item, idx) => (
-                  <div key={idx} className="p-3 bg-white rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-5 gap-3 text-xs items-center shadow-sm">
+                  <div key={`pi-item-${idx}`} className="p-3 bg-white rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-5 gap-3 text-xs items-center shadow-sm">
                     <div className="space-y-1 md:col-span-2">
                       <Label className="text-[11px] font-bold">الوصف / الخدمة المشتراة</Label>
                       <Input className="h-9 text-xs" value={item.description} onChange={(e) => updateItem(idx, "description", e.target.value)} />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-[11px] font-bold">سعر التكلفة الشراء</Label>
+                      <Label className="text-[11px] font-bold">سعر التكلفة الشراء ({currenciesList.find(c => c.code === invCurrency)?.symbol || "ر.س"})</Label>
                       <Input className="h-9 text-xs font-mono font-bold" type="number" value={item.cost_price} onChange={(e) => updateItem(idx, "cost_price", Number(e.target.value))} />
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-[11px] font-bold">البيع المخطط</Label>
+                      <Label className="text-[11px] font-bold">البيع المخطط ({currenciesList.find(c => c.code === invCurrency)?.symbol || "ر.س"})</Label>
                       <Input className="h-9 text-xs font-mono font-bold text-emerald-700" type="number" value={item.selling_price} onChange={(e) => updateItem(idx, "selling_price", Number(e.target.value))} />
                     </div>
                     {items.length > 1 && (
@@ -1729,15 +1863,21 @@ export default function TravelProcurementPage() {
               <div className="grid grid-cols-3 gap-4 bg-teal-50 p-4 rounded-xl text-center text-sm font-sans border border-teal-200">
                 <div>
                   <div className="text-slate-500 font-bold">إجمالي الشراء</div>
-                  <div className="font-bold text-slate-800 text-lg font-mono">{fmt(totalCost)} ريال</div>
+                  <div className="font-bold text-slate-800 text-lg font-mono">
+                    {fmt(totalCost)} {currenciesList.find(c => c.code === invCurrency)?.symbol || "ر.س"}
+                  </div>
                 </div>
                 <div>
                   <div className="text-slate-500 font-bold">المبيعات المخططة</div>
-                  <div className="font-bold text-emerald-800 text-lg font-mono">{fmt(totalSelling)} ريال</div>
+                  <div className="font-bold text-emerald-800 text-lg font-mono">
+                    {fmt(totalSelling)} {currenciesList.find(c => c.code === invCurrency)?.symbol || "ر.س"}
+                  </div>
                 </div>
                 <div>
                   <div className="text-slate-500 font-bold">الأرباح الصافية التقديرية</div>
-                  <div className="font-bold text-blue-700 text-lg font-mono">+{fmt(expectedProfit)} ريال</div>
+                  <div className="font-bold text-blue-700 text-lg font-mono">
+                    +{fmt(expectedProfit)} {currenciesList.find(c => c.code === invCurrency)?.symbol || "ر.س"}
+                  </div>
                 </div>
               </div>
             </div>
